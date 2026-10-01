@@ -266,11 +266,11 @@ If a command cannot find a file, return to the repository root and check the pat
 
 ## M04 — Repository guidance
 
-This activity takes about 15 minutes once the project is ready: 2 minutes to read the brief, then 13 minutes to write, try, and revise guidance. Complete preparation before starting the timer. You will write shared and local project instructions, check a small agent-assisted change, and clarify how a rule handles an approved exception. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
+**Goal:** give an agent project knowledge it cannot learn from the code, then verify that the implementation uses it. Allow about 15 minutes after preparation: 2 minutes for the brief and 13 minutes for the work.
 
-Read these directions yourself. Give the agent only your project guides and the task prompts below. Keep this workbook guide outside the agent's working project.
+Read these directions yourself. Keep the workbook and acceptance checker outside the agent's working project. Give the agent only the task prompts below and the guides you write.
 
-### Before the timer: prepare the project
+### Before the timer: prepare a fresh project
 
 From the **secure-ai-student-labs root**, run:
 
@@ -278,7 +278,7 @@ From the **secure-ai-student-labs root**, run:
 python scripts/prepare_m04.py ../m04-work
 ```
 
-Open the new **m04-work** folder as your project in the coding agent. The preparation script copies only seven starter files and, when Git is available, creates a local baseline commit for reviewing changes. It refuses to overwrite an existing destination. To try again, choose a new folder name.
+Use a new destination name if `m04-work` already exists. Earlier copies may contain a different exercise or your previous changes. Open the new folder as the project in your coding agent.
 
 From **m04-work**, run:
 
@@ -287,79 +287,94 @@ python -m unittest discover -s tests -v
 python demo.py
 ```
 
-Expected baseline: **4 passing tests** and `Order total: 13.50`. Use `python3` or `py -3` if that is your Python command. No packages, API keys, or AITrainer files are required by the sample. Use your existing coding agent for the live activity.
+Expected baseline: **4 passing tests** and `Order total: 13.50`. The new `delivery_fee` function raises `NotImplementedError`; the existing calculator and its tests work. No extra packages or AITrainer files are needed. Use `python3` or `py -3` if that is your Python command.
 
-The repository root for the rest of this exercise is **m04-work**, not the lab collection.
+The preparation script copies only seven starter files and creates a local Git baseline when Git is available. It does not copy this workbook, the acceptance checker, or any solution.
 
 ```text
 m04-work/
-├── AGENTS.md                   starter project instructions
-├── demo.py                     an example caller
-├── src/order_total/pricing.py  the calculator
-└── tests/test_pricing.py       automated checks
+├── AGENTS.md                   basic starter instructions
+├── demo.py                     an existing calculator caller
+├── src/order_total/pricing.py  calculator and delivery_fee stub
+└── tests/test_pricing.py       existing calculator checks
 ```
 
-### 0–2 minutes: read the maintainer's brief
+### 0–2 minutes: the maintainer's brief
 
-The maintainer looks after this project. These are the requirements they want future work to respect:
+The business has decided this delivery policy. It is deliberately absent from the starter code:
 
-- Use Python's standard library; the project needs no extra packages.
-- Keep money calculations in `Decimal`, Python's decimal number type. Converting to floating-point values can change rounding results.
-- Round the final total to two decimal places with `ROUND_HALF_UP`, as the starter does.
-- Ordinary fixes preserve the public function's name and parameters because other code uses them to call it.
-- A maintainer can approve an interface change. That change must account for the callers and tests that use the interface.
-- Finish by reviewing the changed lines and reporting the test results.
+- The delivery fee is **$5 for a subtotal below $50**.
+- Delivery is **free at $50 or more**, including exactly $50.
+- `delivery_fee(subtotal)` returns **the fee only**, as a `Decimal`.
+- Inputs are valid, nonnegative `Decimal` amounts already rounded to cents. Input validation and additional delivery options are outside this task.
 
-### 2–6 minutes: write two guides
+Keep the existing `calculate_order_total` behavior, including `Decimal` arithmetic and `ROUND_HALF_UP` rounding. Use only the standard library. Review the diff and report test results when finishing.
 
-Write the drafts yourself, using the brief above.
+The public policy promises free delivery starting at $50, so the exact boundary matters. Your guides should make that decision clear to someone working on the calculator later.
 
-1. Open the root `AGENTS.md`. Add the small folder map, the test command and its working directory, use of the standard library, and the expectations for review and test reporting. Keep the starter public-function rule for now.
-2. Create `src/order_total/AGENTS.md`. Put the money-calculation and rounding requirements there. This local guide applies to the calculator; it does not need to repeat the root guide's workflow.
+### 2–4 minutes: find the missing knowledge
 
-A few clear sentences in each file are enough. Include the reason for a requirement when it will help someone make a decision. Headings such as `## Validation` are optional ways to organize the text.
+Before writing the guides, start a conversation in **m04-work** and ask:
 
-### 6–11 minutes: make and review a small change
+> Read the code for `delivery_fee`. What project policy do you need before you can implement it? Do not invent a policy or change files.
 
-Start a fresh agent conversation in **m04-work**. Give it this request:
+Save one question the code could not answer. An agent asking for the price or free-delivery threshold is behaving usefully. If it proposes a default, check whether it can point to a project source for that value. Do not treat a guess as an established policy.
 
-> Read `AGENTS.md` and `src/order_total/AGENTS.md`. Name both files and briefly summarize the rules that apply. Then reject order items whose quantity is zero or negative. Raise `ValueError` with the message `quantity must be at least 1`. Add tests for both cases and check the result.
+Leave the files unchanged during this step. Keep the brief in your own notes for the next part; do not paste the whole workbook into the chat.
 
-Check that its summary covers both files before accepting the work. If it misses a guide, ask it to read that exact path. Explicitly reading the files makes this activity usable across coding agents; it is not a test of automatic instruction discovery.
+### 4–8 minutes: write the guides yourself
 
-Run `git status --short` to see changed and new files. Read the changed lines in your editor's diff view or with `git diff`. Open the new `src/order_total/AGENTS.md` directly too: plain `git diff` does not display untracked files. Then review the test results:
+1. Improve the root `AGENTS.md`: add a small file map, the test command with its working directory, the standard-library requirement, preservation of existing calculator behavior, and review/test reporting.
+2. Create `src/order_total/AGENTS.md`: record the delivery policy, the input and return contract, and the arithmetic/rounding requirements that apply to this code. Make the exactly-$50 case unambiguous.
 
-- Did the function keep its name and parameters?
-- Are `Decimal` and the final rounding intact?
-- Do the new and existing tests pass?
-- Did the agent report what it changed and checked?
+A few clear sentences are enough. Use the root guide for shared workflow and the local guide for the calculator's policy. Identify the sentence that answers the question you saved in the previous step.
 
-If you find a problem, look for missing or unclear guidance and ask for the needed correction. If the agent is still working at the end of the block, stop the run and confirm it has stopped before continuing. Use a written plan for the final step if needed, and return to the code review afterward.
+### 8–15 minutes: implement and check the policy
 
-### 11–15 minutes: revise the rule, then try an approved change
+Start a **fresh conversation** in **m04-work**, then give the agent this request:
 
-Make sure the previous run has finished or stopped. Read the starter rule about public functions alongside the maintainer's brief. Rewrite it to explain what ordinary fixes preserve and what an approved interface change needs to account for. Save the file, and keep the original sentence and your revision in your notes with a short reason for the change.
+> Read `AGENTS.md` and `src/order_total/AGENTS.md`. Briefly state the project policy you found and where it is recorded. Implement `delivery_fee(subtotal)` from that policy. Add tests and run the test suite. Preserve the existing calculator behavior.
 
-Start a **new conversation** in **m04-work** and give it this request:
+Notice that the prompt supplies no fee or threshold. Check whether the agent found those facts in your guide. If it misses a file, ask it to read the exact path.
 
-> Read `AGENTS.md` and `src/order_total/AGENTS.md`. Name both files and briefly summarize the relevant rules. The maintainer has approved renaming `calculate_order_total` to `order_total`. Give me a short plan and explain how the instructions affect it. Leave every file unchanged.
+Review the implementation, the new tests, and both guides. Use `git status --short` to include new files in the review; `git diff` does not display untracked files. Run the project's tests from **m04-work**:
 
-Check the plan against the revised guidance. It should account for `demo.py` and the tests that call the function, while preserving the arithmetic and rounding requirements. If the plan misses something, identify the relevant instruction and clarify the plan. You can also check `git status --short` and the diff to confirm this planning step added no changes.
+```sh
+python -m unittest discover -s tests -v
+```
 
-A useful revision expresses both ordinary fixes and approved changes clearly. It does not require the agent to make a mistake first. If the agent is unavailable or slow, write the rename plan yourself and use the same checks.
+Then switch your terminal back to the **secure-ai-student-labs root** and run the independent acceptance check yourself:
+
+```sh
+python scripts/check_m04.py ../m04-work
+```
+
+Use your actual working-folder name if you chose a different one. Keep this checker outside the agent's project. It checks the implementation against the workbook policy, independently of the tests the agent wrote.
+
+| Subtotal | Expected delivery fee |
+| --- | --- |
+| $49.99 | $5.00 |
+| $50.00 | $0.00 |
+| $50.01 | $0.00 |
+
+All returned amounts must be `Decimal`. The four original calculator behaviors must also remain correct. A completed implementation passes **7/7 acceptance checks**. Running the checker on the untouched starter produces **4/7**, because delivery is not implemented yet.
+
+Find the sentence in your local guide that decides the exactly-$50 case. If that sentence is ambiguous, clarify it and ask the agent to reread the guide and fix the behavior. If the guide is already clear but the implementation is wrong, ask for a code correction. Rerun the checks after a change.
+
+If everything already passes, keep the sentence and the boundary results as your evidence. You do not need to introduce a bad rule or manufacture a revision.
 
 ### What to keep
 
+- One missing-policy question and the guide sentence that answers it.
 - Your root and local `AGENTS.md` files.
-- The quantity-validation change and test results, or a written plan if you used the fallback.
-- A short rename plan that accounts for affected callers and tests.
-- The original public-function rule, your revision, and why you changed it.
+- The implementation, test results, and acceptance-check output.
+- One ambiguity you clarified, or the wording that already made the boundary clear.
 
-No push or pull request is required. Keep the work in your own copy.
+No push or pull request is required. Keep your work in your own copy.
 
-### If setup or agent access is unavailable
+### If the agent is slow or unavailable
 
-Read the starter files on GitHub. Draft the two guides and a short plan for each task in your notes, then revise the public-function rule. You can pair with a learner whose copy is running. The slide's timings are a guide, so move on to the revision step even if the implementation needs more time.
+Stop any unfinished run before changing instructions or moving on. Pair with another learner, or write the two guides and a short implementation plan yourself. Work through the three boundary cases in writing. That still demonstrates the missing knowledge, where you put it, and how you would check its effect; it does not count as a completed implementation.
 
 ### Earlier workbook: instruction tracing
 

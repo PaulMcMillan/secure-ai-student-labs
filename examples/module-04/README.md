@@ -25,9 +25,13 @@ You can also copy the contents of `agents-md-workshop` into a new folder yoursel
 
 Complete preparation before the 15-minute activity begins.
 
+The `delivery_fee` function is intentionally unimplemented. The four baseline tests cover the existing calculator.
+
 ## During class
 
-Follow the [M04 workbook directions](../../WORKBOOK_GUIDE.md#m04--repository-guidance) or the single work slide, **M04 S014 — Practice: write, try, and revise**. Keep the workbook guide outside your `m04-work` project and give the agent only your guides and the stated task prompts. The starter contains no completed local guide, exercise walkthrough, or worked solution.
+Follow the [M04 workbook directions](../../WORKBOOK_GUIDE.md#m04--repository-guidance) or the single work slide, **M04 S014 — Practice: make project guidance useful**. Keep the workbook guide outside your `m04-work` project and give the agent only your guides and the stated task prompts. The starter contains no completed local guide, exercise walkthrough, or worked solution.
+
+After implementing the policy, run `python scripts/check_m04.py ../m04-work` from the lab collection root. This checks the three delivery boundaries and four existing calculator behaviors. The checker stays outside the agent project and contains no completed implementation.
 
 Keep your work in your own copy. You do not need an API key, extra Python packages, or access to AITrainer. A coding agent is used for the live activity; the slides also describe a written alternative.
 

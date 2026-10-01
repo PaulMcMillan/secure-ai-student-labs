@@ -1,6 +1,7 @@
 # Order calculator
 
-A small Python project that calculates an order total from decimal prices and quantities.
+A small Python project that calculates an order subtotal from decimal prices and quantities.
+The delivery-fee function has a defined input and return type, but its policy is not yet implemented.
 
 ## Setup
 

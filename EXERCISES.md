@@ -4,7 +4,7 @@ Start with the directions for your current module below. They include starting f
 
 ## M04 — Current slide exercise
 
-**[Writing useful project instructions](examples/module-04/README.md)** uses a small order calculator with four passing baseline tests. The activity illustrates shared and local guidance, checking an agent's work, and improving an overly broad instruction.
+**[Writing useful project instructions](examples/module-04/README.md)** uses a small order calculator with four passing baseline tests. Students supply a delivery policy that the code cannot reveal, record it in project guidance, and check the implementation at the exact free-delivery threshold. An independent checker stays outside the agent's working copy.
 
 Prepare an independent copy from this repository root:
 

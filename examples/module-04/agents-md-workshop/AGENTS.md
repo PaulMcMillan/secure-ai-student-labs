@@ -1,5 +1,4 @@
 # Project instructions
 
-Never change the name or parameters of a public function.
-
+Use the Python standard library.
 Keep changes small.
