@@ -1,0 +1,20 @@
+{
+  "practice_id": "codex-best-practices-v1",
+  "rag_observed_evidence": {"id": "EV-RAG-01", "path": "examples/evidence/EV-RAG-01.json"},
+  "required_checks": ["baseline", "focused", "regression", "rag-functional", "rag-security", "rag-operations", "diff", "review"],
+  "allowed_tools": ["filesystem", "shell", "local-rag"],
+  "required_evidence": [
+    "contract",
+    "context",
+    "guidance",
+    "plan",
+    "permissions",
+    "tools",
+    "budget",
+    "validation",
+    "review",
+    "reuse",
+    "retrospective",
+    "stop"
+  ]
+}

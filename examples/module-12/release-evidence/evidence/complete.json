@@ -1,0 +1,165 @@
+{
+  "capstone_id": "pricing-explanation-v1",
+  "scope": {
+    "goal": "Add a deterministic quote explanation without changing existing quote totals.",
+    "start_ref": "abc1234",
+    "branch": "learner/pricing-explanation",
+    "changed_paths": ["pricing.py", "tests/test_pricing.py", "evidence/capstone.json", "evidence/rag-report.json"],
+    "stop_condition": "All acceptance criteria and release gates pass; residual risk is recorded."
+  },
+  "instructions": {
+    "sources": ["AGENTS.md", "task.json"],
+    "conflicts_resolved": true,
+    "trace": ["standard-library-only", "synthetic-data", "no-network", "run-tests"]
+  },
+  "context": {
+    "included": ["pricing.py", "tests/test_pricing.py", "task.json", "examples/rag-reference/README.md"],
+    "excluded": ["credentials", "production-data", "unrelated-modules"],
+    "assumptions": ["currency is represented by two-decimal synthetic values"],
+    "acceptance_linked": true,
+    "synthetic_only": true
+  },
+  "decision": {
+    "surface": "local-repository-agent",
+    "rationale": "The change is local, bounded, testable, and requires no external system.",
+    "posture_sequence": ["Explore", "Plan", "Implement", "Test", "Review", "Release"],
+    "execution_shape": "single-agent",
+    "execution_reason": "The code and tests are tightly coupled and fit one small write set."
+  },
+  "cost": {
+    "complexity": "bounded",
+    "risk": "medium",
+    "budget": {"time_minutes": 30, "max_iterations": 3},
+    "actual": {"time_minutes": 24, "iterations": 2},
+    "escalation_trigger": "Stop after three failed iterations or any critical safety failure."
+  },
+  "tools": {
+    "allowed": ["filesystem", "shell"],
+    "external_tools": [],
+    "network_allowed": false,
+    "authority_expanded": false,
+    "approval_boundary": "Workspace-only writes and local test execution."
+  },
+  "workflow": {
+    "states": ["intake", "context", "plan", "implement", "test", "review", "release", "stop"],
+    "gates": {
+      "scope": "pass",
+      "implementation": "pass",
+      "validation": "pass",
+      "review": "pass",
+      "release": "pass"
+    }
+  },
+  "security": {
+    "synthetic_data": true,
+    "secrets_included": false,
+    "production_data_used": false,
+    "input_validation": true,
+    "least_privilege": true,
+    "dependency_change": false,
+    "retrieved_content_treated_as_data": true,
+    "server_side_tenant_filter": true
+  },
+  "rag": {
+    "reference_path": "examples/rag-reference",
+    "commands": [
+      "python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/index.json",
+      "python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question \"What is the travel approval threshold?\" --telemetry examples/rag-reference/build/telemetry.jsonl",
+      "python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl"
+    ],
+    "observed_evidence": {
+      "id": "EV-RAG-01",
+      "path": "examples/evidence/EV-RAG-01.json",
+      "sha256": "1e606a9563196755eca8a0562983801f2ae723bb3f4c399eb966160383f75969"
+    },
+    "digests": {
+      "corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77",
+      "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+      "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7"
+    },
+    "ingestion_status": "completed",
+    "ingestion": {
+      "document_count": 7,
+      "indexed_document_count": 5,
+      "chunk_count": 5,
+      "scanner_quarantined_document_count": 1,
+      "deletion_pending_document_count": 1
+    },
+    "category_results": {
+      "answerable": "pass",
+      "abstain": "pass",
+      "classification": "pass",
+      "cross_tenant": "pass",
+      "poison": "pass",
+      "freshness": "pass",
+      "deletion": "pass",
+      "budget": "pass"
+    },
+    "metric_results": {
+      "retrieval_recall_at_k": 1.0,
+      "citation_precision": 1.0,
+      "answerable_pass_rate": 1.0,
+      "abstain_pass_rate": 1.0,
+      "classification_block_rate": 1.0,
+      "cross_tenant_block_rate": 1.0,
+      "poison_block_rate": 1.0,
+      "freshness_pass_rate": 1.0,
+      "deletion_block_rate": 1.0,
+      "budget_pass_rate": 1.0
+    },
+    "monitoring": {
+      "owner": "rag-service-owner",
+      "freshness_slo_minutes": 15,
+      "alert_route": "rag-on-call",
+      "canary_metrics": ["cross_tenant_block_rate", "poison_block_rate", "freshness_pass_rate", "deletion_block_rate", "budget_pass_rate"]
+    },
+    "rollback_or_reindex": "restore the approved manifest and implementation, then rebuild and re-evaluate the index",
+    "verified_during_integration": true
+  },
+  "validation": [
+    {"id": "baseline", "status": "pass", "command": "python -m unittest discover -s starter/tests -v", "output_ref": "EV-VAL-01", "fabricated": false},
+    {"id": "focused", "status": "pass", "command": "python -m unittest solution.tests.test_pricing.PricingTests.test_explanation -v", "output_ref": "EV-VAL-02", "fabricated": false},
+    {"id": "regression", "status": "pass", "command": "python -m unittest discover -s solution/tests -v", "output_ref": "EV-VAL-03", "fabricated": false},
+    {"id": "rag", "status": "pass", "command": "python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl", "output_ref": "examples/evidence/EV-RAG-01.json", "fabricated": false},
+    {"id": "security", "status": "pass", "command": "python evidence_check.py task.json evidence/complete.json", "output_ref": "EV-VAL-04", "fabricated": false},
+    {"id": "diff", "status": "pass", "command": "git diff --check", "output_ref": "EV-VAL-05", "fabricated": false}
+  ],
+  "review": {
+    "author": "learner-01",
+    "reviewer": "peer-02",
+    "read_only": true,
+    "target_ref": "def5678",
+    "coverage": ["acceptance", "correctness", "security", "tests", "scope"],
+    "findings": [{"id": "REV-01", "severity": "low", "decision": "accepted", "evidence": "pricing.py input guard"}],
+    "adjudicated": true
+  },
+  "release": {
+    "owner": "learner-01",
+    "all_gates_passed": true,
+    "rollback_ready": true,
+    "rollback_path": "Revert the bounded change through the approved Git workflow and rerun regression tests.",
+    "residual_risks": ["Synthetic currency rounding does not model every production currency."],
+    "stop_condition_met": true
+  },
+  "evidence_index": {
+    "instructions": "EV-INS-01",
+    "context": "EV-CTX-01",
+    "decision": "EV-DEC-01",
+    "cost": "EV-COST-01",
+    "tools": "EV-TOOL-01",
+    "workflow": "EV-WF-01",
+    "security": "EV-SEC-01",
+    "rag": "EV-RAG-01",
+    "validation": "EV-VAL-01",
+    "review": "EV-REV-01",
+    "release": "EV-REL-01"
+  },
+  "critical_safety_failures": [],
+  "runtime": {
+    "commands_executed": false,
+    "model_called": false,
+    "network_used": false,
+    "credentials_read": false,
+    "git_operations_run": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "workflow_id": "rag-release-v1",
+  "base_commit": "abc1234",
+  "changed_paths": ["rag-config.json"],
+  "authority_expanded": false,
+  "secrets_included": false,
+  "skipped_checks": [],
+  "events": [],
+  "rollback": {},
+  "rag_release": {},
+  "metrics": {}
+}

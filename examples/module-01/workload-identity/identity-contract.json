@@ -1,0 +1,25 @@
+{
+  "schema": "aitrainer.workload-identity-contract.v1",
+  "required_approval_classes": [
+    "destructive",
+    "financial",
+    "administrative",
+    "production"
+  ],
+  "required_network_zones": [
+    "inference",
+    "training",
+    "management",
+    "data"
+  ],
+  "allowed_proof_types": [
+    "x509-svid",
+    "mtls-certificate",
+    "audience-bound-signed-token",
+    "cloud-workload-identity"
+  ],
+  "maximum_credential_lifetime_minutes": 60,
+  "forbidden_wildcards": ["*", "all", "any"],
+  "required_resource_classes": ["databases", "apis", "files", "gpus", "tools"]
+}
+

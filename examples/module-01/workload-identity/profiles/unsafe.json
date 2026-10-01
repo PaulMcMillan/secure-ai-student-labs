@@ -1,0 +1,62 @@
+{
+  "profile": "shared-agent-unsafe",
+  "workload_identity": {
+    "id": "shared-ai-service",
+    "dedicated": false,
+    "shared_service_account": true,
+    "proof_type": "static-token",
+    "credential_lifetime_minutes": 10080,
+    "automatic_rotation": false
+  },
+  "mutual_verification": {
+    "client_verifies_server": false,
+    "server_verifies_workload": true,
+    "audience_bound": false,
+    "issuer_and_trust_domain_validated": false
+  },
+  "runtime_attestation": {
+    "node_attested": false,
+    "workload_attested": false,
+    "image_digest_verified": false,
+    "allowed_execution_environments": ["any"],
+    "current_execution_environment": "developer-laptop"
+  },
+  "authorization": {
+    "databases": ["*"],
+    "apis": ["all"],
+    "files": ["*"],
+    "gpus": ["any"],
+    "tools": ["*"],
+    "actions": ["read", "write", "delete", "admin"],
+    "tenant_bound": false,
+    "object_authorization": false
+  },
+  "secrets": {
+    "vault_references": [],
+    "inline_secrets": true,
+    "prompt_secrets": true,
+    "container_baked_secrets": true,
+    "model_file_secrets": true
+  },
+  "network": {
+    "default_deny": false,
+    "zones": {
+      "inference": "flat-network",
+      "training": "flat-network",
+      "management": "flat-network",
+      "data": "flat-network"
+    },
+    "authorized_egress": ["*"]
+  },
+  "execution": {
+    "sandboxed": false,
+    "non_elevated": false,
+    "workspace_scoped": false,
+    "generated_code_network": true
+  },
+  "human_approval": {
+    "required_for": ["delete"],
+    "approver_must_be_independent": false
+  }
+}
+

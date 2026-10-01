@@ -1,0 +1,18 @@
+# Teaching example only; update-sensitive permission-profile syntax, verified 2026-09-18.
+default_permissions = "course-workspace"
+
+[features]
+network_proxy = true
+
+[permissions.course-workspace.filesystem]
+":minimal" = "read"
+
+[permissions.course-workspace.filesystem.":workspace_roots"]
+"." = "write"
+"**/*.env" = "deny"
+
+[permissions.course-workspace.network]
+enabled = true
+
+[permissions.course-workspace.network.domains]
+"docs.example.invalid" = "allow"

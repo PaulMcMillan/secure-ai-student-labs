@@ -1,0 +1,55 @@
+{
+  "workflow_id": "parallel-rag-evidence-v1",
+  "authority_expanded": false,
+  "secrets_included": false,
+  "rag_release": {
+    "observed_evidence": {
+      "id": "EV-RAG-01",
+      "path": "examples/evidence/EV-RAG-01.json",
+      "sha256": "1e606a9563196755eca8a0562983801f2ae723bb3f4c399eb966160383f75969"
+    },
+    "digests": {
+      "corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77",
+      "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+      "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7",
+      "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"
+    }
+  },
+  "operations": {
+    "runtime_interface": "codex-agent-thread",
+    "permission_inheritance_verified": true,
+    "goal_budget_accounted": true,
+    "cancellation_owner": "orchestrator-a",
+    "max_parallel_observed": 2
+  },
+  "tasks": [
+    {"id": "inventory-corpus", "owner": "explorer-a", "role": "explorer", "authority": "read", "paths": ["corpus-manifest.json", "rag-config.json"], "write_paths": [], "depends_on": [], "isolation": "read-only", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "corpus-map.json", "status": "complete", "validation": ["references-cited"], "budget": {"max_minutes": 4, "max_attempts": 1}, "stop_condition": "manifest and configuration digests are recorded"},
+    {"id": "inventory-evals", "owner": "explorer-b", "role": "explorer", "authority": "read", "paths": ["evals/rag-functional.jsonl", "evals/rag-security.jsonl"], "write_paths": [], "depends_on": [], "isolation": "read-only", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "eval-map.json", "status": "complete", "validation": ["cases-counted"], "budget": {"max_minutes": 4, "max_attempts": 1}, "stop_condition": "functional and security cases are classified"},
+    {"id": "evaluate-quality", "owner": "worker-a", "role": "worker", "authority": "write", "paths": ["corpus-manifest.json", "rag-config.json", "evals/rag-functional.jsonl", "evidence/retrieval-quality.json"], "write_paths": ["evidence/retrieval-quality.json"], "depends_on": ["inventory-corpus", "inventory-evals"], "isolation": "worktree-quality", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "retrieval-quality.patch", "status": "complete", "validation": ["retrieval-metrics", "citation-abstention"], "budget": {"max_minutes": 5, "max_attempts": 2}, "stop_condition": "quality report is complete or a threshold breach is escalated"},
+    {"id": "evaluate-security", "owner": "worker-b", "role": "worker", "authority": "write", "paths": ["corpus-manifest.json", "rag-config.json", "evals/rag-security.jsonl", "evidence/rag-security.json"], "write_paths": ["evidence/rag-security.json"], "depends_on": ["inventory-corpus", "inventory-evals"], "isolation": "worktree-security", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "rag-security.patch", "status": "complete", "validation": ["authorization-tests", "injection-tests"], "budget": {"max_minutes": 5, "max_attempts": 2}, "stop_condition": "zero authorization leaks and injection tests pass or release is blocked"},
+    {"id": "review-rag-evidence", "owner": "reviewer-a", "role": "reviewer", "authority": "read", "paths": ["evidence/retrieval-quality.json", "evidence/rag-security.json"], "write_paths": [], "depends_on": ["evaluate-quality", "evaluate-security"], "isolation": "read-only", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "review.json", "status": "complete", "validation": ["findings-adjudicated"], "budget": {"max_minutes": 4, "max_attempts": 1}, "stop_condition": "all evidence-linked findings are adjudicated"},
+    {"id": "integrate-rag-evidence", "owner": "integrator-a", "role": "integrator", "authority": "integrate", "paths": ["evidence/retrieval-quality.json", "evidence/rag-security.json", "evidence/rag-integration.json"], "write_paths": [], "depends_on": ["review-rag-evidence"], "isolation": "integration-branch", "base_commit": "abc1234", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}, "output": "rag-integration.json", "status": "complete", "validation": ["retrieval-metrics", "citation-abstention", "authorization-tests", "injection-tests", "monitoring-cost-check", "provenance-check"], "budget": {"max_minutes": 4, "max_attempts": 1}, "stop_condition": "all RAG evidence gates pass and residual risk is owned"}
+  ],
+  "reports": [
+    {"task_id": "evaluate-quality", "output": "retrieval-quality.patch", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}},
+    {"task_id": "evaluate-security", "output": "rag-security.patch", "rag_release_ref": "EV-RAG-01", "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"}}
+  ],
+  "waves": [
+    ["inventory-corpus", "inventory-evals"],
+    ["evaluate-quality", "evaluate-security"],
+    ["review-rag-evidence"],
+    ["integrate-rag-evidence"]
+  ],
+  "integration": {
+    "owner": "integrator-a",
+    "task_id": "integrate-rag-evidence",
+    "merge_order": ["evaluate-quality", "evaluate-security"],
+    "conflict_resolution": "integrator rejects mismatched corpus/index/config digests and returns evidence to its producing owner",
+    "rag_release_ref": "EV-RAG-01",
+    "rag_release_digests": {"corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77", "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98", "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7", "evaluation_cases": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"},
+    "validation": ["retrieval-metrics", "citation-abstention", "authorization-tests", "injection-tests", "monitoring-cost-check", "provenance-check"],
+    "result": "pass",
+    "residual_risks": ["offline reference does not attest to a hosted vector service"],
+    "stop_condition": "quality, security, monitoring, cost, provenance, and review gates pass against one immutable RAG release"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "phases": [
+    {
+      "posture": "Explore",
+      "deliverable": "quick scan",
+      "scope": ["entire-repository"],
+      "constraints": ["move fast"],
+      "validation": ["looks reasonable"],
+      "stopping_condition": "keep going",
+      "exit_evidence": "scan-done"
+    },
+    {
+      "posture": "Implement",
+      "deliverable": "change everything needed",
+      "scope": ["entire-repository"],
+      "constraints": ["move fast"],
+      "validation": ["skip tests"],
+      "stopping_condition": "keep going",
+      "exit_evidence": "done"
+    }
+  ]
+}

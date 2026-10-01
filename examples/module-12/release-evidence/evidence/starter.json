@@ -1,0 +1,24 @@
+{
+  "capstone_id": "pricing-explanation-v1",
+  "scope": {},
+  "instructions": {},
+  "context": {},
+  "decision": {},
+  "cost": {},
+  "tools": {},
+  "workflow": {},
+  "security": {},
+  "rag": {},
+  "validation": [],
+  "review": {},
+  "release": {},
+  "evidence_index": {},
+  "critical_safety_failures": [],
+  "runtime": {
+    "commands_executed": false,
+    "model_called": false,
+    "network_used": false,
+    "credentials_read": false,
+    "git_operations_run": false
+  }
+}

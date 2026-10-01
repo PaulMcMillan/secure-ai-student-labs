@@ -1,0 +1,25 @@
+{
+  "schema": "aitrainer.secure-ai-evidence.v1",
+  "case": "Instructor-supplied platform assertions before evidence review",
+  "safety": {
+    "offline_synthetic": true,
+    "network_used": false,
+    "host_probed": false,
+    "models_started": false,
+    "files_written": false
+  },
+  "claims": [
+    "Secure Boot enabled",
+    "Kernel lockdown active",
+    "Intel PTT or TPM 2.0 operational",
+    "SED or LUKS disk encryption and locks enabled",
+    "MOK enrolled and trusted by the kernel",
+    "IMA SHA-256 policy active with 3,564 measurements in TPM PCR 10",
+    "LKRG 1.0.1 installed by DKMS, signed, trusted, automatically loaded, and scanned without violations",
+    "AMD OpenCL benchmark approximately 3.44 TFLOPS and 165 GB/s",
+    "AMD and Intel GPUs passed Vulkan, OpenGL 4.6, and video acceleration checks"
+  ],
+  "platform_evidence": [],
+  "modality_controls": [],
+  "control_spine": []
+}

@@ -1,0 +1,202 @@
+{
+  "schema": "aitrainer.secure-ai-evidence.v1",
+  "case": "Synthetic evidence-ready Secure AI reference packet",
+  "safety": {
+    "offline_synthetic": true,
+    "network_used": false,
+    "host_probed": false,
+    "models_started": false,
+    "files_written": false
+  },
+  "control_spine": [
+    "workload_identity",
+    "data_and_object_authorization",
+    "model_data_supply_chain",
+    "input_provenance_and_normalization",
+    "sandbox_and_network_isolation",
+    "adversarial_evaluation",
+    "monitoring_and_response",
+    "human_consequence_gate"
+  ],
+  "platform_evidence": [
+    {
+      "id": "secure_boot",
+      "assertion": "Firmware, shim, bootloader, kernel, and required module trust path enforces approved signatures.",
+      "evidence_class": "preventive_enforcement",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:00:00Z",
+      "scope": "synthetic training node and current boot",
+      "evidence_refs": ["EV-BOOT-STATE", "EV-UNSIGNED-MODULE-NEGATIVE"],
+      "owner": "platform security",
+      "limitations": "Does not prove user-space model behavior, data authorization, or prompt safety.",
+      "enabled": true,
+      "enforcement_verified": true
+    },
+    {
+      "id": "kernel_lockdown",
+      "assertion": "Kernel lockdown is active in integrity mode.",
+      "evidence_class": "preventive_enforcement",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:01:00Z",
+      "scope": "synthetic running kernel",
+      "evidence_refs": ["EV-LOCKDOWN-MODE", "EV-RESTRICTED-OPERATION-NEGATIVE"],
+      "owner": "Linux platform owner",
+      "limitations": "Restricts kernel-facing operations but does not sandbox the AI workload by itself.",
+      "mode": "integrity"
+    },
+    {
+      "id": "tpm2",
+      "assertion": "TPM 2.0 is present and a nonce-bound quote was verified against the approved baseline.",
+      "evidence_class": "attestation_enabler",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:02:00Z",
+      "scope": "synthetic current boot and approved verifier",
+      "evidence_refs": ["EV-TPM-PROPERTIES", "EV-TPM-FRESH-QUOTE"],
+      "owner": "attestation service owner",
+      "limitations": "TPM presence is not attestation; verifier policy, nonce freshness, event-log replay, and reference values remain required.",
+      "version": "2.0",
+      "fresh_quote_verified": true
+    },
+    {
+      "id": "disk_encryption",
+      "assertion": "All data-bearing system and AI-data devices are encrypted and locked with tested recovery.",
+      "evidence_class": "encryption",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:03:00Z",
+      "scope": "synthetic root, data, model-cache, and training-data devices",
+      "evidence_refs": ["EV-BLOCK-MAP", "EV-LUKS-HEADERS", "EV-RECOVERY-TEST"],
+      "owner": "storage security owner",
+      "limitations": "Protects data at rest; it does not protect plaintext in memory or an already unlocked compromised host.",
+      "covered_devices": [
+        {"role": "system", "encrypted": true},
+        {"role": "ai-data", "encrypted": true},
+        {"role": "model-cache", "encrypted": true}
+      ],
+      "key_protection_verified": true,
+      "recovery_tested": true
+    },
+    {
+      "id": "mok",
+      "assertion": "The approved module-signing MOK is enrolled, its private key is protected, and required third-party modules validate under that trust chain.",
+      "evidence_class": "preventive_enforcement",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:04:00Z",
+      "scope": "synthetic MOK database and required module inventory",
+      "evidence_refs": ["EV-MOK-FINGERPRINT", "EV-MODULE-SIGNERS", "EV-KEY-CUSTODY"],
+      "owner": "kernel module signing owner",
+      "limitations": "An enrolled key expands trust; weak private-key custody can undermine the boundary.",
+      "enrolled": true,
+      "private_key_protected": true,
+      "verified_modules": ["synthetic-lkrg-module", "synthetic-gpu-module"]
+    },
+    {
+      "id": "ima",
+      "assertion": "IMA measures the approved scope with SHA-256 into PCR 10 and the verifier replays the log against a fresh quote.",
+      "evidence_class": "measurement",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:05:00Z",
+      "scope": "synthetic current boot, policy, measurement log, and verifier",
+      "evidence_refs": ["EV-IMA-POLICY", "EV-IMA-LOG", "EV-PCR10-QUOTE", "EV-REFERENCE-VALUES"],
+      "owner": "integrity and attestation owner",
+      "limitations": "A count is only a point-in-time observation; measured does not mean approved until a verifier checks the event and reference value.",
+      "hash_algorithm": "sha256",
+      "pcr": 10,
+      "measurement_count": 3564,
+      "measurement_count_interpretation": "point-in-time-observation-not-threshold",
+      "verification": ["policy-review", "event-log-validation", "replay-and-quote", "reference-value-comparison"]
+    },
+    {
+      "id": "lkrg",
+      "assertion": "LKRG 1.0.1 is installed, signed, loaded for the observed boot, scanned, and connected to reviewed alerts.",
+      "evidence_class": "runtime_detection",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:06:00Z",
+      "scope": "synthetic running kernel and alert path",
+      "evidence_refs": ["EV-DKMS", "EV-MODULE-SIGNER", "EV-LOADED-MODULE", "EV-LKRG-SCAN", "EV-ALERT-CANARY"],
+      "owner": "kernel detection owner",
+      "limitations": "Adds runtime detection; it does not replace patching, Secure Boot, least privilege, or workload isolation.",
+      "version": "1.0.1",
+      "installed": true,
+      "loaded_at_observation": true,
+      "integrity_scan": "passed",
+      "alert_destinations": ["synthetic-security-operations-queue"]
+    },
+    {
+      "id": "gpu_capability",
+      "assertion": "AMD compute and memory throughput plus AMD/Intel graphics and video APIs are available for the approved workload.",
+      "evidence_class": "performance_capability",
+      "status": "pass",
+      "observed_at": "2026-09-11T14:07:00Z",
+      "scope": "synthetic AMD and Intel accelerator inventory",
+      "evidence_refs": ["EV-OPENCL-BENCH", "EV-VULKAN", "EV-OPENGL", "EV-VIDEO"],
+      "owner": "accelerator platform owner",
+      "limitations": "API and benchmark success prove capability or performance, not identity, isolation, authorization, confidentiality, or model safety.",
+      "counts_as_ai_security_control": false
+    }
+  ],
+  "modality_controls": [
+    {
+      "id": "llm_gpt",
+      "untrusted_inputs": ["user prompts", "retrieved text", "tool descriptions and results", "memory"],
+      "attack_paths": ["direct or indirect prompt injection", "jailbreak or goal hijack", "tool abuse", "data exfiltration and denial of wallet"],
+      "prevent": ["instruction/data separation", "identity-bound tool authorization", "sandboxing", "approval and hard budgets"],
+      "detect": ["policy denials", "novel tool graphs", "cross-tenant canaries", "cost and retry anomalies"],
+      "respond": ["stop the run", "revoke delegated credentials", "quarantine context and output", "replay against a trusted baseline"],
+      "test_oracles": ["denied side effect", "zero unauthorized context", "bounded attempts", "independent evidence review"]
+    },
+    {
+      "id": "computer_vision",
+      "untrusted_inputs": ["camera frames", "uploaded images", "labels", "sensor metadata"],
+      "attack_paths": ["adversarial patch or perturbation", "sensor replay or spoofing", "label poisoning", "model extraction"],
+      "prevent": ["sensor and dataset provenance", "physical and digital input bounds", "segmented capture pipeline", "signed model artifacts"],
+      "detect": ["out-of-distribution checks", "multi-sensor disagreement", "robustness slices", "input-quality telemetry"],
+      "respond": ["reject or degrade safely", "switch to independent sensing", "quarantine samples", "require human safety review"],
+      "test_oracles": ["attack-set miss rate", "false-reject rate", "safe fallback", "no unauthorized model access"]
+    },
+    {
+      "id": "natural_language_processing",
+      "untrusted_inputs": ["documents", "tokens", "Unicode text", "labels and lexicons"],
+      "attack_paths": ["homoglyph or encoding abuse", "tokenization edge cases", "poisoned labels", "PII extraction"],
+      "prevent": ["canonical normalization", "provenance and access controls", "data minimization", "versioned tokenizer and model"],
+      "detect": ["encoding anomaly checks", "slice evaluation", "DLP signals", "drift and error monitoring"],
+      "respond": ["quarantine malformed input", "redact protected data", "roll back tokenizer or model", "re-evaluate affected records"],
+      "test_oracles": ["stable meaning after normalization", "zero protected-data leakage", "slice thresholds", "reproducible version binding"]
+    },
+    {
+      "id": "reinforcement_learning",
+      "untrusted_inputs": ["environment observations", "reward signals", "simulator state", "human feedback"],
+      "attack_paths": ["reward hacking", "environment manipulation", "unsafe exploration", "policy or feedback poisoning"],
+      "prevent": ["constrained action envelope", "independent reward review", "safe simulator", "separated training and production authority"],
+      "detect": ["trajectory review", "constraint violations", "reward-performance divergence", "distribution shift"],
+      "respond": ["activate kill switch", "return to safe policy", "freeze deployment", "retrain from a trusted checkpoint"],
+      "test_oracles": ["hard constraint never violated", "safe-stop latency", "holdout performance", "no evaluator tampering"]
+    },
+    {
+      "id": "speech_recognition",
+      "untrusted_inputs": ["microphone audio", "uploaded recordings", "speaker claims", "transcripts"],
+      "attack_paths": ["replay or synthetic voice", "hidden or ultrasonic command", "transcription injection", "biometric spoofing"],
+      "prevent": ["liveness and channel binding", "multi-factor approval", "audio provenance", "treat transcripts as untrusted data"],
+      "detect": ["replay and synthesis signals", "channel anomalies", "command-risk classification", "speaker and device disagreement"],
+      "respond": ["reject the command", "require a separate trusted channel", "preserve redacted audio evidence", "revoke the session"],
+      "test_oracles": ["no consequential action from voice alone", "replay rejection", "benign speech accuracy", "auditable approval"]
+    },
+    {
+      "id": "gan_generative_media",
+      "untrusted_inputs": ["training media", "conditioning inputs", "latent controls", "generated assets"],
+      "attack_paths": ["data or model poisoning", "memorization and privacy leakage", "unsafe generation", "provenance laundering"],
+      "prevent": ["licensed and versioned datasets", "privacy testing", "signed models", "content and consequence policy"],
+      "detect": ["memorization probes", "output safety evaluation", "dataset anomaly scans", "Content Credential validation"],
+      "respond": ["block distribution", "quarantine model or dataset", "remove compromised provenance claims", "notify the content owner"],
+      "test_oracles": ["privacy threshold", "policy-compliant holdout", "verified provenance state", "human review for high-impact use"]
+    },
+    {
+      "id": "embeddings_foundation_models",
+      "untrusted_inputs": ["model files", "adapters", "embedding corpora", "serialization formats", "provider responses"],
+      "attack_paths": ["malicious model loading", "adapter or dependency compromise", "embedding inversion or membership inference", "provider drift"],
+      "prevent": ["safe model formats and sandboxed loading", "AI bill of materials", "signature and digest verification", "tenant-scoped vector access"],
+      "detect": ["malware and behavior scans", "inventory drift", "privacy attacks in evaluation", "provider and model canaries"],
+      "respond": ["revoke and quarantine artifacts", "pin a trusted version", "rebuild indexes", "rotate affected credentials"],
+      "test_oracles": ["immutable artifact match", "zero unauthorized vector retrieval", "no loader side effect", "clean rollback and reindex"]
+    }
+  ]
+}

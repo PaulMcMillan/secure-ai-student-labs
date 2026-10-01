@@ -1,0 +1,34 @@
+{
+  "workflow_id": "rag-release-v1",
+  "base_commit": "latest",
+  "changed_paths": ["rag-config.json", ".github/workflows/release.yml"],
+  "authority_expanded": true,
+  "secrets_included": true,
+  "skipped_checks": ["security-review", "regression-tests"],
+  "events": [
+    {"state": "intake", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["work-item"]},
+    {"state": "explore", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["repository-map"]},
+    {"state": "implement", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["patch"]},
+    {"state": "test", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "fail", "evidence": ["focused-tests"]},
+    {"state": "approve", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["approval-record"]},
+    {"state": "release", "owner": "agent-a", "owner_role": "developer", "authority": "external-release", "result": "pass", "evidence": ["release-record"]},
+    {"state": "close", "owner": "agent-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["closure-bundle"]}
+  ],
+  "rollback": {
+    "trigger": "",
+    "owner": "",
+    "steps": [],
+    "validation_command": "",
+    "validation_result": "not-run"
+  },
+  "rag_release": {
+    "observed_evidence": {"id": "EV-RAG-01", "path": "latest", "sha256": "short"},
+    "digests": {"corpus": "latest", "index": "", "configuration": ""},
+    "ingestion_status": "in_progress",
+    "ingestion": {"document_count": 7, "indexed_document_count": 6, "chunk_count": 6, "scanner_quarantined_document_count": 0, "deletion_pending_document_count": 1},
+    "category_results": {"answerable": "pass", "cross_tenant": "skip", "poison": "skip"},
+    "metric_results": {"retrieval_recall_at_k": 1.0, "cross_tenant_block_rate": 0.0, "poison_block_rate": 0.0},
+    "monitoring": {"owner": "", "freshness_slo": "", "alert_route": "", "canary_metrics": []}
+  },
+  "metrics": {}
+}

@@ -1,0 +1,26 @@
+{
+  "scenario_id": "architecture-review",
+  "recommendation": "claude_code",
+  "base_commit": "def5678",
+  "rationale": [
+    "The requested deliverable is an approved independent architecture synthesis, not a patch.",
+    "A read-only snapshot contains all relevant design records and excludes production data."
+  ],
+  "product_baseline": {
+    "as_of": "2026-09-10",
+    "claude_code_controls": {"restricted_mode_considered": true, "sandbox_fail_closed": true, "managed_policy_reviewed": true, "plugin_inventory_reviewed": true, "loop_usage_monitoring": true}
+  },
+  "roles": [
+    {
+      "tool": "claude_code",
+      "purpose": "Review dependency boundaries and record evidence-backed risks.",
+      "authority": "read",
+      "allowed_paths": ["docs/architecture/**", "src/**"],
+      "inputs": ["CLAUDE.md importing AGENTS.md", "snapshot def5678"],
+      "output": "architecture-review.md",
+      "validation": ["Confirm every finding cites a repository path", "Confirm no source file changed"],
+      "stop_condition": "Review covers the three named boundaries or reports missing evidence.",
+      "receiving_owner": "architecture-owner"
+    }
+  ]
+}

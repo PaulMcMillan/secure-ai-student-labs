@@ -1,0 +1,22 @@
+{
+  "scenario_id": "local-implementation",
+  "recommendation": "codex",
+  "base_commit": "abc1234",
+  "rationale": [
+    "The task requires a patch in the established Codex isolated-checkout workflow.",
+    "A second tool would add coordination cost without a distinct deliverable."
+  ],
+  "roles": [
+    {
+      "tool": "codex",
+      "purpose": "Implement and test the bounded pricing change.",
+      "authority": "write",
+      "allowed_paths": ["src/pricing.py", "tests/test_pricing.py"],
+      "inputs": ["WORK_ITEM.md", "AGENTS.md", "base abc1234"],
+      "output": "tested.patch",
+      "validation": ["python -m unittest discover -s tests -v", "git diff --check"],
+      "stop_condition": "Acceptance tests pass and the allowed-path diff is reviewed.",
+      "receiving_owner": "change-owner"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "practice_id": "codex-best-practices-v1",
+  "contract": {
+    "goal": "Operate the pre-staged RAG reference within functional, security, monitoring, and cost gates.",
+    "context_refs": ["examples/rag-reference/README.md", "rag-config.json", "corpus-manifest.json"],
+    "constraints": ["standard-library-only", "synthetic-data", "no-network"],
+    "done_when": ["rag-functional-eval-passes", "rag-security-eval-passes", "monitoring-cost-gates-pass", "review-complete"],
+    "allowed_paths": ["rag-config.json", "corpus-manifest.json", "evidence/rag-operations.json"],
+    "excluded_paths": ["deployment/", "secrets/"],
+    "start_ref": "abc1234"
+  },
+  "context": {
+    "included": ["examples/rag-reference/README.md", "rag-config.json", "corpus-manifest.json", "AGENTS.md"],
+    "excluded": ["credentials", "production-data", "unrelated-modules"],
+    "assumptions": ["the shared fixture remains synthetic and local"],
+    "unknowns": ["hosted vector-store retention and regional policy"],
+    "acceptance_linked": true
+  },
+  "guidance": {
+    "one_off": ["return a concise evidence summary"],
+    "repo_sources": ["AGENTS.md"],
+    "project_config_reviewed": true,
+    "nearest_scope_wins": true,
+    "conflicts_resolved": true,
+    "concise_and_actionable": true
+  },
+  "plan": {
+    "postures": ["Explore", "Plan", "Implement", "Test", "Review"],
+    "steps": [
+      {"id": "inspect", "deliverable": "bounded RAG release context", "validation": "corpus, index, configuration, and rules listed"},
+      {"id": "evaluate", "deliverable": "functional/security/monitoring/cost reports", "validation": "all declared RAG gates pass"},
+      {"id": "review", "deliverable": "adjudicated findings", "validation": "review gate passes"}
+    ],
+    "risk": "medium",
+    "decision_points": ["stop if scope expands", "escalate on repeated test failure"]
+  },
+  "permissions": {
+    "workspace_only": true,
+    "network_allowed": false,
+    "authority_expanded": false,
+    "approval_boundary": "Ask before any action outside workspace-only edits and local tests.",
+    "synthetic_data_only": true,
+    "secrets_included": false
+  },
+  "tools": {
+    "selected": ["filesystem", "shell", "local-rag"],
+    "external": [],
+    "selection_reason": "The task uses the local synthetic RAG fixture and deterministic evaluation oracle.",
+    "side_effects": ["workspace-write", "local-index-write", "local-test-process"],
+    "mcp_needed": false,
+    "plugin_inventory": [],
+    "plugin_results_treated_as_untrusted": true,
+    "hot_refresh_reapproval_required": true
+  },
+  "budget": {
+    "time_minutes": 30,
+    "max_iterations": 3,
+    "actual_minutes": 22,
+    "actual_iterations": 2,
+    "escalation_trigger": "Three failed iterations, scope expansion, or any safety failure."
+  },
+  "validation": [
+    {"id": "baseline", "status": "pass", "command": "python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/index.json", "output_ref": "EV-VAL-01", "fabricated": false},
+    {"id": "focused", "status": "pass", "command": "python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question \"What is the travel approval threshold?\" --telemetry examples/rag-reference/build/telemetry.jsonl", "output_ref": "EV-VAL-02", "fabricated": false},
+    {"id": "regression", "status": "pass", "command": "python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl", "output_ref": "EV-VAL-03", "fabricated": false},
+    {"id": "rag-functional", "status": "pass", "command": "inspect the bound EV-RAG category and metric results", "output_ref": "examples/evidence/EV-RAG-01.json", "fabricated": false},
+    {"id": "rag-security", "status": "pass", "command": "inspect the bound classification, cross-tenant, poison, freshness, and deletion results", "output_ref": "examples/evidence/EV-RAG-01.json", "fabricated": false},
+    {"id": "rag-operations", "status": "pass", "command": "inspect bound ingestion, index integrity, alert, and reindex records", "output_ref": "examples/evidence/EV-RAG-01.json", "fabricated": false},
+    {"id": "diff", "status": "pass", "command": "git diff --check", "output_ref": "EV-VAL-04", "fabricated": false},
+    {"id": "review", "status": "pass", "command": "review named RAG release against acceptance", "output_ref": "EV-VAL-05", "fabricated": false}
+  ],
+  "rag_operations": {
+    "owner": "rag-service-owner",
+    "observed_evidence": {
+      "id": "EV-RAG-01",
+      "path": "examples/evidence/EV-RAG-01.json",
+      "sha256": "1e606a9563196755eca8a0562983801f2ae723bb3f4c399eb966160383f75969"
+    },
+    "digests": {
+      "corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77",
+      "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+      "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7"
+    },
+    "ingestion": {
+      "document_count": 7,
+      "indexed_document_count": 5,
+      "chunk_count": 5,
+      "scanner_quarantined_document_count": 1,
+      "deletion_pending_document_count": 1
+    },
+    "category_results": {
+      "answerable": "pass",
+      "abstain": "pass",
+      "classification": "pass",
+      "cross_tenant": "pass",
+      "poison": "pass",
+      "freshness": "pass",
+      "deletion": "pass",
+      "budget": "pass"
+    },
+    "metric_results": {
+      "retrieval_recall_at_k": 1.0,
+      "citation_precision": 1.0,
+      "answerable_pass_rate": 1.0,
+      "abstain_pass_rate": 1.0,
+      "classification_block_rate": 1.0,
+      "cross_tenant_block_rate": 1.0,
+      "poison_block_rate": 1.0,
+      "freshness_pass_rate": 1.0,
+      "deletion_block_rate": 1.0,
+      "budget_pass_rate": 1.0
+    },
+    "functional_eval": "pass",
+    "security_eval": "pass",
+    "alert_route": "rag-on-call",
+    "canary_metrics": ["cross_tenant_block_rate", "poison_block_rate", "freshness_pass_rate", "deletion_block_rate", "budget_pass_rate"],
+    "rollback_or_reindex": "restore the approved corpus/configuration and rebuild the index"
+  },
+  "review": {
+    "target_ref": "def5678",
+    "criteria": ["acceptance", "correctness", "security", "tests", "scope"],
+    "reviewer": "peer-02",
+    "author": "learner-01",
+    "read_only": true,
+    "findings_adjudicated": true,
+    "residual_risk": "The local evaluator does not attest to hosted retrieval behavior."
+  },
+  "reuse": {
+    "repeat_count": 1,
+    "current_surface": "task-prompt",
+    "promotion_rule": "Move repeated repo guidance to AGENTS.md; admit a skill, plugin, MCP integration, or automation only after stable evaluation, permission review, ownership, and measured benefit.",
+    "automated": false,
+    "plugin_admission_rule": "Pin source, version, digest, permissions, data flows, result handling, owner, review date, and rollback before enablement.",
+    "removal_owner": "engineering-enablement",
+    "event_triggered": false
+  },
+  "retrospective": {
+    "observed_friction": "The first RAG run omitted abstention and deletion cases.",
+    "root_cause": "The operating checklist measured only answerable queries.",
+    "improvement": "Require the file-bound category, metric, ingestion, integrity, alert, and reindex evidence in every RAG release.",
+    "measure": "Track cross_tenant_block_rate, abstain_pass_rate, freshness_pass_rate, deletion_block_rate, and budget_pass_rate.",
+    "owner": "engineering-enablement"
+  },
+  "stop": {
+    "condition": "All declared validation and review checks pass within scope and budget.",
+    "met": true,
+    "unresolved": ["Hosted vector-store retention policy remains out of scope."],
+    "next_owner": "rag-service-owner"
+  },
+  "evidence_index": {
+    "contract": "EV-CON-01",
+    "context": "EV-CTX-01",
+    "guidance": "EV-GUI-01",
+    "plan": "EV-PLAN-01",
+    "permissions": "EV-PERM-01",
+    "tools": "EV-TOOL-01",
+    "budget": "EV-BUD-01",
+    "validation": "EV-VAL-01",
+    "review": "EV-REV-01",
+    "reuse": "EV-REUSE-01",
+    "retrospective": "EV-RETRO-01",
+    "stop": "EV-STOP-01"
+  },
+  "critical_safety_failures": [],
+  "runtime": {"commands_executed": false, "model_called": false, "network_used": false, "credentials_read": false, "git_operations_run": false}
+}

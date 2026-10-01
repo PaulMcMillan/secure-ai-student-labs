@@ -1,0 +1,14 @@
+{
+  "task_id": "MCP-TRAIN-08",
+  "purpose": "Evaluate a local read-only policy lookup tool for synthetic training use.",
+  "allowed_tool": "lookup_policy",
+  "allowed_policy_ids": ["RET-01", "SEC-02"],
+  "required_protocol_version": "2025-11-25",
+  "prohibited": [
+    "network access",
+    "credential access",
+    "filesystem writes",
+    "production data",
+    "Codex configuration changes"
+  ]
+}

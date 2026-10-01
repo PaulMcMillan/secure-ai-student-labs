@@ -1,0 +1,89 @@
+{
+  "workflow_id": "rag-release-v1",
+  "base_commit": "abc1234",
+  "changed_paths": ["rag-config.json", "corpus-manifest.json", "evidence/rag-release.json"],
+  "authority_expanded": false,
+  "secrets_included": false,
+  "skipped_checks": [],
+  "events": [
+    {"state": "intake", "owner": "product-a", "owner_role": "product_owner", "authority": "read", "result": "pass", "evidence": ["work-item", "acceptance-criteria", "risk-classification", "data-owner"]},
+    {"state": "explore", "owner": "developer-a", "owner_role": "developer", "authority": "read", "result": "pass", "evidence": ["repository-map", "relevant-context", "corpus-inventory"]},
+    {"state": "plan", "owner": "developer-a", "owner_role": "developer", "authority": "read", "result": "pass", "evidence": ["implementation-plan", "allowed-paths", "gate-plan", "rollback-plan", "deletion-plan"]},
+    {"state": "implement", "owner": "developer-a", "owner_role": "developer", "authority": "write", "result": "pass", "evidence": ["configuration-change", "changed-paths", "base-commit", "corpus-manifest-digest"]},
+    {"state": "test", "owner": "test-a", "owner_role": "test_engineer", "authority": "execute", "result": "pass", "evidence": ["ingestion-status", "retrieval-eval", "abstention-eval", "acl-isolation", "injection-eval", "freshness-deletion", "cost-budget", "diff-check"]},
+    {"state": "review", "owner": "reviewer-a", "owner_role": "reviewer", "authority": "read", "result": "pass", "evidence": ["diff-review", "security-review", "rag-eval-review", "residual-risks"]},
+    {"state": "approve", "owner": "release-manager-a", "owner_role": "release_manager", "authority": "human-approval", "result": "pass", "evidence": ["approval-record", "risk-acceptance"]},
+    {"state": "release", "owner": "release-engineer-a", "owner_role": "release_engineer", "authority": "external-release", "result": "pass", "evidence": ["artifact-digest", "index-digest", "configuration-digest", "release-record", "canary-result"]},
+    {"state": "observe", "owner": "service-owner-a", "owner_role": "service_owner", "authority": "read", "result": "pass", "evidence": ["health-result", "retrieval-slo", "usage-report", "business-guardrail", "rollback-decision"]},
+    {"state": "close", "owner": "product-a", "owner_role": "product_owner", "authority": "human-approval", "result": "pass", "evidence": ["closure-bundle", "metrics", "improvement-actions"]}
+  ],
+  "rollback": {
+    "trigger": "retrieval canary, authorization, freshness, cost, or health guardrail breach",
+    "owner": "release-manager-a",
+    "steps": ["stop rollout", "restore approved artifact", "verify health", "notify stakeholders"],
+    "validation_command": "python -m unittest discover -s examples/rag-reference/tests -v",
+    "validation_result": "pass"
+  },
+  "rag_release": {
+    "observed_evidence": {
+      "id": "EV-RAG-01",
+      "path": "examples/evidence/EV-RAG-01.json",
+      "sha256": "1e606a9563196755eca8a0562983801f2ae723bb3f4c399eb966160383f75969"
+    },
+    "digests": {
+      "corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77",
+      "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+      "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7"
+    },
+    "ingestion_status": "completed",
+    "ingestion": {
+      "document_count": 7,
+      "indexed_document_count": 5,
+      "chunk_count": 5,
+      "scanner_quarantined_document_count": 1,
+      "deletion_pending_document_count": 1
+    },
+    "category_results": {
+      "answerable": "pass",
+      "abstain": "pass",
+      "classification": "pass",
+      "cross_tenant": "pass",
+      "poison": "pass",
+      "freshness": "pass",
+      "deletion": "pass",
+      "budget": "pass"
+    },
+    "metric_results": {
+      "retrieval_recall_at_k": 1.0,
+      "citation_precision": 1.0,
+      "answerable_pass_rate": 1.0,
+      "abstain_pass_rate": 1.0,
+      "classification_block_rate": 1.0,
+      "cross_tenant_block_rate": 1.0,
+      "poison_block_rate": 1.0,
+      "freshness_pass_rate": 1.0,
+      "deletion_block_rate": 1.0,
+      "budget_pass_rate": 1.0
+    },
+    "monitoring": {
+      "owner": "rag-service-owner",
+      "freshness_slo": "approved corpus available within 15 minutes",
+      "alert_route": "rag-on-call",
+      "canary_metrics": ["cross_tenant_block_rate", "poison_block_rate", "freshness_pass_rate", "deletion_block_rate", "budget_pass_rate"]
+    }
+  },
+  "metrics": {
+    "lead_time_minutes": 42,
+    "first_pass_yield": 1.0,
+    "retry_count": 0,
+    "rework_count": 0,
+    "review_minutes": 8,
+    "escaped_defects": 0,
+    "rollback_count": 0,
+    "retrieval_calls": 12,
+    "vector_usage_bytes": 4096,
+    "answer_tokens": 780,
+    "p95_latency_ms": 180,
+    "cost_proxy_units": 12
+  }
+}

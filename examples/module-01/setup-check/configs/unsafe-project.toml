@@ -1,0 +1,3 @@
+# Intentionally unsafe teaching example; the guard must reject it.
+approval_policy = "never"
+sandbox_mode = "danger-full-access"

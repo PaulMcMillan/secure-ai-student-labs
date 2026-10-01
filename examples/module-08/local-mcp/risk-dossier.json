@@ -1,0 +1,45 @@
+{
+  "server_name": "aitrainer-policy",
+  "owner": "AITrainer course maintainers",
+  "purpose": "Synthetic local policy lookup for MCP protocol training",
+  "source_date": "2026-07-20",
+  "protocol_version": "2025-11-25",
+  "transport": "stdio",
+  "identity_boundary": "Local child process runs as the learner operating-system identity",
+  "credential_handling": "No credentials required or read",
+  "secrets_in_source": false,
+  "data_exposure": {
+    "input": "One public-training policy identifier",
+    "output": "One static public-training policy record",
+    "downstream_systems": []
+  },
+  "tools": [
+    {
+      "name": "lookup_policy",
+      "side_effect": "none",
+      "approval": "prompt",
+      "input_fields": ["policy_id"],
+      "output_fields": ["policy_id", "title", "text", "classification"],
+      "idempotent": true
+    }
+  ],
+  "audit": "Record server version, tool name, outcome, and duration; do not log arguments or result content",
+  "timeouts": {
+    "startup_seconds": 10,
+    "tool_seconds": 15
+  },
+  "failure_modes": [
+    "Server unavailable",
+    "Version mismatch",
+    "Initialization incomplete",
+    "Unknown tool",
+    "Invalid or unknown policy identifier"
+  ],
+  "monitoring": "Alert on repeated startup failure, timeout, or rejected calls in an approved deployment",
+  "disablement": "Set enabled=false or remove the scoped server entry, refresh the client, and verify lookup_policy is absent",
+  "rollback": "Disable the integration; no data or external side effect requires compensation",
+  "removal": "Remove configuration and server access, revoke any future credential, verify absence, and retain the review record",
+  "residual_risks": [
+    "Future server edits could add data sources or side effects and require a new review"
+  ]
+}

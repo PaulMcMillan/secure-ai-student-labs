@@ -1,0 +1,19 @@
+{
+  "practice_id": "codex-best-practices-v1",
+  "contract": {},
+  "context": {},
+  "guidance": {},
+  "plan": {},
+  "permissions": {},
+  "tools": {},
+  "budget": {},
+  "validation": [],
+  "rag_operations": {},
+  "review": {},
+  "reuse": {},
+  "retrospective": {},
+  "stop": {},
+  "evidence_index": {},
+  "critical_safety_failures": [],
+  "runtime": {"commands_executed": false, "model_called": false, "network_used": false, "credentials_read": false, "git_operations_run": false}
+}

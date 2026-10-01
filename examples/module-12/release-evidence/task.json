@@ -1,0 +1,32 @@
+{
+  "capstone_id": "pricing-explanation-v1",
+  "goal": "Add a deterministic quote explanation without changing existing quote totals.",
+  "allowed_paths": [
+    "pricing.py",
+    "tests/test_pricing.py",
+    "evidence/capstone.json",
+    "evidence/rag-report.json"
+  ],
+  "acceptance_criteria": [
+    "existing-total-preserved",
+    "explanation-added",
+    "invalid-input-rejected"
+  ],
+  "required_domains": [
+    "instructions",
+    "context",
+    "decision",
+    "cost",
+    "tools",
+    "workflow",
+    "security",
+    "rag",
+    "validation",
+    "review",
+    "release"
+  ],
+  "required_checks": ["baseline", "focused", "regression", "rag", "security", "diff"],
+  "rag_reference": "examples/rag-reference",
+  "rag_observed_evidence": {"id": "EV-RAG-01", "path": "examples/evidence/EV-RAG-01.json"},
+  "risk": "medium"
+}

@@ -1,0 +1,19 @@
+{
+  "task_id": "M05-TASK-01",
+  "model_contract": {
+    "allowed_models": ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol", "gpt-6-astra"],
+    "required_authority_profile": "synthetic-local-pricing-v1",
+    "required_evaluation_set": "pricing-policy-v1",
+    "astra_authority_unchanged": true
+  },
+  "required_postures": ["Explore", "Plan", "Implement", "Test", "Review"],
+  "allowed_paths": ["src/pricing.py", "tests/test_pricing.py", "docs/pricing-policy.md"],
+  "required_constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+  "required_exit_evidence": {
+    "Explore": "impacted-area-mapped",
+    "Plan": "plan-approved",
+    "Implement": "bounded-diff-ready",
+    "Test": "focused-tests-passed",
+    "Review": "review-complete"
+  }
+}

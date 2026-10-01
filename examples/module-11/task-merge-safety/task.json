@@ -1,0 +1,19 @@
+{
+  "workflow_id": "parallel-rag-evidence-v1",
+  "base_commit": "abc1234",
+  "rag_observed_evidence": {"id": "EV-RAG-01", "path": "examples/evidence/EV-RAG-01.json"},
+  "rag_bound_task_ids": ["inventory-corpus", "inventory-evals", "evaluate-quality", "evaluate-security", "review-rag-evidence", "integrate-rag-evidence"],
+  "rag_report_task_ids": ["evaluate-quality", "evaluate-security"],
+  "allowed_paths": [
+    "corpus-manifest.json",
+    "rag-config.json",
+    "evals/rag-functional.jsonl",
+    "evals/rag-security.jsonl",
+    "evidence/retrieval-quality.json",
+    "evidence/rag-security.json",
+    "evidence/rag-integration.json"
+  ],
+  "max_parallel": 2,
+  "required_validation": ["retrieval-metrics", "citation-abstention", "authorization-tests", "injection-tests", "monitoring-cost-check", "provenance-check"],
+  "required_roles": ["explorer", "worker", "reviewer", "integrator"]
+}

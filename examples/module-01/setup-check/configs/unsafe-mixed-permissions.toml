@@ -1,0 +1,9 @@
+# Intentionally unsafe teaching example; do not activate.
+default_permissions = "course-workspace"
+sandbox_mode = "workspace-write"
+
+[permissions.course-workspace.network]
+enabled = true
+
+[permissions.course-workspace.network.domains]
+"*.example.invalid" = "allow"

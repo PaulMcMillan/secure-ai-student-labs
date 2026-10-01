@@ -1,0 +1,37 @@
+{
+  "scenario_id": "bounded-sequence",
+  "recommendation": "codex_then_claude_code",
+  "base_commit": "abc1234",
+  "rationale": [
+    "The established Codex workflow owns implementation and executable validation.",
+    "An approved read-only Claude Code architecture review adds a distinct evidence artifact after the writer stops."
+  ],
+  "product_baseline": {
+    "as_of": "2026-09-10",
+    "claude_code_controls": {"restricted_mode_considered": true, "sandbox_fail_closed": true, "managed_policy_reviewed": true, "plugin_inventory_reviewed": true, "loop_usage_monitoring": true}
+  },
+  "roles": [
+    {
+      "tool": "codex",
+      "purpose": "Produce and validate the bounded implementation patch.",
+      "authority": "write",
+      "allowed_paths": ["src/**", "tests/**"],
+      "inputs": ["WORK_ITEM.md", "AGENTS.md", "base abc1234"],
+      "output": "tested.patch",
+      "validation": ["python -m unittest discover -s tests -v", "git diff --check"],
+      "stop_condition": "Patch, test output, diff review, and residual risks are recorded.",
+      "receiving_owner": "review-coordinator"
+    },
+    {
+      "tool": "claude_code",
+      "purpose": "Review the stopped patch for architecture boundary regressions.",
+      "authority": "read",
+      "allowed_paths": ["tested.patch", "src/**", "docs/architecture/**"],
+      "inputs": ["CLAUDE.md importing AGENTS.md", "tested.patch", "base abc1234"],
+      "output": "architecture-review.md",
+      "validation": ["Confirm findings cite changed paths", "Confirm reviewer made no repository edits"],
+      "stop_condition": "Findings and unanswered questions are returned without modifying the patch.",
+      "receiving_owner": "change-owner"
+    }
+  ]
+}

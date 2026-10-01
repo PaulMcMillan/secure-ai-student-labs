@@ -1,0 +1,5 @@
+# Intentionally invalid teaching profile; do not activate.
+model = "gpt-6-astra"
+model_reasoning_effort = "none"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"

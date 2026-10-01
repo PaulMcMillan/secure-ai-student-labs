@@ -1,0 +1,38 @@
+{
+  "task_id": "M03-TASK-01",
+  "repository_root": "sample-repo",
+  "required_goal_terms": [
+    "bulk discount",
+    "order total"
+  ],
+  "required_context": [
+    "src/pricing.py",
+    "tests/test_pricing.py",
+    "docs/pricing-policy.md"
+  ],
+  "useful_context": [
+    "README.md"
+  ],
+  "irrelevant_context": [
+    "docs/mobile-roadmap.md"
+  ],
+  "required_constraint_terms": [
+    "public api",
+    "decimal",
+    "no production dependency"
+  ],
+  "required_deliverable_terms": [
+    "implementation",
+    "tests",
+    "summary"
+  ],
+  "validation_command": "python -m unittest discover -s tests -v",
+  "required_stop_terms": [
+    "stop",
+    "ask"
+  ],
+  "required_privacy_terms": [
+    "credentials",
+    "customer data"
+  ]
+}

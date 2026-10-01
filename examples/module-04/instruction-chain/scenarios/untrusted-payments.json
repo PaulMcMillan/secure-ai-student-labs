@@ -1,0 +1,8 @@
+{
+  "codex_home": "fixture/codex-home",
+  "project_root": "fixture/repo",
+  "cwd": "fixture/repo/services/payments",
+  "project_trusted": false,
+  "fallback_filenames": ["TEAM_GUIDE.md"],
+  "max_bytes": 32768
+}

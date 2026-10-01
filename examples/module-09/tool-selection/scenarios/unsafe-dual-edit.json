@@ -1,0 +1,30 @@
+{
+  "scenario_id": "unsafe-dual-edit",
+  "recommendation": "codex_then_claude_code",
+  "base_commit": "latest",
+  "rationale": ["Use both because two agents are better."],
+  "roles": [
+    {
+      "tool": "codex",
+      "purpose": "Edit everything.",
+      "authority": "write",
+      "allowed_paths": ["**"],
+      "inputs": ["working tree"],
+      "output": "shared.patch",
+      "validation": ["run tests sometime"],
+      "stop_condition": "When it looks good.",
+      "receiving_owner": "team"
+    },
+    {
+      "tool": "claude_code",
+      "purpose": "Edit the same files concurrently.",
+      "authority": "write",
+      "allowed_paths": ["**"],
+      "inputs": ["mutable working tree"],
+      "output": "shared.patch",
+      "validation": [],
+      "stop_condition": "",
+      "receiving_owner": ""
+    }
+  ]
+}

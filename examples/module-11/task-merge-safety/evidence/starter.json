@@ -1,0 +1,9 @@
+{
+  "workflow_id": "parallel-rag-evidence-v1",
+  "authority_expanded": false,
+  "secrets_included": false,
+  "operations": {},
+  "tasks": [],
+  "waves": [],
+  "integration": {}
+}

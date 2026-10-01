@@ -1,0 +1,62 @@
+{
+  "profile": "northstar-benefits-reader-hardened",
+  "workload_identity": {
+    "id": "spiffe://northstar.example/agent/benefits-reader",
+    "dedicated": true,
+    "shared_service_account": false,
+    "proof_type": "x509-svid",
+    "credential_lifetime_minutes": 30,
+    "automatic_rotation": true
+  },
+  "mutual_verification": {
+    "client_verifies_server": true,
+    "server_verifies_workload": true,
+    "audience_bound": true,
+    "issuer_and_trust_domain_validated": true
+  },
+  "runtime_attestation": {
+    "node_attested": true,
+    "workload_attested": true,
+    "image_digest_verified": true,
+    "allowed_execution_environments": ["prod-ai-inference"],
+    "current_execution_environment": "prod-ai-inference"
+  },
+  "authorization": {
+    "databases": ["benefits-policy-read-replica"],
+    "apis": ["benefits-policy-read"],
+    "files": ["/workspace/policies"],
+    "gpus": ["inference-pool-low-risk"],
+    "tools": ["lookup_policy"],
+    "actions": ["read", "query"],
+    "tenant_bound": true,
+    "object_authorization": true
+  },
+  "secrets": {
+    "vault_references": ["vault://northstar/ai/benefits-reader"],
+    "inline_secrets": false,
+    "prompt_secrets": false,
+    "container_baked_secrets": false,
+    "model_file_secrets": false
+  },
+  "network": {
+    "default_deny": true,
+    "zones": {
+      "inference": "segment-ai-inference",
+      "training": "segment-ai-training",
+      "management": "segment-ai-management",
+      "data": "segment-ai-data"
+    },
+    "authorized_egress": ["benefits-policy-read.internal"]
+  },
+  "execution": {
+    "sandboxed": true,
+    "non_elevated": true,
+    "workspace_scoped": true,
+    "generated_code_network": false
+  },
+  "human_approval": {
+    "required_for": ["destructive", "financial", "administrative", "production"],
+    "approver_must_be_independent": true
+  }
+}
+

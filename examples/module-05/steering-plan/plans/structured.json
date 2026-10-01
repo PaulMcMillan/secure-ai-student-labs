@@ -1,0 +1,58 @@
+{
+  "model_contract": {
+    "selected": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "selection_reason": "Complex professional planning with bounded deterministic validation",
+    "authority_profile": "synthetic-local-pricing-v1",
+    "evaluation_set": "pricing-policy-v1",
+    "escalation_trigger": "Two attributed capability failures on the unchanged evaluation",
+    "astra_authority_unchanged": true
+  },
+  "phases": [
+    {
+      "posture": "Explore",
+      "deliverable": "repository map, relevant evidence, and unknowns",
+      "scope": ["src/pricing.py", "tests/test_pricing.py", "docs/pricing-policy.md"],
+      "constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+      "validation": ["cite each observation to a path", "make no edits"],
+      "stopping_condition": "stop when the impacted area and material unknowns are mapped; ask on policy conflict",
+      "exit_evidence": "impacted-area-mapped"
+    },
+    {
+      "posture": "Plan",
+      "deliverable": "ordered implementation and validation plan",
+      "scope": ["src/pricing.py", "tests/test_pricing.py", "docs/pricing-policy.md"],
+      "constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+      "validation": ["map each step to evidence and a check", "make no edits"],
+      "stopping_condition": "stop for approval before implementation; ask if acceptance is ambiguous",
+      "exit_evidence": "plan-approved"
+    },
+    {
+      "posture": "Implement",
+      "deliverable": "bounded pricing implementation and regression tests",
+      "scope": ["src/pricing.py", "tests/test_pricing.py"],
+      "constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+      "validation": ["inspect changed paths", "prepare focused test command"],
+      "stopping_condition": "complete when the bounded diff is ready; stop on scope expansion",
+      "exit_evidence": "bounded-diff-ready"
+    },
+    {
+      "posture": "Test",
+      "deliverable": "focused test and failure evidence",
+      "scope": ["src/pricing.py", "tests/test_pricing.py"],
+      "constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+      "validation": ["run focused tests", "record exact failures"],
+      "stopping_condition": "complete when focused tests pass; stop and return to Implement on failure",
+      "exit_evidence": "focused-tests-passed"
+    },
+    {
+      "posture": "Review",
+      "deliverable": "prioritized findings and acceptance recommendation",
+      "scope": ["src/pricing.py", "tests/test_pricing.py"],
+      "constraints": ["preserve public api", "no new production dependency", "synthetic data only"],
+      "validation": ["review diff against task and tests", "check unrelated changes"],
+      "stopping_condition": "complete with no actionable findings or return findings to Implement",
+      "exit_evidence": "review-complete"
+    }
+  ]
+}

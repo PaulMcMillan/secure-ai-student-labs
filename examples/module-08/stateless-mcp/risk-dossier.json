@@ -1,0 +1,23 @@
+{
+  "server_name": "aitrainer-stateless-policy",
+  "owner": "AITrainer course maintainers",
+  "source_date": "2026-09-18",
+  "protocol_version": "2026-07-28",
+  "transport": "stdio",
+  "identity_boundary": "Local child process; self-reported clientInfo is never identity or authorization",
+  "pinned_tools": ["lookup_policy"],
+  "controls": {
+    "per_request_protocol_and_capability_validation": "Reject missing or unsupported protocolVersion and missing clientCapabilities on every request",
+    "pinned_tool_inventory": "Expose and dispatch only lookup_policy; reject every other name",
+    "issuer_and_token_audience_validation": "Not applicable to this credential-free public-training fixture; required before any protected remote deployment",
+    "side_effect_approval": "Tool has no side effect; any future write requires preview, explicit approval, idempotency, and rollback"
+  },
+  "secrets_in_source": false,
+  "audit": "Record protocol version, tool name, decision, trace ID, duration, and server version without arguments or result content",
+  "disablement": "Disable/remove the scoped server entry and verify lookup_policy is absent",
+  "removal": "Remove configuration and server access, revoke future credentials, verify absence, and retain the review record",
+  "residual_risks": [
+    "Hand-written teaching subset is not a production SDK",
+    "A future downstream data source would require object-level authorization"
+  ]
+}

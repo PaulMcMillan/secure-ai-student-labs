@@ -1,0 +1,24 @@
+{
+  "capstone_id": "pricing-explanation-v1",
+  "scope": {
+    "goal": "Change pricing everywhere",
+    "start_ref": "latest",
+    "branch": "main",
+    "changed_paths": ["pricing.py", "../production.env"],
+    "stop_condition": "Ship quickly"
+  },
+  "instructions": {"sources": [], "conflicts_resolved": false, "trace": []},
+  "context": {"included": ["production-data"], "excluded": [], "assumptions": [], "acceptance_linked": false, "synthetic_only": false},
+  "decision": {"surface": "unknown", "rationale": "", "posture_sequence": ["Implement", "Release"], "execution_shape": "parallel-writers", "execution_reason": "faster"},
+  "cost": {"complexity": "unknown", "risk": "low", "budget": {"time_minutes": 10, "max_iterations": 1}, "actual": {"time_minutes": 40, "iterations": 5}, "escalation_trigger": ""},
+  "tools": {"allowed": ["filesystem", "shell", "production-admin"], "external_tools": ["live-pricing"], "network_allowed": true, "authority_expanded": true, "approval_boundary": "none"},
+  "workflow": {"states": ["implement", "release"], "gates": {"scope": "skip", "implementation": "pass", "validation": "skip", "review": "skip", "release": "pass"}},
+  "security": {"synthetic_data": false, "secrets_included": true, "production_data_used": true, "input_validation": false, "least_privilege": false, "dependency_change": true},
+  "rag": {"reference_path": "live-production-index", "commands": [], "observed_evidence": {"id": "EV-RAG-01", "path": "latest", "sha256": "short"}, "digests": {"corpus": "latest"}, "ingestion_status": "in_progress", "ingestion": {"document_count": 7, "indexed_document_count": 6, "chunk_count": 6, "scanner_quarantined_document_count": 0, "deletion_pending_document_count": 1}, "category_results": {"answerable": "pass", "cross_tenant": "fail", "poison": "fail"}, "metric_results": {"retrieval_recall_at_k": 1.0, "cross_tenant_block_rate": 0.0, "poison_block_rate": 0.0}, "monitoring": {"owner": "", "freshness_slo_minutes": 0, "alert_route": "", "canary_metrics": []}, "rollback_or_reindex": "", "verified_during_integration": false},
+  "validation": [{"id": "focused", "status": "pass", "command": "not-run", "output_ref": "", "fabricated": true}],
+  "review": {"author": "learner-01", "reviewer": "learner-01", "read_only": false, "target_ref": "latest", "coverage": [], "findings": [], "adjudicated": false},
+  "release": {"owner": "", "all_gates_passed": false, "rollback_ready": false, "rollback_path": "", "residual_risks": [], "stop_condition_met": false},
+  "evidence_index": {},
+  "critical_safety_failures": ["control-bypass", "fabricated-validation", "restricted-data"],
+  "runtime": {"commands_executed": false, "model_called": false, "network_used": false, "credentials_read": false, "git_operations_run": false}
+}

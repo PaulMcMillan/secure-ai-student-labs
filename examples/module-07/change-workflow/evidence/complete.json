@@ -1,0 +1,70 @@
+{
+  "task_id": "INV-27",
+  "base": "training-fixture-v1",
+  "model_contract": {
+    "selected": "gpt-5.6-sol",
+    "reasoning_effort": "medium",
+    "selection_reason": "Complex professional repository change with deterministic local validation",
+    "authority_profile": "local-synthetic-workspace-v1",
+    "evaluation_set": "INV-27-acceptance-v1",
+    "escalation_trigger": "Two attributed capability failures on the unchanged evaluation",
+    "astra_authority_unchanged": true
+  },
+  "stages": [
+    {
+      "name": "Explore",
+      "deliverable": "Instruction, behavior, and test inventory",
+      "exit_evidence": "AGENTS.md and WORK_ITEM.md read; baseline two tests pass"
+    },
+    {
+      "name": "Plan",
+      "deliverable": "Two bounded increments",
+      "exit_evidence": "Edge-case reproducer precedes minimal implementation"
+    },
+    {
+      "name": "Implement",
+      "deliverable": "Positive-quantity guard",
+      "exit_evidence": "Only the two allowed paths changed"
+    },
+    {
+      "name": "Test",
+      "deliverable": "Focused behavior evidence",
+      "exit_evidence": "Four inventory tests pass"
+    },
+    {
+      "name": "Review",
+      "deliverable": "Aggregate diff assessment",
+      "exit_evidence": "Intent, scope, boundary, secrets, and regression checks complete"
+    }
+  ],
+  "changed_files": [
+    "src/inventory.py",
+    "tests/test_inventory.py"
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "observation": "Ran 4 tests; OK"
+    }
+  ],
+  "acceptance": [
+    {"id": "A1-positive-reservation", "satisfied": true},
+    {"id": "A2-insufficient-stock", "satisfied": true},
+    {"id": "A3-zero-rejected", "satisfied": true},
+    {"id": "A4-negative-rejected", "satisfied": true}
+  ],
+  "diff_review": {
+    "completed": true,
+    "secret_scan": true,
+    "findings": []
+  },
+  "skipped_checks": [
+    "No integration suite exists in the synthetic fixture"
+  ],
+  "residual_risks": [
+    "External callers might have depended on previously undefined non-positive behavior"
+  ],
+  "authority_expanded": false,
+  "stop_reason": "All acceptance cases pass, the final diff is in scope, and residual risk is recorded"
+}

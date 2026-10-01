@@ -1,0 +1,26 @@
+{
+  "workflow_id": "parallel-rag-evidence-v1",
+  "authority_expanded": true,
+  "secrets_included": true,
+  "operations": {"runtime_interface": "unknown", "permission_inheritance_verified": false, "goal_budget_accounted": false, "cancellation_owner": "", "max_parallel_observed": 3},
+  "tasks": [
+    {"id": "write-a", "owner": "agent-a", "role": "worker", "authority": "write", "paths": ["src/pricing.py", ".github/workflows/release.yml"], "write_paths": ["src/pricing.py"], "depends_on": ["write-b"], "isolation": "shared-checkout", "base_commit": "latest", "output": "shared.patch", "status": "complete", "validation": []},
+    {"id": "write-b", "owner": "agent-b", "role": "worker", "authority": "write", "paths": ["src/pricing.py"], "write_paths": ["src/pricing.py"], "depends_on": ["write-a"], "isolation": "shared-checkout", "base_commit": "deadbee", "output": "shared.patch", "status": "complete", "validation": []},
+    {"id": "review", "owner": "agent-a", "role": "reviewer", "authority": "write", "paths": ["src/pricing.py"], "write_paths": ["src/pricing.py"], "depends_on": [], "isolation": "shared-checkout", "base_commit": "latest", "output": "review.json", "status": "complete", "validation": []},
+    {"id": "integrate", "owner": "agent-a", "role": "integrator", "authority": "integrate", "paths": ["src/pricing.py"], "write_paths": [], "depends_on": ["review"], "isolation": "shared-checkout", "base_commit": "latest", "output": "integration.json", "status": "complete", "validation": []}
+  ],
+  "waves": [
+    ["write-a", "write-b", "review"],
+    ["integrate"]
+  ],
+  "integration": {
+    "owner": "agent-a",
+    "task_id": "integrate",
+    "merge_order": ["write-a"],
+    "conflict_resolution": "",
+    "validation": [],
+    "result": "not-run",
+    "residual_risks": [],
+    "stop_condition": ""
+  }
+}

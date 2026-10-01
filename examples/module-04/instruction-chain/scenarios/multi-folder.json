@@ -1,0 +1,10 @@
+{
+  "codex_home": "fixture/codex-home",
+  "project_root": "fixture/repo",
+  "primary_project_root": "fixture/repo",
+  "cwd": "fixture/repo/services/payments",
+  "workspace_folders": ["fixture/repo", "fixture/secondary"],
+  "project_trusted": true,
+  "fallback_filenames": ["TEAM_GUIDE.md"],
+  "max_bytes": 32768
+}

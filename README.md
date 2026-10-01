@@ -1,89 +1,71 @@
 # Secure AI Agentic Platform Engineering — Student Labs
 
-Runnable source for the **Day 1 M02 and M03** student workbook exercises.
+Exercise source, tests, and synthetic data for the Day 1 and Day 2 student workbooks.
 
-## Download
+**[Download ZIP](https://github.com/PaulMcMillan/secure-ai-student-labs/archive/refs/heads/main.zip)** · **[Workbook exercise guide](WORKBOOK_GUIDE.md)**
 
-**[Download the ZIP](https://github.com/PaulMcMillan/secure-ai-student-labs/archive/refs/heads/main.zip)** and extract it, or:
+## Get started
 
 ```sh
 git clone https://github.com/PaulMcMillan/secure-ai-student-labs.git
 cd secure-ai-student-labs
-```
-
-Use **Python 3.11 or newer**. No packages, API keys, or model calls are needed for these fixtures. Run the commands below from the extracted repository root. If your Python command is `python3` or `py -3`, use that in place of `python`.
-
-```sh
 python --version
 python scripts/validate_course.py
 ```
 
-Expected: **13 unit tests pass**, followed by successful RAG ingestion, a cited query, and **8 passing evaluation cases**. Validation creates its index in a temporary directory. The M03 commands below create the working index for your own queries.
+If you already cloned this repository, run `git pull` after saving your exercise changes. ZIP users can download and extract a fresh copy.
 
-## M02 — Bounded coding change
+Use **Python 3.11 or newer**. The bundled fixtures need only the standard library. Substitute `python3` or `py -3` if that is your Python command. Run commands from the repository root unless a lab explicitly names another working directory.
 
-The M02 exercise is in `examples/module-02/order-service`.
+The validation command runs **231 tests across 26 suites**, then rebuilds the RAG index in a temporary directory, runs a cited query, and checks **8 evaluation cases** against the supplied observation. Setup diagnostics may invoke installed Git/Codex status commands; no model API is required. The optional tokenizer homework and live coding-assistant activities have separate tool requirements described in the workbook.
 
-1. Read the [lab README](examples/module-02/order-service/README.md), [repository guidance](examples/module-02/order-service/AGENTS.md), and [work item](examples/module-02/order-service/WORK_ITEM.md).
-2. Run the baseline from this repository root:
+## Find your workbook module
 
-   ```sh
-   python -m unittest discover -s examples/module-02/order-service/tests -v
-   ```
+| Day | Module | Exercise | Included support |
+| --- | --- | --- | --- |
+| 1 | M00 | [Foundations and context budgeting](examples/module-00/README.md) | Written homework; supplemental evidence checker |
+| 1 | M01 | [Setup and sanitized evidence](examples/module-01/setup-check/README.md) | Setup checker and configuration fixtures |
+| 1 | M02 | [Bounded coding change](examples/module-02/order-service/README.md) | Order-service starter and baseline tests |
+| 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; full hybrid/LLM extension remains additional work |
+| 1 | M04 | [Repository guidance](examples/module-04/instruction-chain/README.md) | Instruction tracing and guidance lint |
+| 1 | M05 | [Steering and bounded plans](examples/module-05/steering-plan/README.md) | Plan checker and prompt templates |
+| 1 | M06 | [Cost per accepted task](examples/module-06/cost-decision/README.md) | Role decisions and synthetic cost trace |
+| 2 | M07 | [Implement, test, review, hand off](examples/module-07/change-workflow/README.md) | Inventory starter, reference solution, evidence checker |
+| 2 | M08 | [MCP integration dossier](examples/module-08/stateless-mcp/README.md) | STDIO client/server and dossier checker |
+| 2 | M09 | [Tool selection](examples/module-09/tool-selection/README.md) | Workflow scenarios and decision checker |
+| 2 | M10 | [Lifecycle gates](examples/module-10/lifecycle-gates/README.md) | Starter, complete, and unsafe RAG release records |
+| 2 | M11 | [Parallel work and merge safety](examples/module-11/task-merge-safety/README.md) | Task graphs, evidence records, and merge checker |
+| 2 | M12 | [Release-evidence capstone](examples/module-12/release-evidence/README.md) | Pricing starter/solution and RAG release evidence |
+| 2 | M12.5 | [Optional practice check](examples/module-12-5/practice-check/README.md) | Twelve-practice evidence packet and checker |
 
-   Expected: **4 tests pass**. The starter intentionally does not reject zero or negative quantities; implementing that behavior is the exercise.
+See the [workbook guide](WORKBOOK_GUIDE.md) for starting files, runnable commands, expected outcomes, and what to record for each exercise.
 
-3. In your own copy or branch, add the requested negative-case test and the smallest quantity-validation change. Preserve valid totals and currency rounding.
-4. Rerun the tests and review your changes. Record commands, results, and remaining risks in the workbook.
+## Supplemental exercises
 
-## M03 — Authorized RAG trace
+These existing fixtures support additional practice. Follow the core workbook activity first.
 
-This offline lab ingests synthetic policy documents, filters access before ranking, returns cited answers or abstains, and records redacted telemetry.
+| Fits with | Exercise | Purpose |
+| --- | --- | --- |
+| M00 | [Secure AI foundations](examples/secure-ai-foundations/README.md) | Compare declared controls with synthetic evidence |
+| M01 | [Workload identity](examples/module-01/workload-identity/README.md) | Evaluate identity, isolation, and authorization contracts |
+| M02 | [Lint repair](examples/module-02/lint-repair/README.md) | Repair one lint issue while preserving behavior |
+| M03 | [Context packet](examples/module-03/context-packet/README.md) | Build a bounded handoff using relevant repository context |
+| M05 | [Prompt and bounded-loop templates](examples/module-05/prompt-loop/README.md) | Write a plan, steer, and stopping contract |
+| M08 | [MCP security](examples/module-08/mcp-security/README.md) | Evaluate policy records and incident events |
+| M03 / M08 | [RAG MCP bridge](examples/module-08/rag-mcp-bridge/README.md) | Expose the shared offline RAG through a read-only tool |
+| M08 | [Legacy MCP comparison](examples/module-08/local-mcp/README.md) | Compare the older handshake with the course's stateless fixture |
+| Across modules | [Security task range](examples/security-task-range/README.md) | Evaluate inert scenario records against control sets |
 
-### 1. Build the index
+## Path corrections and scope
 
-```sh
-python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/index.json
-```
+- **M01:** setup now lives in `examples/module-01/setup-check`; workload identity is in `examples/module-01/workload-identity`.
+- **M02:** the coding lab is `examples/module-02/order-service`; optional lint repair is `examples/module-02/lint-repair`.
+- **M03:** start at `examples/module-03/README.md`. The shared RAG code stays in `examples/rag-reference` because M08 and M10–M12.5 also use its paths and integrity-bound evidence.
+- Older workbooks may print the historical M01/M02 folder names or `course/.../lab-guide.md` authoring paths. Use the corrected paths and separate command lines in [WORKBOOK_GUIDE.md](WORKBOOK_GUIDE.md).
+- The workbook's exact-token/context-budget homework is a written/tool-based activity. The repository contains no tokenizer script. The M03 fixture uses lexical retrieval and deterministic answer composition; full vector/hybrid search, reranking, an LLM, and retry/clarification orchestration remain additional work.
 
-Expected: **7 source documents, 5 indexed documents, 5 chunks**. One sample is quarantined and one is pending deletion.
+Work in your own copy or branch. Starter tests deliberately cover baseline behavior; add the acceptance tests the workbook asks for. Compare reference solutions after attempting the change. Unsafe/incomplete records usually exit `1` by design; successful rejection is part of the exercise.
 
-### 2. Ask an authorized question
+All policy records, identities, and corpus data are synthetic classroom fixtures. The security range evaluates inert data and does not execute attacks. Evidence checkers validate file bindings and recorded structure; they do not establish that a real agent, approval, review, or deployment occurred. Model, pricing, configuration, and protocol references are dated course examples; consult your instructor's current guidance for live tools.
 
-```sh
-python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the travel approval threshold?" --telemetry examples/rag-reference/build/telemetry.jsonl
-```
-
-Expected: `status: answered`, an answer containing **$500**, and a citation to `northstar-travel-2026`.
-
-### 3. Check a denied-access case
-
-```sh
-python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the Southstar acquisition project codename?" --telemetry examples/rag-reference/build/telemetry.jsonl
-```
-
-Expected: `status: abstained` and no citations to the other tenant's document.
-
-### 4. Run the evaluation and tests
-
-```sh
-python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl
-python -m unittest discover -s examples/rag-reference/tests -v
-```
-
-Expected: **8/8 evaluation cases** and **9 unit tests pass**. The evaluation covers answerable queries, abstention, classification, cross-tenant access, poisoned content, freshness, deletion, and budget limits.
-
-Use the results and `build/telemetry.jsonl` for your workbook evidence record. The generated index and telemetry stay out of Git.
-
-### Scope of this reference
-
-The implementation uses lexical retrieval and a deterministic answer composer. It supports the offline authorization and evidence exercises. The workbook's optional full vector/hybrid search, reranking, and LLM extension requires additional implementation and an approved environment. See the [RAG README](examples/rag-reference/README.md) and [runbook](examples/rag-reference/RUNBOOK.md) for details.
-
-## Workbook notes
-
-- Use a disposable copy or your own branch for edits.
-- M02 now lives under `examples/module-02/order-service`. If your workbook prints the older M01 directory for this exercise, use the M02 commands above. References to the “AITrainer root” mean this repository root in the student bundle.
-- Historical `course/.../lab-guide.md` references identify the workbook's authoring sources. Follow the instructions printed in your workbook and the lab READMEs here.
-- If a workbook paragraph puts several commands on one line, run each command separately.
-- All corpus documents, identities, and policy records are synthetic classroom fixtures. Identity arguments simulate trusted claims; they are not a production authentication system.
-- Use the separately supplied student workbook and slides alongside this source bundle. Other modules will be published separately.
+Use the separately supplied student workbooks and slides alongside this repository. Instructor guides, exam materials, and student records are not included.

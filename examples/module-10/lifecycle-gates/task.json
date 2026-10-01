@@ -1,0 +1,19 @@
+{
+  "workflow_id": "rag-release-v1",
+  "required_rollback_validation_command": "python -m unittest discover -s examples/rag-reference/tests -v",
+  "rag_observed_evidence": {"id": "EV-RAG-01", "path": "examples/evidence/EV-RAG-01.json"},
+  "allowed_paths": ["rag-config.json", "corpus-manifest.json", "evidence/rag-release.json"],
+  "required_states": [
+    {"id": "intake", "owner_role": "product_owner", "authority": "read", "required_evidence": ["work-item", "acceptance-criteria", "risk-classification", "data-owner"]},
+    {"id": "explore", "owner_role": "developer", "authority": "read", "required_evidence": ["repository-map", "relevant-context", "corpus-inventory"]},
+    {"id": "plan", "owner_role": "developer", "authority": "read", "required_evidence": ["implementation-plan", "allowed-paths", "gate-plan", "rollback-plan", "deletion-plan"]},
+    {"id": "implement", "owner_role": "developer", "authority": "write", "required_evidence": ["configuration-change", "changed-paths", "base-commit", "corpus-manifest-digest"]},
+    {"id": "test", "owner_role": "test_engineer", "authority": "execute", "required_evidence": ["ingestion-status", "retrieval-eval", "abstention-eval", "acl-isolation", "injection-eval", "freshness-deletion", "cost-budget", "diff-check"]},
+    {"id": "review", "owner_role": "reviewer", "authority": "read", "required_evidence": ["diff-review", "security-review", "rag-eval-review", "residual-risks"]},
+    {"id": "approve", "owner_role": "release_manager", "authority": "human-approval", "required_evidence": ["approval-record", "risk-acceptance"]},
+    {"id": "release", "owner_role": "release_engineer", "authority": "external-release", "required_evidence": ["artifact-digest", "index-digest", "configuration-digest", "release-record", "canary-result"]},
+    {"id": "observe", "owner_role": "service_owner", "authority": "read", "required_evidence": ["health-result", "retrieval-slo", "usage-report", "business-guardrail", "rollback-decision"]},
+    {"id": "close", "owner_role": "product_owner", "authority": "human-approval", "required_evidence": ["closure-bundle", "metrics", "improvement-actions"]}
+  ],
+  "required_metrics": ["lead_time_minutes", "first_pass_yield", "retry_count", "rework_count", "review_minutes", "escaped_defects", "rollback_count", "retrieval_calls", "vector_usage_bytes", "answer_tokens", "p95_latency_ms", "cost_proxy_units"]
+}

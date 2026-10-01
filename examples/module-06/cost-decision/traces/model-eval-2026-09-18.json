@@ -1,0 +1,56 @@
+{
+  "scenario": "bounded repository review with a five-case acceptance set",
+  "catalog_accessed": "2026-09-18",
+  "comparison_contract": {
+    "prompt_version": "repository-review-v3",
+    "evaluation_set": "five-cases-v2",
+    "authority_profile": "read-only-repository-review-v1"
+  },
+  "reviewer_hourly_usd": 90,
+  "candidates": [
+    {
+      "model": "gpt-6-astra",
+      "role": "hardest end-to-end work",
+      "reasoning_effort": "medium",
+      "rates_per_million": {"input": 10.0, "cached_input": 1.0, "output": 50.0},
+      "runs": [
+        {"accepted": true, "input_tokens": 18000, "cached_input_tokens": 6000, "output_tokens": 1800, "tool_cost_usd": 0.01, "reviewer_minutes": 2},
+        {"accepted": true, "input_tokens": 17000, "cached_input_tokens": 7000, "output_tokens": 1600, "tool_cost_usd": 0.01, "reviewer_minutes": 2},
+        {"accepted": true, "input_tokens": 19000, "cached_input_tokens": 5000, "output_tokens": 1900, "tool_cost_usd": 0.01, "reviewer_minutes": 3}
+      ]
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "role": "complex professional work",
+      "reasoning_effort": "medium",
+      "rates_per_million": {"input": 4.0, "cached_input": 0.4, "output": 20.0},
+      "runs": [
+        {"accepted": true, "input_tokens": 19000, "cached_input_tokens": 6000, "output_tokens": 2100, "tool_cost_usd": 0.01, "reviewer_minutes": 4},
+        {"accepted": false, "input_tokens": 21000, "cached_input_tokens": 5000, "output_tokens": 2500, "tool_cost_usd": 0.02, "reviewer_minutes": 7},
+        {"accepted": true, "input_tokens": 20000, "cached_input_tokens": 7000, "output_tokens": 2200, "tool_cost_usd": 0.01, "reviewer_minutes": 4}
+      ]
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "role": "balanced intelligence and cost",
+      "reasoning_effort": "medium",
+      "rates_per_million": {"input": 2.0, "cached_input": 0.2, "output": 12.0},
+      "runs": [
+        {"accepted": true, "input_tokens": 20000, "cached_input_tokens": 6000, "output_tokens": 2400, "tool_cost_usd": 0.01, "reviewer_minutes": 3},
+        {"accepted": false, "input_tokens": 22000, "cached_input_tokens": 5000, "output_tokens": 2800, "tool_cost_usd": 0.02, "reviewer_minutes": 7},
+        {"accepted": true, "input_tokens": 21000, "cached_input_tokens": 7000, "output_tokens": 2500, "tool_cost_usd": 0.01, "reviewer_minutes": 4}
+      ]
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "role": "cost-sensitive high-volume work",
+      "reasoning_effort": "medium",
+      "rates_per_million": {"input": 0.2, "cached_input": 0.02, "output": 1.2},
+      "runs": [
+        {"accepted": false, "input_tokens": 23000, "cached_input_tokens": 4000, "output_tokens": 3200, "tool_cost_usd": 0.02, "reviewer_minutes": 8},
+        {"accepted": true, "input_tokens": 24000, "cached_input_tokens": 5000, "output_tokens": 3300, "tool_cost_usd": 0.02, "reviewer_minutes": 6},
+        {"accepted": false, "input_tokens": 25000, "cached_input_tokens": 5000, "output_tokens": 3500, "tool_cost_usd": 0.02, "reviewer_minutes": 9}
+      ]
+    }
+  ]
+}

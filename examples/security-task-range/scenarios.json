@@ -1,0 +1,123 @@
+{
+  "incident_id": "NB-AI-2026-001",
+  "organization": "Northstar Benefits (fictional)",
+  "episodes": [
+    {
+      "id": "M01", "title": "Map the breach path", "evidence_id": "E01-boundary",
+      "attack_objective": "Move untrusted vendor content across an undocumented model-to-tool boundary.",
+      "attack_steps": [{"id": "external-content", "record": "A vendor document contains an instruction-like data fragment."}, {"id": "agent-trust", "record": "The agent treats the fragment as authority."}, {"id": "tool-request", "record": "A sensitive tool action is proposed."}],
+      "required_controls": ["trust_boundary_map", "asset_classification", "consequential_action_approval"],
+      "signals": ["untrusted_input_reached_agent", "sensitive_tool_requested_without_owner"],
+      "first_response": "Pause the task, preserve redacted decision metadata, and assign owners to the missing boundaries.",
+      "next_episode": "M02"
+    },
+    {
+      "id": "M02", "title": "Reject poisoned setup", "evidence_id": "E02-config",
+      "attack_objective": "Use an unreviewed project configuration to broaden filesystem, environment, and network authority.",
+      "attack_steps": [{"id": "config-arrives", "record": "A bootstrap archive introduces project configuration."}, {"id": "authority-expands", "record": "The profile requests broad write and network access."}, {"id": "credential-surface", "record": "Inherited environment variables become reachable."}],
+      "required_controls": ["trusted_config_baseline", "least_privilege_profile", "secret_isolation"],
+      "signals": ["configuration_hash_changed", "permission_profile_expanded"],
+      "first_response": "Quarantine the configuration, restore the approved baseline, and rotate any credential that may have been exposed.",
+      "next_episode": "M03"
+    },
+    {
+      "id": "M03", "title": "Contain indirect prompt injection", "evidence_id": "E03-context",
+      "attack_objective": "Turn instruction-like text retrieved from a vendor document into an unauthorized action.",
+      "attack_steps": [{"id": "retrieve", "record": "The workflow retrieves an instruction-like benefits document from the wrong tenant."}, {"id": "inject", "record": "The directive asks the agent to ignore the task contract."}, {"id": "exfiltrate", "record": "The directive proposes sending repository data to an external destination."}],
+      "required_controls": ["identity_filter_before_ranking", "provenance_and_instruction_separation", "citation_abstention_and_quarantine"],
+      "signals": ["unauthorized_source_candidate", "instruction_pattern_in_retrieved_data", "unapproved_destination_proposed"],
+      "first_response": "Deny the cross-tenant result, quarantine the source, block the proposed action, rebuild the clean index, and identify other tasks that consumed the same corpus version.",
+      "next_episode": "M04"
+    },
+    {
+      "id": "M04", "title": "Detect instruction-file poisoning", "evidence_id": "E04-guidance",
+      "attack_objective": "Use a newly added nested guidance file to suppress validation and redirect evidence.",
+      "attack_steps": [{"id": "nested-guide", "record": "A nested instruction file appears in a sensitive subtree."}, {"id": "policy-conflict", "record": "It conflicts with root security and review rules."}, {"id": "evidence-redirection", "record": "It requests an unapproved evidence destination."}],
+      "required_controls": ["guidance_owner", "instruction_chain_lint", "mechanical_policy_enforcement"],
+      "signals": ["unowned_guidance_added", "security_rule_conflict"],
+      "first_response": "Stop affected runs, remove the untrusted guide through review, and re-evaluate work performed under it.",
+      "next_episode": "M05"
+    },
+    {
+      "id": "M05", "title": "Resist jailbreak and goal hijack", "evidence_id": "E05-steering",
+      "attack_objective": "Redefine the task, disable approvals, and keep the agent running until an unsafe action is accepted.",
+      "attack_steps": [{"id": "jailbreak", "record": "A message claims an emergency exception to all constraints."}, {"id": "goal-drift", "record": "The deliverable changes from analysis to execution."}, {"id": "approval-bypass", "record": "The message asks the agent not to pause for review."}],
+      "required_controls": ["immutable_task_contract", "authority_change_approval", "stop_condition"],
+      "signals": ["goal_changed_without_owner", "approval_suppression_requested"],
+      "first_response": "Stop the run, restore the last approved task contract, and require a fresh authorized request for any scope change.",
+      "next_episode": "M06"
+    },
+    {
+      "id": "M06", "title": "Stop denial of wallet", "evidence_id": "E06-budget",
+      "attack_objective": "Use recursive retries and forced escalation to exhaust time, tokens, and service quota.",
+      "attack_steps": [{"id": "forced-failure", "record": "Adversarial input induces a repeatable validation failure."}, {"id": "retry-loop", "record": "The workflow retries without a new hypothesis."}, {"id": "cost-escalation", "record": "Every retry selects a more expensive route."}],
+      "required_controls": ["hard_cost_budget", "bounded_retries", "usage_anomaly_alert"],
+      "signals": ["retry_rate_exceeded", "cost_per_success_spike"],
+      "first_response": "Trip the budget circuit breaker, cancel queued retries, and preserve correlation IDs for root-cause review.",
+      "next_episode": "M07"
+    },
+    {
+      "id": "M07", "title": "Block tool and path abuse", "evidence_id": "E07-tool",
+      "attack_objective": "Convert a tainted instruction into path traversal, sensitive-file access, and outbound transfer.",
+      "attack_steps": [{"id": "argument-smuggle", "record": "A tool argument contains an out-of-scope path."}, {"id": "secret-read", "record": "The request targets a synthetic credential location."}, {"id": "egress", "record": "A second tool proposes an unapproved outbound destination."}],
+      "required_controls": ["strict_tool_schema", "workspace_path_scope", "default_deny_egress"],
+      "signals": ["path_scope_violation", "blocked_egress_attempt"],
+      "first_response": "Disable the tool route, preserve redacted call metadata, and review all calls sharing the task correlation ID.",
+      "next_episode": "M08"
+    },
+    {
+      "id": "M08", "title": "Break the MCP compromise chain", "evidence_id": "E08-mcp",
+      "attack_objective": "Use changed tool metadata and an over-broad token to make an unauthorized downstream change.",
+      "attack_steps": [{"id": "request-mismatch", "record": "A stateless request carries an unsupported protocol version or capability set."}, {"id": "tool-drift", "record": "An MCP tool description and inventory change after approval."}, {"id": "confused-deputy", "record": "The server accepts a token intended for another resource."}, {"id": "side-effect", "record": "A read-looking operation triggers a downstream write."}],
+      "required_controls": ["per_request_protocol_and_capability_validation", "pinned_tool_inventory", "issuer_and_token_audience_validation", "side_effect_approval"],
+      "signals": ["protocol_or_capability_mismatch", "tool_inventory_hash_changed", "issuer_or_token_audience_mismatch", "unexpected_write"],
+      "first_response": "Disable the server and affected tool, revoke MCP and downstream access, and preserve redacted audit evidence.",
+      "next_episode": "M09"
+    },
+    {
+      "id": "M09", "title": "Clean cross-tool handoffs", "evidence_id": "E09-handoff",
+      "attack_objective": "Carry a tainted instruction and excessive authority into a second AI tool through a trusted-looking handoff.",
+      "attack_steps": [{"id": "handoff-poison", "record": "The handoff embeds an instruction copied from untrusted content."}, {"id": "authority-carryover", "record": "The receiving tool inherits permissions it does not need."}, {"id": "single-reviewer", "record": "The originating tool's self-review is accepted as independent evidence."}],
+      "required_controls": ["signed_handoff_manifest", "untrusted_instruction_stripping", "fresh_permission_evaluation"],
+      "signals": ["handoff_hash_mismatch", "permission_delta_on_import"],
+      "first_response": "Reject the handoff, reset receiving-tool authority, and reconstruct context from approved source artifacts.",
+      "next_episode": "M10"
+    },
+    {
+      "id": "M10", "title": "Protect workflow gates", "evidence_id": "E10-pipeline",
+      "attack_objective": "Promote a poisoned artifact by forging test evidence and bypassing the release gate.",
+      "attack_steps": [{"id": "artifact-poison", "record": "An unsigned generated artifact replaces the reviewed output."}, {"id": "evidence-forge", "record": "A copied success record is attached to a different revision."}, {"id": "gate-bypass", "record": "The pipeline attempts promotion without independent approval."}],
+      "required_controls": ["artifact_provenance", "revision_bound_evidence", "independent_release_gate"],
+      "signals": ["artifact_digest_mismatch", "evidence_revision_mismatch"],
+      "first_response": "Halt promotion, quarantine artifacts, invalidate the forged evidence, and rebuild from the last trusted revision.",
+      "next_episode": "M11"
+    },
+    {
+      "id": "M11", "title": "Contain a compromised subagent", "evidence_id": "E11-agents",
+      "attack_objective": "Use a delegated agent to expand authority, overwrite peer work, and approve its own change.",
+      "attack_steps": [{"id": "delegation-drift", "record": "A subtask expands beyond its declared paths and tools."}, {"id": "write-conflict", "record": "The subagent modifies another worker's owned artifact."}, {"id": "review-evasion", "record": "The same lineage claims independent approval."}],
+      "required_controls": ["capability_scoped_delegation", "isolated_write_ownership", "independent_reviewer_identity"],
+      "signals": ["delegated_scope_violation", "writer_reviewer_lineage_match"],
+      "first_response": "Cancel the subtask, isolate its outputs, revoke delegated capability, and assign clean-room review.",
+      "next_episode": "M12"
+    },
+    {
+      "id": "M12", "title": "Contain and recover the enterprise chain", "evidence_id": "E12-incident",
+      "attack_objective": "Use the accumulated weak points to reach release with unauthorized access and untrusted evidence.",
+      "attack_steps": [{"id": "correlate", "record": "Signals from context, tools, MCP, and pipeline share one incident lineage."}, {"id": "contain", "record": "Active identities, tools, sessions, and releases require coordinated disablement."}, {"id": "recover", "record": "Services must return from trusted artifacts with absence proof."}],
+      "required_controls": ["cross_layer_correlation", "revocation_playbook", "recovery_absence_proof"],
+      "signals": ["multi_layer_incident_correlation", "post_recovery_canary_result"],
+      "first_response": "Declare the incident, freeze release, revoke affected access, isolate components, and preserve redacted evidence before recovery.",
+      "next_episode": "M12.5"
+    },
+    {
+      "id": "M12.5", "title": "Keep the controls effective", "evidence_id": "E12.5-operations",
+      "attack_objective": "Exploit control drift, noisy alerts, and untested response procedures after the incident closes.",
+      "attack_steps": [{"id": "control-drift", "record": "A tool inventory and policy baseline age without revalidation."}, {"id": "alert-fatigue", "record": "Repeated low-quality alerts hide a high-confidence chain."}, {"id": "response-decay", "record": "Revocation and recovery procedures are no longer exercised."}],
+      "required_controls": ["continuous_security_scanning", "alert_quality_review", "scheduled_response_exercise"],
+      "signals": ["baseline_age_exceeded", "high_confidence_alert_unowned"],
+      "first_response": "Assign an owner, restore the approved baseline, tune detections from evidence, and run the response exercise.",
+      "next_episode": "COURSE-CLOSE"
+    }
+  ]
+}

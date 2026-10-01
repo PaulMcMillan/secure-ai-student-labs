@@ -1,0 +1,35 @@
+{
+  "task_id": "INV-27",
+  "goal": "Reject non-positive reservation quantities without changing valid or insufficient-stock behavior.",
+  "model_contract": {
+    "allowed_models": [
+      "gpt-5.6-luna",
+      "gpt-5.6-terra",
+      "gpt-5.6-sol",
+      "gpt-6-astra"
+    ],
+    "required_authority_profile": "local-synthetic-workspace-v1",
+    "required_evaluation_set": "INV-27-acceptance-v1",
+    "astra_authority_unchanged": true
+  },
+  "allowed_paths": [
+    "src/inventory.py",
+    "tests/test_inventory.py"
+  ],
+  "required_stages": [
+    "Explore",
+    "Plan",
+    "Implement",
+    "Test",
+    "Review"
+  ],
+  "required_commands": [
+    "python -m unittest discover -s tests -v"
+  ],
+  "acceptance_ids": [
+    "A1-positive-reservation",
+    "A2-insufficient-stock",
+    "A3-zero-rejected",
+    "A4-negative-rejected"
+  ]
+}

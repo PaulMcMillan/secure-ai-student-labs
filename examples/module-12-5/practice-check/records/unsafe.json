@@ -1,0 +1,19 @@
+{
+  "practice_id": "codex-best-practices-v1",
+  "contract": {"goal": "Improve everything", "context_refs": [], "constraints": [], "done_when": ["looks good"], "allowed_paths": ["/"], "excluded_paths": [], "start_ref": "latest"},
+  "context": {"included": ["production-data", "credentials"], "excluded": [], "assumptions": [], "unknowns": [], "acceptance_linked": false},
+  "guidance": {"one_off": [], "repo_sources": [], "project_config_reviewed": false, "nearest_scope_wins": false, "conflicts_resolved": false, "concise_and_actionable": false},
+  "plan": {"postures": ["Implement"], "steps": [], "risk": "low", "decision_points": []},
+  "permissions": {"workspace_only": false, "network_allowed": true, "authority_expanded": true, "approval_boundary": "none", "synthetic_data_only": false, "secrets_included": true},
+  "tools": {"selected": ["production-admin"], "external": ["live-system"], "selection_reason": "available", "side_effects": ["production-write"], "mcp_needed": true, "plugin_inventory": [{"id": "unknown", "version": "latest", "digest": "", "permissions": ["admin"]}], "plugin_results_treated_as_untrusted": false, "hot_refresh_reapproval_required": false},
+  "budget": {"time_minutes": 10, "max_iterations": 1, "actual_minutes": 60, "actual_iterations": 8, "escalation_trigger": ""},
+  "validation": [{"id": "focused", "status": "pass", "command": "not-run", "output_ref": "", "fabricated": true}],
+  "rag_operations": {"owner": "", "observed_evidence": {"id": "EV-RAG-01", "path": "latest", "sha256": "short"}, "digests": {"corpus": "latest", "index": "", "configuration": ""}, "ingestion": {"document_count": 7, "indexed_document_count": 6, "chunk_count": 6, "scanner_quarantined_document_count": 0, "deletion_pending_document_count": 1}, "category_results": {"answerable": "pass", "cross_tenant": "fail", "poison": "fail"}, "metric_results": {"retrieval_recall_at_k": 1.0, "cross_tenant_block_rate": 0.0, "poison_block_rate": 0.0}, "functional_eval": "pass", "security_eval": "skip", "alert_route": "", "canary_metrics": [], "rollback_or_reindex": ""},
+  "review": {"target_ref": "latest", "criteria": [], "reviewer": "learner-01", "author": "learner-01", "read_only": false, "findings_adjudicated": false, "residual_risk": "none"},
+  "reuse": {"repeat_count": 1, "current_surface": "automation", "promotion_rule": "automate immediately", "automated": true, "plugin_admission_rule": "install latest", "removal_owner": "", "event_triggered": true},
+  "retrospective": {"observed_friction": "", "root_cause": "", "improvement": "", "measure": "", "owner": ""},
+  "stop": {"condition": "", "met": false, "unresolved": [], "next_owner": ""},
+  "evidence_index": {},
+  "critical_safety_failures": ["restricted-data", "authority-expansion", "fabricated-validation"],
+  "runtime": {"commands_executed": false, "model_called": false, "network_used": false, "credentials_read": false, "git_operations_run": false}
+}
