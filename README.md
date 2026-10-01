@@ -23,8 +23,8 @@ The validation command runs **235 tests across 27 suites**, then rebuilds the RA
 
 | Day | Module | Exercise | Included support |
 | --- | --- | --- | --- |
-| 1 | M00 | [Foundations and context budgeting](examples/module-00/README.md) | Written homework; supplemental evidence checker |
-| 1 | M01 | [Setup and sanitized evidence](examples/module-01/setup-check/README.md) | Setup checker and configuration fixtures |
+| 1 | M00 | [Foundations and context budgeting](examples/module-00/README.md) | Choose one optional token, diagram, or context activity |
+| 1 | M01 | [Hands-on setup](examples/module-01/hands-on/README.md) | Read a file, make one edit, and run the local check |
 | 1 | M02 | [Bounded coding change](examples/module-02/order-service/README.md) | Order-service starter and baseline tests |
 | 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; skip missing hybrid/LLM steps as directed in the guide |
 | 1 | M04 | [Writing project guidance](examples/module-04/README.md) | Standalone order-calculator starter for the revised slides |
@@ -47,6 +47,7 @@ These existing fixtures support additional practice. Follow the core workbook ac
 | Fits with | Exercise | Purpose |
 | --- | --- | --- |
 | M00 | [Secure AI foundations](examples/secure-ai-foundations/README.md) | Compare declared controls with synthetic evidence |
+| M01 | [Earlier configuration review](examples/module-01/setup-check/README.md) | Compare safe/unsafe synthetic configuration |
 | M01 | [Workload identity](examples/module-01/workload-identity/README.md) | Evaluate identity, isolation, and authorization contracts |
 | M02 | [Lint repair](examples/module-02/lint-repair/README.md) | Repair one lint issue while preserving behavior |
 | M03 | [Context packet](examples/module-03/context-packet/README.md) | Build a bounded handoff using relevant repository context |
@@ -59,14 +60,14 @@ These existing fixtures support additional practice. Follow the core workbook ac
 
 ## Path corrections and scope
 
-- **M01:** setup now lives in `examples/module-01/setup-check`; workload identity is in `examples/module-01/workload-identity`.
+- **M01:** revised hands-on setup uses `examples/module-01/hands-on`. The earlier configuration and workload-identity fixtures remain optional under `examples/module-01`.
 - **M02:** the coding lab is `examples/module-02/order-service`; optional lint repair is `examples/module-02/lint-repair`.
 - **M03:** start at `examples/module-03/README.md`. The shared RAG code stays in `examples/rag-reference` because M08 and M10–M12.5 also use its paths and integrity-bound evidence.
 - Older workbooks may print the historical M01/M02 folder names or `course/.../lab-guide.md` authoring paths. Use the corrected paths and separate command lines in [WORKBOOK_GUIDE.md](WORKBOOK_GUIDE.md).
-- The workbook's exact-token/context-budget homework is a written/tool-based activity. The repository contains no tokenizer script. For M03, complete the offline exercise and **skip** the missing full-workbook features listed in the guide, including hybrid search, reranking, LLM calls, and automatic retry/clarification. Record them as skipped; no extra model setup is required.
+- M00 now asks you to choose one optional activity. If no tokenizer is already available, skip token inspection and choose the supplied diagram or context-planning directions. For M03, complete the offline exercise and **skip** the missing full-workbook features listed in the guide, including hybrid search, reranking, LLM calls, and automatic retry/clarification. Record them as skipped; no extra model setup is required.
 
 Work in your own copy or branch. Starter tests deliberately cover baseline behavior; add the acceptance tests the workbook asks for. Compare reference solutions after attempting the change. Unsafe/incomplete records usually exit `1` by design; successful rejection is part of the exercise.
 
 All policy records, identities, and corpus data are synthetic classroom fixtures. The security range evaluates inert data and does not execute attacks. Evidence checkers validate file bindings and recorded structure; they do not establish that a real agent, approval, review, or deployment occurred. Model, pricing, configuration, and protocol references are dated course examples; consult your instructor's current guidance for live tools.
 
-Use the separately supplied student workbooks and slides alongside this repository. Instructor guides, exam materials, and student records are not included.
+Use the [exercise index](EXERCISES.md) to follow the practical activities. The course slides supply lecture context; the Word workbook is optional for the revised practical directions. Instructor guides, exam materials, and student records are not included.

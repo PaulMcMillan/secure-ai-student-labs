@@ -1,22 +1,93 @@
 # Workbook exercise guide
 
-Use this guide with the published Day 1 and Day 2 student workbooks. It maps the existing source fixtures to the current teaching order and provides corrected commands. It does not replace the workbook's discussion questions, timing, or grading guidance.
+Use these directions for the practical activities in the current slide sequence. Each activity names its starting files, steps, checks, deliverables, and fallback. Use your own notes for the evidence record; the Word workbook is optional for these practical directions. Lecture explanations, knowledge questions, and formal assessment remain in the course materials. M03 follows the approved offline adaptation and explicitly lists the missing steps to skip.
 
 ## Before starting
 
 - Use Python 3.11+ and a disposable copy or your own branch.
 - Run each code-block line separately from the repository root unless a `cd` is shown.
-- For every activity, keep the task/boundary, commands, actual results, review, remaining risks, and stop decision in your workbook evidence record.
+- For coding/evidence activities, keep a note with: task and scope; acceptance criteria; environment/authority; files consulted; commands and actual output; review; unresolved risks; and completion/stop decision. M00 is optional study practice and M01 is a setup check.
 - A reference record is an example. Do not submit its claims as evidence that you performed the work.
-- The ZIP contains source but no Git history. Clone if you need `git diff`, branches, or an immutable starting commit; otherwise use the workbook's disposable-copy workflow and record that limitation.
+- The ZIP contains source but no Git history. Clone if you need `git diff`, branches, or an immutable starting commit; otherwise keep an untouched copy for comparison and label Git checks “not run.”
+- From the repository root, create a folder for your own notes and copied records:
+
+```sh
+python -c "from pathlib import Path; Path('student-work').mkdir(exist_ok=True)"
+```
+
+Use your editor/file manager to copy the named starter to the named destination before running a checker on your record. `student-work/` is ignored by Git. A checker returning `1` for an incomplete record is expected; preserve its issues and record a stop if you cannot resolve them in time. The supplied JSON contracts describe synthetic workflows: retain their field names and clearly distinguish scenario claims from actions you actually performed.
 
 ## M00 — Foundations and context budgeting
 
-Complete the exact-token, context-manifest, and budget worksheets in the Day 1 workbook. The named tokenizer is a separate tool requirement; no tokenizer script is included. See [M00 notes](examples/module-00/README.md). The [foundations checker](examples/secure-ai-foundations/README.md) is optional evidence-packet practice.
+**Optional: choose one activity, about 15–25 minutes.** This follows revised slide **M00 S024**, replacing the older all-in-one homework. Keep a small table, an annotated diagram, or a one-page plan. No live model/API call is required.
 
-## M01 — Setup evidence
+### Option A: inspect tokens
 
-Start with [setup-check](examples/module-01/setup-check/README.md). Inspect the safe and unsafe TOML fixtures; they are teaching data, not configuration to install.
+Use this option only if an approved local tokenizer is already available. Otherwise **skip it and choose B or C**; no tokenizer is bundled or required for the other activities.
+
+1. Record the tokenizer library/version and encoding (the slide examples use `o200k_base`).
+2. Compare these exact strings: `Helping`, `helping`, `Extraordinary`, and ` extraordinary`. The last begins with one space.
+3. Make a table with exact input (mark spaces visibly), token pieces, IDs, count, and decoded text. Verify that decoding the complete sequence restores the original text.
+4. Explain how a fixed vocabulary and encoding rules produce the split, and distinguish vocabulary construction from encoding a request. Results from different tokenizer versions/encodings need not match.
+
+Keep the table and two or three explanatory sentences. If you only inspected examples without running a tokenizer, label the values “provided example; not independently run.”
+
+### Option B: trace the model
+
+Draw this generation path: token IDs, embeddings plus position information, Transformer layers, vocabulary scores (logits), probabilities, token selection, append the selected token, and repeat. Mark the stopping signal or output limit.
+
+Expand one Transformer block to show normalization, self-attention, queries/keys/values, residual additions, and the feed-forward network. Label whether you drew a decoder-only or encoder–decoder model; include cross-attention only for the latter. Explain that attention weights combine internal representations, while output probabilities guide selection of the next token. Add why known training positions can be processed in parallel while ordinary generation adds tokens sequentially.
+
+Keep the annotated diagram. Check that residual paths bypass their sublayers, future tokens are masked in causal attention, and you have not drawn a token ID as an attention output.
+
+### Option C: plan the context
+
+Use these **exercise assumptions**, not a claim about your account's current limits: total context 1,050,000 tokens, separate input cap 922,000, generated-output cap 128,000. Reasoning uses the generated allowance rather than a second output budget.
+
+You are investigating a bug in a repository. Your initial complete input, including instructions and tool definitions, is 800,000 tokens. After one step you retain another 2,000 tokens and receive 40,000 tokens of tool results. After the next, retain another 5,000 and receive 50,000 more.
+
+1. Calculate input used and remaining input headroom at all three points. Check both the separate input cap and total context/output constraint.
+2. Explain why requesting less output does not remove the input cap, and reserve room for a future tool result.
+3. List the code/tests/log excerpts needed now, material to retrieve later, and decisions to save across sessions.
+4. Draft a compaction note preserving the task, constraints, decisions and reasons, exact unresolved errors, approvals, and links to original evidence.
+5. Name one access check before returning a file to the model and one application-enforced tool permission. Explain why caching does not enlarge the context window.
+
+Keep your arithmetic and one-page plan. State assumptions and distinguish measurements from estimates. The optional [foundations evidence checker](examples/secure-ai-foundations/README.md) is separate practice, not a substitute for your chosen activity.
+
+## M01 — Hands-on setup
+
+**Current activity: hands-on setup, revised M01 S006.** Connect the course-approved coding agent, open the intended project, make one small edit, and run a check in the same environment. The older sanitized-evidence/configuration lab is optional practice below.
+
+### Get connected
+
+1. Follow the instructor's installation or connection steps and sign in through the normal product/connection flow. Do not paste credentials into a conversation.
+2. Download this repository, then copy [examples/module-01/hands-on](examples/module-01/hands-on/README.md) to your own writable folder, such as `m01-work`. Open that folder in your agent.
+3. Confirm the intended local or remote checkout, where commands execute, and the account/connection used. A remote command checks the code on that host, so ensure that host has your practice copy.
+4. Find the permission controls and use the settings agreed for the exercise. Identify project instructions/settings and any hooks before trusting or enabling them. You do not need to install a hook, plugin, or MCP server.
+
+### Try the small task
+
+Ask the agent to find `check_setup.py`, read it, and explain what it checks. From **m01-work**, run:
+
+```sh
+python check_setup.py
+```
+
+Expected starter result: “Practice edit pending” and exit `1`. Give the agent this request:
+
+> Change only practice.txt from status: pending to status: ready. Run python check_setup.py in this same checkout and report the changed line and result.
+
+Inspect `practice.txt` and the check output yourself. Expected: `PASS: this checkout contains the practice edit and Python ran the check.` with exit `0`. Use `python3` or `py -3` if that is your Python command. Leave `check_setup.py` unchanged.
+
+### Before moving on
+
+Confirm the agent can read and edit the intended project and run its tools. If it edits successfully but the check cannot run, investigate missing Python, the wrong directory, or a different remote checkout with the instructor. Keep or revert your practice edit as directed; restoring `status: pending` resets the example. The pass proves that this checkout contains the edit and the check ran; it does not certify sandbox or account policy.
+
+If setup is unavailable, pair with a learner and observe the steps, or diagnose the issue with the instructor. Mark unrun work “not run.” No formal evidence packet is required for this revised setup activity.
+
+### Optional: earlier workbook configuration review
+
+Run from the **student repository root**, not m01-work:
 
 ```sh
 python examples/module-01/setup-check/setup_check.py
@@ -27,7 +98,7 @@ python examples/module-01/setup-check/config_guard.py examples/module-01/setup-c
 python -m unittest discover -s examples/module-01/setup-check/tests -v
 ```
 
-Expected: safe fixtures exit `0`, unsafe fixtures exit `1`, and **11 tests pass**. Setup evidence reflects the tools actually installed; an unavailable Codex client is a diagnostic finding. Record configuration precedence, permission boundaries, and the layer that needs attention. Use [workload identity](examples/module-01/workload-identity/README.md) for optional identity-contract practice.
+Safe fixtures exit `0`, unsafe fixtures exit `1`, and 11 tests pass. Inspect the examples without copying them into live configuration. [Workload identity](examples/module-01/workload-identity/README.md) is additional optional practice.
 
 ## M02 — Bounded coding change
 
@@ -307,15 +378,38 @@ Expected: **9 tests pass**. Explain the winning test command, the modeled trust 
 
 ## M05 — Steering and bounded plans
 
-Read [steering-plan/task.json](examples/module-05/steering-plan/task.json). Compare the structured and unsafe phases, then draft your corrected-threshold steer and bounded task contract using the [prompt templates](examples/module-05/prompt-loop/README.md).
+**Time: 15 minutes. Slides M05 S011–S012.** A pricing threshold changes while the team is planning. Your task is to route that correction, preserve authority, and write a bounded plan. This is an offline planning activity; skip live model calls and do not implement the pricing change.
+
+### 0–2 minutes: inspect the scenario
+
+Read [task.json](examples/module-05/steering-plan/task.json) and compare [structured.json](examples/module-05/steering-plan/plans/structured.json) with [unsafe.json](examples/module-05/steering-plan/plans/unsafe.json). Their paths describe a proposed pricing task; no missing production repository needs to be created.
 
 ```sh
 python examples/module-05/steering-plan/steering_check.py examples/module-05/steering-plan/task.json examples/module-05/steering-plan/plans/structured.json
 python examples/module-05/steering-plan/steering_check.py examples/module-05/steering-plan/task.json examples/module-05/steering-plan/plans/unsafe.json
+```
+
+Structured exits `0`; unsafe exits `1`. Explain at least one skipped phase and one authority/scope problem in the unsafe record.
+
+### 2–6 minutes: write the contracts
+
+In your notes, make one row each for Explore, Plan, Implement, Test, and Review. Each row needs a deliverable, allowed paths, unchanged constraints, validation, stopping condition, and exact exit-evidence name from `task.json`. Implementation cannot begin until the plan gate is approved. Preserve the supplied model/authority/evaluation contract when discussing a model change.
+
+### 6–9 minutes: route the correction
+
+For a concrete classroom example, assume the approved threshold changes from 100 to 200 units before implementation. Record those as scenario assumptions. Draft the message you would send to steer the task: identify the changed requirement, retain file/permission boundaries, revise boundary-test cases, and require reapproval before implementation. Explain why a side conversation alone would not update the active plan, when separate work is appropriate, and what uncertainty would make you stop.
+
+### 9–13 minutes: bound execution
+
+Use [plan-mode-template.md](examples/module-05/prompt-loop/plan-mode-template.md) and [bounded-loop-template.md](examples/module-05/prompt-loop/bounded-loop-template.md) to write a task contract with measurable completion, maximum attempts, tool calls, elapsed time, token/cost ceiling, and escalation. Choose explicit finite values as a proposal. At each checkpoint record hypothesis, smallest action, result/evidence, remaining budget, and continue/re-plan/stop decision. You are writing the contract, not starting an autonomous loop.
+
+### 13–15 minutes: check and hand off
+
+```sh
 python -m unittest discover -s examples/module-05/steering-plan/tests -v
 ```
 
-Expected: structured exits `0`, unsafe exits `1`, and **8 tests pass**. The workbook's seven-test count predates the extra contract check. Submit the routing rationale, five-phase contract, checkpoints, budget, and stop conditions.
+Expected: 8 tests pass; older workbook text says seven. Keep the two checker reports, five phase contracts, routing rationale, steer message, and bounded execution contract. A peer should be able to identify what changed, what stayed authorized, and exactly when work must stop. If Python is unavailable, do the comparison in notes and mark the checker/tests “not run.”
 
 ## M06 — Cost per accepted task
 
@@ -332,7 +426,15 @@ Expected: **12 tests pass**. Verify one candidate's cost-per-accepted-task calcu
 
 ## M07 — Implement, test, review, hand off
 
-Use a disposable copy of [starter-repo](examples/module-07/change-workflow/starter-repo/README.md). Read its `AGENTS.md` and `WORK_ITEM.md`; add the missing zero/negative-quantity cases and the smallest guard in `src/inventory.py`.
+**Time: 17 minutes. Slide M07 S015.** Implement the inventory reservation work item and hand off evidence that another person can review.
+
+Use a disposable copy of the repository. Read the starter [AGENTS.md](examples/module-07/change-workflow/starter-repo/AGENTS.md), [WORK_ITEM.md](examples/module-07/change-workflow/starter-repo/WORK_ITEM.md), `src/inventory.py`, and `tests/test_inventory.py`.
+
+### 0–4 minutes: contract and baseline
+
+Record your starting commit or identify the untouched ZIP copy. Permit changes only to the starter's `src/inventory.py` and `tests/test_inventory.py`. Plan two increments: a reproducing test, then the smallest implementation. Write four acceptance cases: positive subtraction, insufficient-stock rejection, zero rejection, and negative rejection. Preserve the function signature and existing exception behavior.
+
+Give execution a 10-minute budget and a minute-10 checkpoint. Keep one writer. Choose a disposable local copy or an isolated worktree and explain your choice. Optional side conversations or reviewers do not receive write authority.
 
 ```sh
 cd examples/module-07/change-workflow/starter-repo
@@ -340,9 +442,19 @@ python -m unittest discover -s tests -v
 cd ../../../..
 ```
 
-Expected baseline: **2 tests**. After the workbook change: **4 acceptance tests**. Compare [solution-repo](examples/module-07/change-workflow/solution-repo/README.md) after your attempt. Run its tests from inside that directory too.
+Two baseline tests pass. Stop on an unexpected baseline failure.
 
-Validate the supplied handoff records:
+### 4–10 minutes: implement
+
+Add separate tests for zero and negative requests, run them to show failure on the starter, then add the guard. Rerun the same test command from inside `starter-repo`. Four tests should now pass. Stop at the budget boundary and record incomplete work if needed. Compare the supplied solution only after your attempt.
+
+### 10–15 minutes: review and remediate
+
+Review the changed lines and all four cases. Check the return value, `ValueError` behavior, unchanged interface, and absence of unrelated edits. Ask a peer or a read-only reviewer to inspect the diff. Correct evidenced problems and rerun the affected tests. A solo review must be labeled as such.
+
+### 15–17 minutes: hand off
+
+Keep the contract, base/copy identity, diff, exact test commands and results, review findings and decisions, skipped checks, remaining risk/budget, and stop reason. The reference evidence checker illustrates a complete handoff:
 
 ```sh
 python examples/module-07/change-workflow/workflow_check.py examples/module-07/change-workflow/task.json examples/module-07/change-workflow/evidence/complete.json
@@ -350,87 +462,188 @@ python examples/module-07/change-workflow/workflow_check.py examples/module-07/c
 python -m unittest discover -s examples/module-07/change-workflow/tests -v
 ```
 
-Expected: complete exits `0`, unsafe exits `1`, and **10 checker tests pass**. Submit your contract, changed files, tests, diff review, adjudication, and stopping decision.
+Complete exits `0`, unsafe exits `1`, and 10 checker tests pass. These records do not attest to your implementation. Keep your own real output. Without execution access, write the plan/test cases and critique the reference diff, labeling implementation and tests “not run.”
 
 ## M08 — MCP integration dossier
 
-Use the [stateless fixture](examples/module-08/stateless-mcp/README.md), inspect `server.py`, `client.py`, and `risk-dossier.json`, then create your boundary map and control/removal plan.
+**Time: 19 minutes. Slide M08 S016.** Review the [stateless STDIO fixture](examples/module-08/stateless-mcp/README.md) as a proposed integration. It runs locally with static data and no credentials. Use its pinned course protocol version for this exercise; no live client configuration is required.
+
+### 0–4 minutes: map the boundary
+
+Read `client.py`, `server.py`, and `risk-dossier.json`. Draw the host/client, Python child process, STDIO transport, local identity, static data, one pinned tool, and request/result boundaries. Mark self-reported client metadata, tool descriptions, and returned content as untrusted. List the absent downstream services.
+
+### 4–9 minutes: trace the requests
 
 ```sh
 python examples/module-08/stateless-mcp/client.py
-python examples/module-08/stateless-mcp/dossier_check.py examples/module-08/stateless-mcp/risk-dossier.json
+```
+
+Identify independent discovery, tool-list, and tool-call responses. Expect three responses and one `lookup_policy` tool. Find per-request protocol/client-capability metadata, server metadata, `resultType`, schema validation, and cache hints in the code/output. Explain that the server provides discovery while a client may choose not to invoke it. This course fixture has no session handshake.
+
+### 9–14 minutes: prove four controls
+
+Copy `risk-dossier.json` to `student-work/m08-dossier.json` using your editor/file manager. Explain each control in your own words and cite the handler or test that supplies evidence:
+
+| Control | Evidence to provide |
+| --- | --- |
+| Per-request protocol and capability checks | Where missing/unsupported metadata is rejected |
+| Pinned tool inventory | Where names other than `lookup_policy` are rejected |
+| Issuer and token audience | Explicitly not applicable to this credential-free fixture; describe the check a protected remote service would require |
+| Side-effect approval | Explain why this static read has no write approval; describe preview, approval, idempotency, and recovery needed before adding a write |
+
+Keep the owner, audit, identity boundary, disablement, and removal fields. An annotation or a passing dossier check alone is not enforcement.
+
+### 14–19 minutes: validate and retire on paper
+
+```sh
+python examples/module-08/stateless-mcp/dossier_check.py student-work/m08-dossier.json
 python -m unittest discover -s examples/module-08/stateless-mcp/tests -v
 ```
 
-Expected: three independent responses, one `lookup_policy` tool, a valid dossier, and **12 tests pass**. Optional: [MCP security](examples/module-08/mcp-security/README.md) and [RAG bridge](examples/module-08/rag-mcp-bridge/README.md). The `local-mcp` fixture is a legacy migration comparison, not this workbook's core lab.
+A complete dossier exits `0`; 12 tests pass, including invalid metadata/version and unknown-tool cases. Record the rejection evidence. Write how an owner would disable access, verify tool absence, remove configuration/distribution, revoke any future credentials, and retain audit evidence. **Skip registering a live server, remote authentication, and real credential revocation.** Those are design notes for this fixture, not actions to perform.
+
+Keep the boundary map, your dossier, client/test output, residual risks, and retirement plan. If Python is unavailable, trace the supplied code in notes and mark checks “not run.” Optional follow-on: [MCP security](examples/module-08/mcp-security/README.md) or [RAG bridge](examples/module-08/rag-mcp-bridge/README.md). The legacy `local-mcp` example is not the core activity.
 
 ## M09 — Tool selection
 
-Inspect [tool-selection/scenarios](examples/module-09/tool-selection/scenarios). Choose a single-tool or bounded sequential workflow based on task evidence, with one writer and a distinct reviewer.
+**Time: 8 minutes. Slides M09 S009 and S012.** A team proposes letting two coding agents edit the same checkout at once. Replace that with one implementation owner followed by a distinct read-only architecture review. Use the offline records; live Claude access is unnecessary.
+
+1. **0–2 minutes — decide:** compare [unsafe-dual-edit.json](examples/module-09/tool-selection/scenarios/unsafe-dual-edit.json) and [bounded-sequence.json](examples/module-09/tool-selection/scenarios/bounded-sequence.json). Name the required patch and the separate review deliverable. Explain why the proposed sequence serves this task.
+2. **2–4 minutes — authority:** assign the implementation role write access and reviewer read access. Preserve one immutable base/patch reference and separate output names. Review the dated `product_baseline` as synthetic evidence. Its flags and `CLAUDE.md` text do not prove live controls are enabled.
+3. **4–6 minutes — handoff:** copy `bounded-sequence.json` to `student-work/m09-handoff.json`. Write your own task-specific rationale and role purposes. For each role retain base, allowed paths, authority, inputs, output, validation, stop, and receiving owner. Make it clear that the writer stops before review begins. `abc1234` is a fictional scenario label, not a real checkout instruction.
+4. **6–8 minutes — validate:** run:
 
 ```sh
-python examples/module-09/tool-selection/decision.py examples/module-09/tool-selection/scenarios/bounded-sequence.json
+python examples/module-09/tool-selection/decision.py student-work/m09-handoff.json
 python examples/module-09/tool-selection/decision.py examples/module-09/tool-selection/scenarios/unsafe-dual-edit.json
 python -m unittest discover -s examples/module-09/tool-selection/tests -v
 ```
 
-Expected: bounded sequence exits `0`, unsafe dual edit exits `1`, and **10 tests pass**. Submit your selection rationale and handoff contract. These scripts evaluate records; they do not start Codex or Claude Code.
+Your complete record exits `0`, unsafe exits `1`, and 10 tests pass. Give a peer your handoff: they should be able to identify why each role exists, what it may change, and when it stops. Keep the record and reports. **Skip starting two agents, buying access, or changing live sandbox settings.** Without Python, review the records manually and mark execution “not run.”
 
 ## Shared RAG evidence for M10–M12.5
 
 Keep `examples/rag-reference`, `examples/evidence/EV-RAG-01.json`, and `examples/rag_evidence_binding.py` together. The later checkers verify the observation and source hashes. Run the M03 ingest/query/eval commands to obtain your own functional output; `python scripts/validate_course.py` also reruns that behavior in a temporary directory.
 
-M10, M11, and M12.5 consume the pre-staged observation. M12 additionally asks you to execute the RAG path and retain real output. Do not edit the shared corpus or evidence to make a checker pass. An evidence record passing its checker proves its structure and bindings, not a real approval or deployment.
+M10, M11, and M12.5 consume the pre-staged observation. M12 additionally asks you to execute the RAG path and retain real output. Do not edit the shared corpus or evidence to make a checker pass. An evidence record passing its checker proves its structure and bindings, not a real approval or deployment. In M12/M12.5, the fixture `runtime` flags describe actions by the offline checker and remain false. Keep your own shell/test execution evidence separately in the validation entries and notes.
 
 ## M10 — Lifecycle gates
 
-Copy [evidence/starter.json](examples/module-10/lifecycle-gates/evidence/starter.json) for your work. Inspect `task.json`, complete the state transitions and gates, and compare with the supplied complete and unsafe records.
+**Time: 15 minutes. Slide M10 S015.** Replace this unsafe proposal: “Ingest the latest documents, let the model pick the tenant filter, retry until answers look right, approve its own result, and promote the index.” Your deliverable is a reproducible synthetic lifecycle contract.
+
+Read [task.json](examples/module-10/lifecycle-gates/task.json). Copy [evidence/starter.json](examples/module-10/lifecycle-gates/evidence/starter.json) to `student-work/m10-release.json`. Use the complete record as a schema/reference, keeping all fictional approvals and releases labeled as scenario data.
+
+1. **0–3 minutes — lifecycle:** list the ten required states in order. For each, record owner, identity/authority, required evidence, pass condition, and who acts on failure. Track corpus, index, configuration, evaluator, and release separately.
+2. **3–7 minutes — gates:** map ingestion, retrieval quality, citation support, abstention, tenant access, injection, freshness/deletion, cost, and diff checks to the test gate. Keep authorization outside the model. Bind the supplied EV-RAG observation and its full digests.
+3. **7–10 minutes — approval/recovery:** separate implementer, reviewer, approver, release, and recovery roles. Explain why changes to artifacts or authority invalidate prior approval. Distinguish retryable failure from quarantine/escalation.
+4. **10–13 minutes — operation:** name monitoring/alert owners, the proposed SLO and cost ceiling, and rollback/reindex triggers. Keep raw sensitive content out of telemetry. Use scenario values from the reference; do not label simulated latency/cost as locally measured.
+5. **13–15 minutes — check:** run the supplied comparisons, then your record:
 
 ```sh
 python examples/module-10/lifecycle-gates/workflow_check.py examples/module-10/lifecycle-gates/task.json examples/module-10/lifecycle-gates/evidence/complete.json
 python examples/module-10/lifecycle-gates/workflow_check.py examples/module-10/lifecycle-gates/task.json examples/module-10/lifecycle-gates/evidence/unsafe.json
+python examples/module-10/lifecycle-gates/workflow_check.py examples/module-10/lifecycle-gates/task.json student-work/m10-release.json
 python -m unittest discover -s examples/module-10/lifecycle-gates/tests -v
 ```
 
-Expected: complete exits `0`, unsafe exits `1`, and **12 tests pass**. Record the lifecycle, authority at each state, evidence gates, recovery, monitoring, and release decision.
+Complete exits `0`, unsafe/incomplete exits `1`, and 12 tests pass. Repair your record using the reported issues, without weakening the checker. If time expires, keep the incomplete result and name the next owner/action. Keep the record, lifecycle/gate table, reports, recovery plan, and stop decision. **Skip real deployment, cloud monitoring, and permission changes.** Without Python, critique the supplied records and label the checks “not run.”
 
 ## M11 — Parallel work and merge safety
 
-Start with [evidence/starter.json](examples/module-11/task-merge-safety/evidence/starter.json) and `task.json`. Design the graph and waves, disjoint output ownership, shared immutable RAG release, independent review, and one integration decision.
+**Time: 13 minutes. Slide M11 S015.** Plan separate retrieval-quality and security evaluations of one RAG release, independent review, and one integration decision. You are reviewing records, not launching agents or merging real branches.
+
+Read [task.json](examples/module-11/task-merge-safety/task.json), copy [evidence/starter.json](examples/module-11/task-merge-safety/evidence/starter.json) to `student-work/m11-integration.json`, and consult the complete record for its schema.
+
+1. **0–3 minutes — graph:** draw the six task IDs and four waves from the reference. Show dependencies and explain why each dependency finishes before its consumer starts. Stay within the declared maximum of two parallel workers.
+2. **3–6 minutes — operations:** use the scenario base `abc1234` consistently; it is fictional. Record inherited permissions, root and per-task budgets, concurrency, steer/cancel owner, attempts/time limits, and stops. Keep inventories and reviewer read-only.
+3. **6–9 minutes — evidence ownership:** give quality and security workers distinct proposed outputs/worktrees. Bind both to the same EV-RAG artifact and corpus/index/configuration/evaluation digests. Assign retrieval/citation/abstention to quality and access/injection/freshness/deletion to security.
+4. **9–11 minutes — integrate:** use a reviewer different from the author. Give the integrator the order, checks for compatible evidence, digest-mismatch rejection, conflict-resolution record, monitoring/cost/provenance gates, and residual risk.
+5. **11–13 minutes — check:** run:
 
 ```sh
 python examples/module-11/task-merge-safety/merge_check.py examples/module-11/task-merge-safety/task.json examples/module-11/task-merge-safety/evidence/complete.json
 python examples/module-11/task-merge-safety/merge_check.py examples/module-11/task-merge-safety/task.json examples/module-11/task-merge-safety/evidence/unsafe.json
+python examples/module-11/task-merge-safety/merge_check.py examples/module-11/task-merge-safety/task.json student-work/m11-integration.json
 python -m unittest discover -s examples/module-11/task-merge-safety/tests -v
 ```
 
-Expected: complete exits `0`, unsafe exits `1`, and **12 tests pass**. Submit graph/waves, role contracts, write ownership, review/integration gates, and stop conditions. Running this checker does not spawn agents or merge code.
+Complete exits `0`, unsafe/incomplete exits `1`, and 12 tests pass. Keep your graph/waves, role and integration contracts, reports, and stop decision. If incomplete, list unresolved issues rather than claiming a merge succeeded. **Skip actual agent spawning, worktree creation, Git merges, and deployment.** A written reference critique is the fallback when execution is unavailable.
 
 ## M12 — Release-evidence capstone
 
-Work in a disposable copy of [starter](examples/module-12/release-evidence/starter), following [task.json](examples/module-12/release-evidence/task.json). Add `explain_quote` and the required tests while preserving `quote_total`. Start your evidence record from [evidence/starter.json](examples/module-12/release-evidence/evidence/starter.json).
+**Time: 26 minutes. Slides M12 S003 and S011–S014.** Add an explanation to the pricing function, preserve its existing totals, and defend the change with code and offline RAG evidence.
+
+Use a disposable copy/branch of the whole collection so the shared RAG paths remain available. Read [task.json](examples/module-12/release-evidence/task.json), `starter/pricing.py`, `starter/tests/test_pricing.py`, and [evidence/starter.json](examples/module-12/release-evidence/evidence/starter.json). Copy that evidence starter to `student-work/m12-capstone.json`; keep `student-work/m12-rag-report.json` for your observed RAG evaluation.
+
+### 0–4 minutes: contract
+
+Record goal, start commit or ZIP snapshot, assumptions, instructions consulted, tools/permissions, time/iteration budget, escalation, validation, review, and stop. The task's `pricing.py` and `tests/test_pricing.py` refer to the files under `starter/`. Its two evidence outputs map to your `student-work` records. Keep these mappings explicit in your notes and use the task's relative names in the synthetic contract.
+
+Acceptance:
+
+- Preserve `quote_total`'s standard and partner totals, including its 10% partner discount and two-decimal rounding.
+- Add `explain_quote(subtotal, segment="standard")`, returning `subtotal`, `discount_rate`, `total`, and `reason`. Use a clear reason such as `standard rate` or `partner discount`.
+- Reject negative/non-numeric subtotals (including booleans) and unknown segments with `ValueError`, preserving the starter's validation.
+- Test both explanation paths and invalid input, and retain the two baseline total tests.
 
 ```sh
 python -m unittest discover -s examples/module-12/release-evidence/starter/tests -v
-python -m unittest discover -s examples/module-12/release-evidence/solution/tests -v
+```
+
+Expected: two baseline tests pass. Stop on unexpected baseline failure.
+
+### 4–12 minutes: implement and prove
+
+Add your focused tests, show the new behavior failing before implementation, then make the smallest change inside `starter/pricing.py` and `starter/tests/test_pricing.py`. Rerun the command above. The reference solution has five test methods; your tests must cover all acceptance behaviors even if organized differently. Inspect the solution only after attempting the work.
+
+### 12–18 minutes: assemble RAG and code evidence
+
+Run the [M03 ingest and authorized-query commands](#m03--authorized-rag-trace), then:
+
+```sh
+python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl --report student-work/m12-rag-report.json
+```
+
+Expect 7 source documents, 5 indexed documents/chunks, 8/8 evaluation cases, and ten metrics at 1.0. Link the supplied EV-RAG observation and full digests plus your actual saved output. The checker independently verifies file bindings. Do not modify the shared RAG source/corpus to pass a gate. Mark hosted latency, provider cost, scale, and live deployment/recovery **skipped — not supplied by this lab**.
+
+Complete the eleven `required_domains` in `task.json`: instructions, context, decision, cost, tools, workflow, security, RAG, validation, review, and release. Give evidence entries unique identifiers and real file/output references for work you performed. Label inherited reference/scenario data distinctly. If an actual review or observation is missing, record it as unresolved instead of inventing a pass.
+
+### 18–22 minutes: independent review
+
+Exchange a named diff and RAG report with a peer. The reviewer checks behavior, tests, scope, authorization/citations, monitoring/cost assumptions, and provenance without editing your files. Record findings, your decisions, and any rerun checks. If no independent reviewer is available, record the review gap and choose a safe-stop handoff.
+
+### 22–26 minutes: release decision and defense
+
+Explain who owns the result, which gates passed, what remains uncertain, how to undo your code change, and how to rebuild a trusted RAG index. This is a classroom release decision; **do not deploy**. Give a two-minute defense to a peer, then listen to theirs: task/boundary, main decision, strongest code/RAG evidence, residual risk, and recovery.
+
+```sh
 python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json examples/module-12/release-evidence/evidence/complete.json
 python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json examples/module-12/release-evidence/evidence/unsafe.json
+python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json student-work/m12-capstone.json
 python -m unittest discover -s examples/module-12/release-evidence/tests -v
 ```
 
-Expected: **2 starter tests**, **5 reference-solution tests**, complete exit `0`, unsafe exit `1`, and **13 checker tests**. Open the solution after attempting the change. Also run the M03 RAG commands and keep their actual output. Submit your bounded change, eleven-domain evidence index, independent review/adjudication, release/recovery decision, and paired defense.
+Complete exits `0`, unsafe/incomplete exits `1`, and 13 checker tests pass. Use issues to find missing evidence; an honestly incomplete record and explicit stop are preferable to fabricated validation. Keep the contract, diff, code/RAG results, evidence record, review, and decision. If tools are unavailable, produce a written critique of the reference and mark execution “not run.”
 
 ## M12.5 — Optional practice check
 
-Use [records/starter.json](examples/module-12-5/practice-check/records/starter.json) and `task.json` to build the twelve-practice packet. Compare complete and unsafe records after your attempt.
+**Time: 17 minutes. Slides M12.5 S014–S015.** Turn an unsafe “answers looked right, enable every tool, retry indefinitely, self-review, then automate” proposal into a bounded operating packet for the existing RAG fixture.
+
+Read [task.json](examples/module-12-5/practice-check/task.json). Copy [records/starter.json](examples/module-12-5/practice-check/records/starter.json) to `student-work/m125-packet.json`. Inspect the complete record for schema and the unsafe record for failure cases. Use the supplied EV-RAG observation; no new retrieval system or plugin is required.
+
+1. **0–4 minutes — frame:** write the goal, context references, allowed/excluded paths, immutable base/snapshot, assumptions, unknowns, four done conditions, and stop. Separate one-task instructions from reusable project guidance.
+2. **4–8 minutes — bound:** describe Explore, Plan, Implement, Test, and Review, with deliverables and validation. Identify risk and two decision points. Keep filesystem/shell/local-RAG authority, no external tools, and an empty plugin inventory. Declare finite minutes/iterations and escalation. Do not change model authority when discussing escalation.
+3. **8–14 minutes — prove:** complete the eight named checks in `task.json`, binding RAG source/observation digests, ingest counts, eight categories, ten metrics, monitoring owner/alert route, and recovery. Reference actual outputs when run, clearly label supplied scenario evidence, and record unobserved hosted cost/latency as a gap. Get a read-only critique from a different reviewer, or record that review is outstanding.
+4. **14–17 minutes — improve and stop:** keep first-use guidance at task scope. Write when repeated evidence would justify reuse, one measurable improvement with an owner/review date, and an explicit stop/next-owner record. Give all twelve practices unique evidence references. Run:
 
 ```sh
 python examples/module-12-5/practice-check/practice_check.py examples/module-12-5/practice-check/task.json examples/module-12-5/practice-check/records/complete.json
 python examples/module-12-5/practice-check/practice_check.py examples/module-12-5/practice-check/task.json examples/module-12-5/practice-check/records/unsafe.json
+python examples/module-12-5/practice-check/practice_check.py examples/module-12-5/practice-check/task.json student-work/m125-packet.json
 python -m unittest discover -s examples/module-12-5/practice-check/tests -v
 ```
 
-Expected: complete exits `0` with 12 practices and the separate RAG operations gate; unsafe exits `1`; **14 tests pass**. Submit the packet, checker reports, adoption/retrospective notes, and stop record.
+Complete exits `0` with twelve practices plus the separate RAG operations gate; unsafe/incomplete exits `1`; 14 tests pass. Keep your packet, reports, review/gaps, reuse decision, and retrospective. **Skip installing plugins, scheduling automation, production checks, and deployment.** Without Python, critique the records in notes and mark the checks “not run.”
 
 ## Supplemental scenario numbering
 

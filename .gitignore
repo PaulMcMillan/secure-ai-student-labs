@@ -9,3 +9,6 @@ __pycache__/
 Thumbs.db
 examples/rag-reference/build/*
 !examples/rag-reference/build/.gitkeep
+
+# Learner notes and copies of exercise records
+/student-work/

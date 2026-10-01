@@ -1,9 +1,11 @@
-# M00 — Foundations and context budgeting
+# M00 — Optional foundations practice
 
-Follow the Day 1 workbook's foundations and context-budget activities. Record exact strings, whitespace, UTF-8 bytes, token pieces/IDs/counts, tokenizer identity/version, and the distinction between active context and durable memory. Build the context manifest and explain your budget and trust boundaries.
+Revised slide M00 S024 asks you to choose **one** activity, about 15–25 minutes:
 
-There is no tokenizer implementation bundled here. The workbook names `tiktoken` and an encoding for its exact-token homework; use the instructor-approved tool environment and record what you actually ran. The main repository validator does not validate tokenization or your written work.
+- Inspect four exact strings with an already available approved tokenizer.
+- Draw the generation loop and a Transformer block.
+- Calculate context headroom and plan saved state and access controls.
 
-Optional supporting practice: [Secure AI foundations evidence checker](../secure-ai-foundations/README.md). This checks a synthetic control/evidence packet, not tokenizer output.
+The [complete M00 directions](../../WORKBOOK_GUIDE.md#m00--foundations-and-context-budgeting) include the exact strings, numeric assumptions, steps, and what to keep. No Word workbook or live API call is required. If a tokenizer is unavailable, skip that option and choose the diagram or context activity.
 
-Continue with the [workbook exercise guide](../../WORKBOOK_GUIDE.md).
+[Secure AI foundations](../secure-ai-foundations/README.md) is separate optional evidence-packet practice.
