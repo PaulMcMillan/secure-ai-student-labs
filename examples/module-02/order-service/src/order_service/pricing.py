@@ -1,4 +1,4 @@
-"""Deterministic order-total calculation for the Module 1 lab."""
+"""Deterministic order-total calculation for the Module 2 lab."""
 
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Iterable

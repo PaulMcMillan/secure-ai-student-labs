@@ -11,10 +11,10 @@
 
 ## Validation
 
-From the AITrainer repository root, run:
+From the student repository root, run:
 
 ```powershell
-python -m unittest discover -s examples/module-01/order-service/tests -v
+python -m unittest discover -s examples/module-02/order-service/tests -v
 ```
 
 Review the final diff and report the changed files, test result, selected surface/permission posture, capability inventory, and any residual risk.

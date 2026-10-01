@@ -22,13 +22,13 @@ Expected: **13 unit tests pass**, followed by successful RAG ingestion, a cited 
 
 ## M02 — Bounded coding change
 
-The workbook's M02 exercise uses the historical path `examples/module-01/order-service`.
+The M02 exercise is in `examples/module-02/order-service`.
 
-1. Read the [lab README](examples/module-01/order-service/README.md), [repository guidance](examples/module-01/order-service/AGENTS.md), and [work item](examples/module-01/order-service/WORK_ITEM.md).
+1. Read the [lab README](examples/module-02/order-service/README.md), [repository guidance](examples/module-02/order-service/AGENTS.md), and [work item](examples/module-02/order-service/WORK_ITEM.md).
 2. Run the baseline from this repository root:
 
    ```sh
-   python -m unittest discover -s examples/module-01/order-service/tests -v
+   python -m unittest discover -s examples/module-02/order-service/tests -v
    ```
 
    Expected: **4 tests pass**. The starter intentionally does not reject zero or negative quantities; implementing that behavior is the exercise.
@@ -82,7 +82,7 @@ The implementation uses lexical retrieval and a deterministic answer composer. I
 ## Workbook notes
 
 - Use a disposable copy or your own branch for edits.
-- Original `examples/...` paths are preserved. References to the “AITrainer root” mean this repository root in the student bundle.
+- M02 now lives under `examples/module-02/order-service`. If your workbook prints the older M01 directory for this exercise, use the M02 commands above. References to the “AITrainer root” mean this repository root in the student bundle.
 - Historical `course/.../lab-guide.md` references identify the workbook's authoring sources. Follow the instructions printed in your workbook and the lab READMEs here.
 - If a workbook paragraph puts several commands on one line, run each command separately.
 - All corpus documents, identities, and policy records are synthetic classroom fixtures. Identity arguments simulate trusted claims; they are not a production authentication system.

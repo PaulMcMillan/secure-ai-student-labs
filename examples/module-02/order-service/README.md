@@ -1,6 +1,6 @@
 # Order Service Sample Repository
 
-This synthetic repository supports the Day 1 M02 coding demonstration and lab. Its `module-01` directory name is historical. It calculates order totals with `Decimal`, uses only the Python standard library, and does not access the network or external data.
+This synthetic repository supports the Day 1 M02 coding demonstration and lab. It calculates order totals with `Decimal`, uses only the Python standard library, and does not access the network or external data.
 
 ## Layout
 
@@ -14,10 +14,10 @@ order-service/
 
 ## Baseline validation
 
-From the AITrainer repository root:
+From the student repository root:
 
 ```powershell
-python -m unittest discover -s examples/module-01/order-service/tests -v
+python -m unittest discover -s examples/module-02/order-service/tests -v
 ```
 
 Expected: four tests pass before the exercise.
