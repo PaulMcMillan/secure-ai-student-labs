@@ -31,62 +31,166 @@ Expected: safe fixtures exit `0`, unsafe fixtures exit `1`, and **11 tests pass*
 
 ## M02 — Bounded coding change
 
-The M02 exercise is in `examples/module-02/order-service`.
+**Time: 20 minutes.** Use `examples/module-02/order-service` for the workbook's M02 lab. Replace any older `examples/module-01/order-service` path with this one.
 
-1. Read the [lab README](examples/module-02/order-service/README.md), [repository guidance](examples/module-02/order-service/AGENTS.md), and [work item](examples/module-02/order-service/WORK_ITEM.md).
-2. Run the baseline from this repository root:
+You need Python 3.11+, your own writable copy, and an approved coding agent if you are doing the agent-assisted activity. Git is useful for the branch and diff evidence. No packages, model API keys, MCP server, or plugins are needed by the sample. Run every command below from the **student repository root**.
 
-   ```sh
-   python -m unittest discover -s examples/module-02/order-service/tests -v
-   ```
+### 0–6 minutes: inspect and frame the task
 
-   Expected: **4 tests pass**. The starter intentionally does not reject zero or negative quantities; implementing that behavior is the exercise.
+Read these four files:
 
-3. In your own copy or branch, add the requested negative-case test and the smallest quantity-validation change. Preserve valid totals and currency rounding.
-4. Rerun the tests and review your changes. Record commands, results, and remaining risks in the workbook.
+- [AGENTS.md](examples/module-02/order-service/AGENTS.md): applicable project instructions.
+- [WORK_ITEM.md](examples/module-02/order-service/WORK_ITEM.md): goal, constraints, and acceptance criteria.
+- [pricing.py](examples/module-02/order-service/src/order_service/pricing.py): starter implementation.
+- [test_pricing.py](examples/module-02/order-service/tests/test_pricing.py): baseline tests.
+
+In a cloned repository, record the starting status and create your own branch:
+
+```sh
+git status --short --branch
+git switch -c student/m02-quantity-validation
+python -m unittest discover -s examples/module-02/order-service/tests -v
+```
+
+Choose another branch name if that one exists. If you downloaded a ZIP, use a disposable extracted copy, skip the Git commands, and record “ZIP copy; branch/diff commands not run.” Use your editor to compare your changes with a second untouched copy.
+
+**Checkpoint:** four baseline tests pass. They cover valid totals, empty orders, multiple lines, and rounding. They do not yet prove that invalid quantities are rejected. If the baseline fails, stop and check your Python command, working directory, and whether the starter has already been edited.
+
+Write one line for each field below, then give that contract to your coding agent. Keep the allowed paths relative to `examples/module-02/order-service`:
+
+| Field | What your contract must say |
+| --- | --- |
+| Goal | Reject every line whose quantity is below 1, raising `ValueError` with exactly `quantity must be at least 1`. |
+| Context | Read the four files above. The current four tests pass; quantity validation is missing. |
+| Constraints | Change only `src/order_service/pricing.py` and `tests/test_pricing.py`. Preserve the public function signature, valid totals, `Decimal`, and `ROUND_HALF_UP`. Add no dependencies or unrelated refactoring. Use no network, credentials, plugins, or MCP server. |
+| Validation | Show a new invalid-quantity test failing on the starter, then passing after the change. Run the entire sample suite and review the diff. |
+| Stop | Stop after the acceptance checks and review, or report a failing baseline, conflicting instruction, or need for work outside the two allowed files. |
+
+Record the agent surface you chose, its workspace/permission boundary, and why the task needs only file edits and local tests. Identify who sets the goal, who proposes the change, which tool reads files/runs tests, and who accepts the final diff.
+
+### 6–14 minutes: implement the smallest change
+
+1. Ask the agent to add **one new test method** covering zero or a negative quantity, including the exact exception message. To cover both cases while keeping five test methods, use two `subTest` cases inside that one method.
+2. Run the test command above **before changing the implementation**. Record the expected failure: the starter does not raise the required exception.
+3. Ask for quantity validation before subtotal/tax calculation. Preserve valid-order behavior and the function's iterable input contract; do not accidentally consume a one-shot iterator twice.
+4. Rerun the same test command. Read the actual output yourself.
+
+**Checkpoint:** five test methods pass, including the new invalid-quantity test. If you chose separate methods for zero and negative quantities, six passing methods are also valid; what matters is the acceptance behavior. Only the two permitted files should change.
+
+### 14–18 minutes: validate and review
+
+```sh
+python -m unittest discover -s examples/module-02/order-service/tests -v
+git diff -- examples/module-02/order-service
+git status --short
+```
+
+Check the exact error type/message, validation order, function signature, valid totals, rounding, and two-file scope. Keep the failing-test output, passing-test output, and reviewed diff. ZIP users compare against the untouched copy instead of running Git commands.
+
+### 18–20 minutes: explain and hand off
+
+In two or three sentences, explain the behavioral instruction, chosen agent surface/tools, acting identity category without account identifiers, workspace boundary, any approval decision, human review, and stopping condition.
+
+Keep your five-field contract, baseline evidence, changed files/diff, new test's failure and success, final suite result, control explanation, and any remaining uncertainty. A passing baseline alone does not complete the exercise. Keep the work for debrief; do not commit or push unless your instructor asks.
+
+If agent access is unavailable, complete the written contract and review the starter. Pair with a learner who can run it or follow the instructor's fallback. Mark implementation and tests you did not execute “not run.”
 
 ## M03 — Authorized RAG trace
 
-This offline lab ingests synthetic policy documents, filters access before ranking, returns cited answers or abstains, and records redacted telemetry.
+**Do the offline exercise below. Skip the missing parts of the workbook's full vertical-slice lab.** Use the supplied synthetic corpus and Python fixture; no local model setup, extra packages, or API key is required. Allow about 30 minutes for the authorized-RAG evidence activity.
 
-### 1. Build the index
+### What to do and what to skip
+
+| Workbook request | Directions for this class |
+| --- | --- |
+| Ingest two student documents and one instructor-only document | **Skip creating that corpus.** Inspect and ingest the seven supplied synthetic policy documents. Use their tenant, role, classification, owner, version, and date metadata. They are not actual student/instructor materials. |
+| Vector plus full-text search, fusion, and reranking | **Skip vector search, fusion, and reranking.** Run the supplied lexical retrieval and inspect its scores. |
+| Bounded context pack and LLM generation | **Skip building a model prompt and calling an LLM.** Inspect the selected chunks and the deterministic extractive answer with its citations. |
+| Direct/no-retrieval routing, automatic retry, and clarification | **Skip implementing or demonstrating these paths.** The fixture supports an answer, abstention, or a blocked request. |
+| Injection, weak evidence, stale content, and access boundaries | **Do** the supplied queries and eight-case evaluation below. Review the reason and source IDs for each result. |
+| Trace, quality/operations metrics, deletion/reindex evidence | **Do** the telemetry review, existing deletion-pending evaluation case, and clean rebuild below. **Skip** live deletion workflows, hosted-model token/cost measurements, scale tests, and production latency claims. |
+
+In your evidence record, write “skipped — not included in the supplied lab” for the omitted parts. These omissions do not block completion of this adapted offline exercise. Do not claim the full hybrid/LLM system was built or tested.
+
+### 0–5 minutes: inspect the inputs and boundary
+
+Run commands from the **student repository root**. Read:
+
+- [rag.py](examples/rag-reference/rag.py): `_eligible_documents`, `answer_query`, and `_telemetry_event`.
+- [corpus/manifest.json](examples/rag-reference/corpus/manifest.json): approved files and policy metadata.
+- [evals/cases.json](examples/rag-reference/evals/cases.json): eight synthetic questions and expected outcomes.
+
+The CLI identity arguments simulate verified claims from a trusted harness. `employee` is a synthetic role, not a real signed-in student identity. `internal` and `restricted` are explicit classification clearances. The reference freezes policy time at **2026-09-10** for reproducible results.
+
+Record: your question, synthetic caller/tenant/role/clearance, permitted corpus, reason retrieval is needed, and expected citation or abstention. Explain why document text is evidence rather than an instruction to the agent. Keep the shared corpus and code unchanged so later modules can use their evidence hashes.
+
+### 5–10 minutes: ingest and ask an authorized question
+
+The commands save JSON results under the existing, Git-ignored `build` folder. Open each output file in your editor after running it. A query that abstains can still exit `0`; inspect `status` and `reason`, not only the process exit code.
 
 ```sh
-python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/index.json
+python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/index.json > examples/rag-reference/build/ingest-output.json
+python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the travel approval threshold?" --telemetry examples/rag-reference/build/telemetry.jsonl > examples/rag-reference/build/authorized-answer.json
 ```
 
-Expected: **7 source documents, 5 indexed documents, 5 chunks**. One sample is quarantined and one is pending deletion.
+Expected ingestion: **7 source documents, 5 indexed documents, 5 chunks**, one quarantined document, and one deletion-pending document. “Indexed” does not mean every caller may retrieve a document; policy filtering happens before scoring.
 
-### 2. Ask an authorized question
+Expected answer: `status: answered`, text containing **$500**, and a citation to `northstar-travel-2026`. Record `trace_id`, `index_version`, `integrity_sha256`, `policy_decision`, and the retrieved/cited source IDs. Open `corpus/documents/travel-policy.md` and check that it supports the claim and citation. In `answer_query`, locate the filtering step before the ranking step.
 
-```sh
-python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the travel approval threshold?" --telemetry examples/rag-reference/build/telemetry.jsonl
-```
+### 10–18 minutes: check denied access and the evaluation cases
 
-Expected: `status: answered`, an answer containing **$500**, and a citation to `northstar-travel-2026`.
-
-### 3. Check a denied-access case
+Run three access checks using the same index:
 
 ```sh
-python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the Southstar acquisition project codename?" --telemetry examples/rag-reference/build/telemetry.jsonl
-```
-
-Expected: `status: abstained` and no citations to the other tenant's document.
-
-### 4. Run the evaluation and tests
-
-```sh
-python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl
+python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What is the Southstar acquisition project codename?" --telemetry examples/rag-reference/build/telemetry.jsonl > examples/rag-reference/build/denied-tenant.json
+python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-alpha --tenant northstar --roles employee --clearances internal --question "What must happen before a consequential production action?" --telemetry examples/rag-reference/build/telemetry.jsonl > examples/rag-reference/build/denied-classification.json
+python examples/rag-reference/rag.py query --index examples/rag-reference/build/index.json --principal learner-visitor --tenant northstar --roles visitor --clearances internal --question "What is the travel approval threshold?" --telemetry examples/rag-reference/build/telemetry.jsonl > examples/rag-reference/build/denied-role.json
+python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl --report examples/rag-reference/build/eval-report.json
 python -m unittest discover -s examples/rag-reference/tests -v
 ```
 
-Expected: **8/8 evaluation cases** and **9 unit tests pass**. The evaluation covers answerable queries, abstention, classification, cross-tenant access, poisoned content, freshness, deletion, and budget limits.
+Expected: all three access queries have `status: abstained`, empty answers, and empty citations. The other tenant's source, the restricted source, and the role-denied travel source must be absent from the respective `retrieved` lists. **8/8 evaluation cases and 9 unit tests pass**; the ten reported evaluation metrics equal `1.0` for this small fixture.
 
-Use the results and `build/telemetry.jsonl` for your workbook evidence record. The generated index and telemetry stay out of Git.
+In `eval-report.json`, inspect every row:
 
-### Scope of this reference
+| Case | Evidence to explain |
+| --- | --- |
+| RAG-E01 — answerable | The permitted travel policy supports the cited answer. |
+| RAG-E02 — abstain | The corpus does not support the lunar-commuting question. |
+| RAG-E03 — classification | Internal clearance does not admit the restricted security standard. |
+| RAG-E04 — cross-tenant | Northstar cannot retrieve Southstar's private source. |
+| RAG-E05 — poison | The bundled malicious-instruction sample is quarantined and not retrieved. This demonstrates a known-sample check, not general prompt-injection immunity. |
+| RAG-E06 — freshness | The retired meal policy is expired at the test's policy time. |
+| RAG-E07 — deletion | The deletion-pending draft is excluded even at its future effective date. |
+| RAG-E08 — budget | The over-budget question is blocked. |
 
-The implementation uses lexical retrieval and a deterministic answer composer. It supports the offline authorization and evidence exercises. The workbook's optional full vector/hybrid search, reranking, and LLM extension requires additional implementation and an approved environment. See the [RAG README](examples/rag-reference/README.md) and [runbook](examples/rag-reference/RUNBOOK.md) for details.
+### 18–25 minutes: inspect the trace and rebuild
+
+Find the authorized query's `trace_id` in `build/telemetry.jsonl`. Record its source IDs, citation count, policy-filter counts, budget, and local `elapsed_ms`. Confirm `content_logged` is false and the event omits the question, answer, and raw document content. Telemetry appends on each run; use trace IDs to identify your current results.
+
+Build a fresh index from the same trusted files and evaluate it:
+
+```sh
+python examples/rag-reference/rag.py ingest --manifest examples/rag-reference/corpus/manifest.json --index examples/rag-reference/build/rebuilt-index.json > examples/rag-reference/build/rebuild-output.json
+python examples/rag-reference/rag.py eval --index examples/rag-reference/build/rebuilt-index.json --cases examples/rag-reference/evals/cases.json --report examples/rag-reference/build/rebuilt-eval-report.json
+```
+
+Compare `ingest-output.json` with `rebuild-output.json`: the integrity digest and index version should match. The rebuilt evaluation must again pass all eight cases. Combined with RAG-E07, this demonstrates rebuilding the trusted fixture while excluding a pre-marked deletion-pending source. It does not perform a live deletion operation. Skip designing a new deletion workflow for this exercise.
+
+### 25–30 minutes: finish the evidence record
+
+Keep the saved query/ingest/evaluation/rebuild outputs, unit-test result, and the matching telemetry events. Add a short record containing:
+
+- Question, synthetic caller claims, permitted corpus, and retrieval decision.
+- Where authorization runs before ranking and how untrusted text is handled.
+- Supporting source/citation and your manual claim check.
+- Tenant, role, classification, injection, freshness, and deletion-case results.
+- Observed evaluation metrics, local timing, and rebuild digest comparison.
+- The skipped features from the table above and your final completion or stop decision.
+
+Do not report model tokens/cost, production latency, semantic retrieval quality, or retry/clarification behavior as measured. Stop and investigate if an unauthorized source is retrieved or any evaluation fails. Preserve your evidence for debrief; generated files stay under the ignored `build` directory.
+
+If a command cannot find a file, return to the repository root and check the path. If the index is missing, rerun ingestion. If integrity verification fails, restore an untouched copy of the supplied fixture and rebuild; do not disable the check. Without Python, inspect the source/case files and complete the written record, marking all execution results “not run.”
 
 
 ## M04 — Repository guidance

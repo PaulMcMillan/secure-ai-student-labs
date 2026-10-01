@@ -26,7 +26,7 @@ The validation command runs **235 tests across 27 suites**, then rebuilds the RA
 | 1 | M00 | [Foundations and context budgeting](examples/module-00/README.md) | Written homework; supplemental evidence checker |
 | 1 | M01 | [Setup and sanitized evidence](examples/module-01/setup-check/README.md) | Setup checker and configuration fixtures |
 | 1 | M02 | [Bounded coding change](examples/module-02/order-service/README.md) | Order-service starter and baseline tests |
-| 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; full hybrid/LLM extension remains additional work |
+| 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; skip missing hybrid/LLM steps as directed in the guide |
 | 1 | M04 | [Writing project guidance](examples/module-04/README.md) | Standalone order-calculator starter for the revised slides |
 | 1 | M05 | [Steering and bounded plans](examples/module-05/steering-plan/README.md) | Plan checker and prompt templates |
 | 1 | M06 | [Cost per accepted task](examples/module-06/cost-decision/README.md) | Role decisions and synthetic cost trace |
@@ -63,7 +63,7 @@ These existing fixtures support additional practice. Follow the core workbook ac
 - **M02:** the coding lab is `examples/module-02/order-service`; optional lint repair is `examples/module-02/lint-repair`.
 - **M03:** start at `examples/module-03/README.md`. The shared RAG code stays in `examples/rag-reference` because M08 and M10–M12.5 also use its paths and integrity-bound evidence.
 - Older workbooks may print the historical M01/M02 folder names or `course/.../lab-guide.md` authoring paths. Use the corrected paths and separate command lines in [WORKBOOK_GUIDE.md](WORKBOOK_GUIDE.md).
-- The workbook's exact-token/context-budget homework is a written/tool-based activity. The repository contains no tokenizer script. The M03 fixture uses lexical retrieval and deterministic answer composition; full vector/hybrid search, reranking, an LLM, and retry/clarification orchestration remain additional work.
+- The workbook's exact-token/context-budget homework is a written/tool-based activity. The repository contains no tokenizer script. For M03, complete the offline exercise and **skip** the missing full-workbook features listed in the guide, including hybrid search, reranking, LLM calls, and automatic retry/clarification. Record them as skipped; no extra model setup is required.
 
 Work in your own copy or branch. Starter tests deliberately cover baseline behavior; add the acceptance tests the workbook asks for. Compare reference solutions after attempting the change. Unsafe/incomplete records usually exit `1` by design; successful rejection is part of the exercise.
 

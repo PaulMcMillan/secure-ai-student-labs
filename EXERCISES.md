@@ -1,6 +1,6 @@
 # Student exercises
 
-Use the exercise named by your current slides. This index distinguishes the revised M04 activity from the older workbook lab. Other modules retain their existing activities in this update.
+Use the exercise named by your current slides. This index distinguishes the revised M04 activity from the older workbook lab. M02 and M03 have workbook-aligned directions below.
 
 ## M04 — Current slide exercise
 
@@ -16,13 +16,13 @@ Open the new `m04-work` folder in your coding agent. Follow the [complete M04 di
 
 ## Existing module exercises
 
-The links below retain the published workbook activities. They have not been rewritten against other modules' revised slides in this update.
+The links below map to the workbook activities. M02 includes the complete task/validation sequence. For M03, follow the adapted offline steps and skip the missing features explicitly listed in the guide. Other modules retain their existing directions.
 
 | Module | Starting point | Student task or directions |
 | --- | --- | --- |
 | M00 | [Foundations](examples/module-00/README.md) | Workbook homework and current slides |
 | M01 | [Setup check](examples/module-01/setup-check/README.md) | [Setup activity](WORKBOOK_GUIDE.md#m01--setup-evidence) |
-| M02 | [Order service](examples/module-02/order-service/README.md) | [Work item](examples/module-02/order-service/WORK_ITEM.md) |
+| M02 | [Order service](examples/module-02/order-service/README.md) | [Complete M02 directions](WORKBOOK_GUIDE.md#m02--bounded-coding-change) |
 | M03 | [RAG exercise](examples/module-03/README.md) | [Offline RAG directions](WORKBOOK_GUIDE.md#m03--authorized-rag-trace) |
 | M04, earlier workbook | [Instruction chain](examples/module-04/instruction-chain/README.md) | Tracing activity in the earlier workbook |
 | M05 | [Steering](examples/module-05/steering-plan/README.md) | [Task](examples/module-05/steering-plan/task.json) and [prompt worksheets](examples/module-05/prompt-loop/README.md) |
