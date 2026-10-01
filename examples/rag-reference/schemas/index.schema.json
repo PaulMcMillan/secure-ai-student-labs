@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/aitrainer/rag/index.schema.json",
+  "title": "Offline RAG index",
+  "type": "object",
+  "required": ["schema_version", "corpus_id", "corpus_version", "index_version", "integrity_sha256", "documents", "chunks", "statistics"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "corpus_id": {"type": "string"},
+    "corpus_version": {"type": "string"},
+    "index_version": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
+    "integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "built_at": {"type": "string"},
+    "documents": {"type": "array"},
+    "chunks": {"type": "array"},
+    "statistics": {"type": "object"}
+  },
+  "additionalProperties": false
+}

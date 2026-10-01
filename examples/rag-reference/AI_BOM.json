@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "component": "AITrainer secure offline RAG reference",
+  "version": "2026-09-10.1",
+  "owner": "AITrainer course maintainer",
+  "review_date": "2026-09-10",
+  "runtime": {"name": "Python", "minimum_version": "3.10", "external_dependencies": []},
+  "models": [],
+  "hosted_services": [],
+  "data": {
+    "manifest": "corpus/manifest.json",
+    "classification": "synthetic training data",
+    "retention": "generated index and telemetry are disposable",
+    "deletion": "remove build/index.json, build/telemetry.jsonl, and build/eval-report.json"
+  },
+  "security_controls": [
+    "manifest allowlist and path containment",
+    "optional SHA-256 source-content verification plus mandatory full index integrity verification",
+    "scanner-detected ingestion-time poison quarantine with named reasons",
+    "tenant, role, explicit classification-clearance, deletion, effective-date, and expiry filtering before ranking",
+    "bounded query and ranking work",
+    "extractive cited answer or abstention",
+    "content-free telemetry with operator-only filter counts and no deterministic identity/query hashes",
+    "quality and adversarial eval gates"
+  ],
+  "update_sensitive_components": [
+    "OPENAI_FILE_SEARCH_ADAPTER.md API examples and model/tool availability",
+    "MCP bridge protocol version and result schema"
+  ]
+}

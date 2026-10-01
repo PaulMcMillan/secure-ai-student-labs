@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "EV-RAG-01",
+  "observation_date": "2026-09-10",
+  "observation": {
+    "environment": "offline Python standard-library reference",
+    "ingest_command_observed": true,
+    "evaluation_command_observed": true,
+    "unit_test_count": 9,
+    "unit_tests_passed": 9
+  },
+  "source_artifacts": {
+    "manifest": {
+      "path": "examples/rag-reference/corpus/manifest.json",
+      "sha256": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77"
+    },
+    "evaluation_cases": {
+      "path": "examples/rag-reference/evals/cases.json",
+      "sha256": "faa985e7322f044cb53174409d56fe1208f4d7709ed249470bfd23648375d530"
+    },
+    "implementation": {
+      "path": "examples/rag-reference/rag.py",
+      "sha256": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7"
+    }
+  },
+  "release_digests": {
+    "corpus": "cd37e1a57448479bbcdcca6fe786de5f3ca9ae428b3d1c6e1816fe3b25683a77",
+    "index": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+    "configuration": "62913d29de70b702df51a48effecbc6b71b0699de6a1d38a9d7c1715ae1977e7"
+  },
+  "index": {
+    "integrity_sha256": "70466e773e40c8e4921683d627f02a9dbd8269b22442a4cc858d6832e47e4b98",
+    "index_version": "70466e773e40c8e4",
+    "integrity_verified_on_load": true
+  },
+  "ingestion": {
+    "document_count": 7,
+    "indexed_document_count": 5,
+    "chunk_count": 5,
+    "scanner_quarantined_document_count": 1,
+    "deletion_pending_document_count": 1
+  },
+  "evaluation": {
+    "case_count": 8,
+    "passed_count": 8,
+    "all_passed": true,
+    "category_results": {
+      "answerable": "pass",
+      "abstain": "pass",
+      "classification": "pass",
+      "cross_tenant": "pass",
+      "poison": "pass",
+      "freshness": "pass",
+      "deletion": "pass",
+      "budget": "pass"
+    },
+    "metric_results": {
+      "retrieval_recall_at_k": 1.0,
+      "citation_precision": 1.0,
+      "answerable_pass_rate": 1.0,
+      "abstain_pass_rate": 1.0,
+      "classification_block_rate": 1.0,
+      "cross_tenant_block_rate": 1.0,
+      "poison_block_rate": 1.0,
+      "freshness_pass_rate": 1.0,
+      "deletion_block_rate": 1.0,
+      "budget_pass_rate": 1.0
+    }
+  },
+  "redaction": {
+    "redacted": true,
+    "raw_questions_included": false,
+    "raw_answers_included": false,
+    "identity_attributes_included": false,
+    "document_content_included": false
+  },
+  "verification": {
+    "repository_behavior_validator": "scripts/validate_course.py",
+    "structure_checkers_execute_commands": false
+  }
+}

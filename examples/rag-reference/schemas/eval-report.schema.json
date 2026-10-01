@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/aitrainer/rag/eval-report.schema.json",
+  "title": "RAG evaluation report",
+  "type": "object",
+  "required": ["schema_version", "corpus_version", "index_version", "integrity_sha256", "total", "passed", "all_passed", "metrics", "cases"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "corpus_version": {"type": "string"},
+    "index_version": {"type": "string"},
+    "integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "total": {"type": "integer", "minimum": 1},
+    "passed": {"type": "integer", "minimum": 0},
+    "all_passed": {"type": "boolean"},
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "cases": {"type": "array"}
+  },
+  "additionalProperties": false
+}

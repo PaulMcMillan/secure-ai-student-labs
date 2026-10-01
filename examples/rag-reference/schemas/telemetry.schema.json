@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/aitrainer/rag/telemetry.schema.json",
+  "title": "Redacted RAG telemetry event",
+  "type": "object",
+  "required": ["schema_version", "timestamp", "trace_id", "integrity_sha256", "status", "policy_decision", "policy_filter_counts", "content_logged"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "timestamp": {"type": "string"},
+    "trace_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "role_count": {"type": "integer", "minimum": 1},
+    "clearance_count": {"type": "integer", "minimum": 1},
+    "corpus_version": {"type": "string"},
+    "index_version": {"type": "string"},
+    "integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {"enum": ["answered", "abstained", "blocked"]},
+    "reason": {"type": "string"},
+    "policy_decision": {"type": "string"},
+    "policy_filter_counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "retrieved_source_ids": {"type": "array", "items": {"type": "string"}},
+    "retrieved_count": {"type": "integer", "minimum": 0},
+    "citation_count": {"type": "integer", "minimum": 0},
+    "budget": {"type": "object"},
+    "elapsed_ms": {"type": "number", "minimum": 0},
+    "content_logged": {"const": false}
+  },
+  "additionalProperties": false
+}
