@@ -195,7 +195,7 @@ If a command cannot find a file, return to the repository root and check the pat
 
 ## M04 — Repository guidance
 
-This is the 15-minute activity in the revised M04 slides. You will write shared and local project instructions, check a small agent-assisted change, and improve a rule that is too broad. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
+This is the 15-minute activity in the revised M04 slides. Have Python and your coding agent ready and download this lab collection before starting the timer. You will write shared and local project instructions, check a small agent-assisted change, and improve a rule that is too broad. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
 
 Read these directions yourself. Give the agent only your project guides and the task prompts below. Keep this workbook guide outside the agent's working project.
 
@@ -256,14 +256,14 @@ Give it this task:
 
 > Reject order items whose quantity is zero or negative. Raise `ValueError` with the message `quantity must be at least 1`. Add tests for both cases and check the result.
 
-Read the changed lines, using your editor's diff view or `git diff`, and review the test results:
+Run `git status --short` to see changed and new files. Read the changed lines in your editor's diff view or with `git diff`. Open the new `src/order_total/AGENTS.md` directly too: plain `git diff` does not display untracked files. Then review the test results:
 
 - Did the function keep its name and parameters?
 - Are `Decimal` and the final rounding intact?
 - Do the new and existing tests pass?
 - Did the agent report what it changed and checked?
 
-If you find a problem, look for missing or unclear guidance and ask for the needed correction. If the agent is still working at the end of the block, continue with the final step and return to the code review afterward.
+If you find a problem, look for missing or unclear guidance and ask for the needed correction. If the agent is still working at the end of the block, stop the run and confirm it has stopped before continuing. Use a written plan for the final step if needed, and return to the code review afterward.
 
 ### 11–15 minutes: plan an approved change and revise a rule
 
