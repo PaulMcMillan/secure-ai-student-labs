@@ -1,0 +1,197 @@
+{
+  "views": {
+    "preview": {
+      "balances": [
+        {
+          "merchant": "north",
+          "order": "A",
+          "currency": "USD",
+          "captured": 18000,
+          "refunded": 5000,
+          "net": 13000,
+          "blocked": true
+        },
+        {
+          "merchant": "north",
+          "order": "B",
+          "currency": "USD",
+          "captured": 6000,
+          "refunded": 0,
+          "net": 6000,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "A",
+          "currency": "USD",
+          "captured": 11200,
+          "refunded": 1600,
+          "net": 9600,
+          "blocked": false
+        },
+        {
+          "merchant": "south",
+          "order": "B",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "C",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J1",
+          "currency": "JPY",
+          "captured": 1500,
+          "refunded": 300,
+          "net": 1200,
+          "blocked": false
+        },
+        {
+          "merchant": "east",
+          "order": "J2",
+          "currency": "JPY",
+          "captured": 500,
+          "refunded": 0,
+          "net": 500,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "west",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 1275,
+          "refunded": 200,
+          "net": 1075,
+          "blocked": false
+        }
+      ],
+      "conflicts": [
+        "north/capture/C4",
+        "south/capture/C7"
+      ],
+      "deferred_refunds": [
+        "east/refund/R3",
+        "east/refund/R4",
+        "north/refund/R3",
+        "north/refund/R4",
+        "north/refund/R6",
+        "north/refund/R7"
+      ]
+    },
+    "close": {
+      "balances": [
+        {
+          "merchant": "north",
+          "order": "A",
+          "currency": "USD",
+          "captured": 1400,
+          "refunded": 400,
+          "net": 1000,
+          "blocked": true
+        },
+        {
+          "merchant": "north",
+          "order": "B",
+          "currency": "USD",
+          "captured": 18500,
+          "refunded": 2800,
+          "net": 15700,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "A",
+          "currency": "USD",
+          "captured": 1000,
+          "refunded": 1000,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "B",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "C",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J1",
+          "currency": "JPY",
+          "captured": 900,
+          "refunded": 900,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J2",
+          "currency": "JPY",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 500,
+          "refunded": 100,
+          "net": 400,
+          "blocked": false
+        },
+        {
+          "merchant": "west",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 1275,
+          "refunded": 200,
+          "net": 1075,
+          "blocked": true
+        }
+      ],
+      "conflicts": [
+        "south/capture/C7",
+        "west/refund/R2"
+      ],
+      "deferred_refunds": [
+        "east/refund/R2",
+        "east/refund/R3",
+        "north/refund/R2",
+        "north/refund/R5",
+        "south/refund/R2"
+      ]
+    }
+  }
+}

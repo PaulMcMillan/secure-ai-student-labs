@@ -12,3 +12,4 @@ examples/rag-reference/build/*
 
 # Learner notes and copies of exercise records
 /student-work/
+/student-results/

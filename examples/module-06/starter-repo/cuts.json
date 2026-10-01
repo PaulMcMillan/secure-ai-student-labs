@@ -1,0 +1,59 @@
+{
+  "views": {
+    "preview": {
+      "p": 55,
+      "q": 95
+    },
+    "close": {
+      "p": 75,
+      "q": 115
+    }
+  },
+  "groups": [
+    {
+      "merchant": "north",
+      "order": "A",
+      "currency": "USD"
+    },
+    {
+      "merchant": "north",
+      "order": "B",
+      "currency": "USD"
+    },
+    {
+      "merchant": "south",
+      "order": "A",
+      "currency": "USD"
+    },
+    {
+      "merchant": "south",
+      "order": "B",
+      "currency": "USD"
+    },
+    {
+      "merchant": "south",
+      "order": "C",
+      "currency": "USD"
+    },
+    {
+      "merchant": "east",
+      "order": "J1",
+      "currency": "JPY"
+    },
+    {
+      "merchant": "east",
+      "order": "J2",
+      "currency": "JPY"
+    },
+    {
+      "merchant": "east",
+      "order": "E1",
+      "currency": "EUR"
+    },
+    {
+      "merchant": "west",
+      "order": "E1",
+      "currency": "EUR"
+    }
+  ]
+}

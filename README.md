@@ -17,7 +17,7 @@ If you already cloned this repository, run `git pull` after saving your exercise
 
 Use **Python 3.11 or newer**. The bundled fixtures need only the standard library. Substitute `python3` or `py -3` if that is your Python command. Run commands from the repository root unless a lab explicitly names another working directory.
 
-The validation command runs **235 tests across 27 suites**, then rebuilds the RAG index in a temporary directory, runs a cited query, and checks **8 evaluation cases** against the supplied observation. Setup diagnostics may invoke installed Git/Codex status commands; no model API is required. The optional tokenizer homework and live coding-assistant activities have separate tool requirements described in the workbook.
+The validation command runs **243 tests across 28 suites**, then rebuilds the RAG index in a temporary directory, runs a cited query, and checks **8 evaluation cases** against the supplied observation. Setup diagnostics may invoke installed Git/Codex status commands; no model API is required. The optional tokenizer homework and live coding-assistant activities have separate tool requirements described in the workbook.
 
 ## Find your workbook module
 
@@ -29,7 +29,7 @@ The validation command runs **235 tests across 27 suites**, then rebuilds the RA
 | 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; skip missing hybrid/LLM steps as directed in the guide |
 | 1 | M04 | [Writing project guidance](examples/module-04/README.md) | Standalone order-calculator starter for the revised slides |
 | 1 | M05 | [Steering and bounded plans](examples/module-05/steering-plan/README.md) | Plan checker and prompt templates |
-| 1 | M06 | [Cost per accepted task](examples/module-06/cost-decision/README.md) | Role decisions and synthetic cost trace |
+| 1 | M06 | [Model choice and reasoning effort](examples/module-06/README.md) | Twenty-minute paired Codex investigation with replay evidence and a results checker |
 | 2 | M07 | [Implement, test, review, hand off](examples/module-07/change-workflow/README.md) | Inventory starter, reference solution, evidence checker |
 | 2 | M08 | [MCP integration dossier](examples/module-08/stateless-mcp/README.md) | STDIO client/server and dossier checker |
 | 2 | M09 | [Tool selection](examples/module-09/tool-selection/README.md) | Workflow scenarios and decision checker |

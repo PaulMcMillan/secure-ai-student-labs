@@ -1,0 +1,8 @@
+# Evidence hashes bind exact bytes. Keep course text identical across checkouts.
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf

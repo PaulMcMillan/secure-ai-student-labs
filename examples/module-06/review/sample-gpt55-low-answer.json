@@ -1,0 +1,206 @@
+{
+  "views": {
+    "preview": {
+      "balances": [
+        {
+          "merchant": "north",
+          "order": "A",
+          "currency": "USD",
+          "captured": 18000,
+          "refunded": 5000,
+          "net": 13000,
+          "blocked": true
+        },
+        {
+          "merchant": "north",
+          "order": "B",
+          "currency": "USD",
+          "captured": 6000,
+          "refunded": 0,
+          "net": 6000,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "A",
+          "currency": "USD",
+          "captured": 11200,
+          "refunded": 1600,
+          "net": 9600,
+          "blocked": false
+        },
+        {
+          "merchant": "south",
+          "order": "B",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "C",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J1",
+          "currency": "JPY",
+          "captured": 1500,
+          "refunded": 300,
+          "net": 1200,
+          "blocked": false
+        },
+        {
+          "merchant": "east",
+          "order": "J2",
+          "currency": "JPY",
+          "captured": 500,
+          "refunded": 0,
+          "net": 500,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "west",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 1275,
+          "refunded": 200,
+          "net": 1075,
+          "blocked": false
+        }
+      ],
+      "conflicts": [
+        "north/capture/C4",
+        "south/capture/C7"
+      ],
+      "deferred_refunds": [
+        "east/refund/R3",
+        "east/refund/R4",
+        "north/refund/R3",
+        "north/refund/R4",
+        "north/refund/R6",
+        "north/refund/R7"
+      ]
+    },
+    "close": {
+      "balances": [
+        {
+          "merchant": "north",
+          "order": "A",
+          "currency": "USD",
+          "captured": 1400,
+          "refunded": 400,
+          "net": 1000,
+          "blocked": true
+        },
+        {
+          "merchant": "north",
+          "order": "B",
+          "currency": "USD",
+          "captured": 18500,
+          "refunded": 2800,
+          "net": 15700,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "A",
+          "currency": "USD",
+          "captured": 1000,
+          "refunded": 1000,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "B",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "south",
+          "order": "C",
+          "currency": "USD",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J1",
+          "currency": "JPY",
+          "captured": 900,
+          "refunded": 900,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "J2",
+          "currency": "JPY",
+          "captured": 0,
+          "refunded": 0,
+          "net": 0,
+          "blocked": true
+        },
+        {
+          "merchant": "east",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 500,
+          "refunded": 100,
+          "net": 400,
+          "blocked": false
+        },
+        {
+          "merchant": "west",
+          "order": "E1",
+          "currency": "EUR",
+          "captured": 1275,
+          "refunded": 200,
+          "net": 1075,
+          "blocked": true
+        }
+      ],
+      "conflicts": [
+        "south/capture/C7",
+        "west/refund/R2"
+      ],
+      "deferred_refunds": [
+        "east/refund/R2",
+        "east/refund/R3",
+        "north/refund/R2",
+        "north/refund/R5",
+        "south/refund/R2"
+      ]
+    }
+  },
+  "diagnosis": "The current code applies journal events by received_at and offset <= max(cut), ignoring checkpoint lower bounds and per-partition cuts; it must filter checkpoint.offsets[p] < offset <= cut[p] before version choice. It keys records by (kind,id), merging merchants and captures/refunds with reused IDs; it must key by (merchant,kind,id). It filters statuses before version selection, so voided, pending, and canceled replacements cannot remove older amounts; it must select highest normalized version first, then apply status rules. It neither normalizes schema 1 by currency scale nor removes schema/transport from conflict comparison; JPY must use zero decimals and normalized bodies decide duplicates/conflicts. It cannot detect same-version conflicting bodies or block affected groups. It also treats refunds as independent amounts instead of validating capture merchant/order/currency/version, revisiting checkpoint refunds against final capture state, and deferring all otherwise eligible refunds when their sum exceeds the capture.",
+  "regression_checks": [
+    "Partition filter: with checkpoint p=40,q=80 and preview p=55,q=95, include p-55 and q-95 but exclude p-39, p-56, and q-96; north/A remains blocked by deferred R7 and still has refund R1 because q-96 is beyond preview.",
+    "Identity scope: north capture R1 and north refund R1 must coexist, and south C1 must not replace north C1; preview north/B includes the capture R1 amount while north/A includes refund R1.",
+    "Version before status: close north C1 version 3 voided contributes zero and q-96 canceled refund R1 contributes zero; no fallback to older captured/settled versions.",
+    "Conflict handling: preview north/capture/C4 and south/capture/C7 are conflicts and block their named groups while contributing no amount; close west/refund/R2 is a conflict, not a deferred refund.",
+    "Currency normalization: schema 1 JPY amount '900' is 900, not 90000; close east/J1 is captured 900, refunded 900.",
+    "Refund eligibility and over-refund: preview north refunds R3/R4 on C3 total 4500 against a 4000 capture, so both defer; close C3 is 3000 and eligible R3/R4 total 3800, so both still defer while R5 is separately deferred for requiring capture version 3."
+  ]
+}

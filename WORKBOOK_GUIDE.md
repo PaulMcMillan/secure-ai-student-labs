@@ -1,6 +1,6 @@
 # Workbook exercise guide
 
-Use these directions for the practical activities in the current slide sequence. Each activity names its starting files, steps, checks, deliverables, and fallback. Use your own notes for the evidence record; the Word workbook is optional for these practical directions. Lecture explanations, knowledge questions, and formal assessment remain in the course materials. M03 follows the approved offline adaptation and explicitly lists the missing steps to skip.
+Use these directions for the practical activities in the current slide sequence. Each activity names its starting files, steps, checks, deliverables, and fallback. Use your own notes for the evidence record; the Word workbook is optional for these practical directions. Lecture explanations, knowledge questions, and formal assessment remain in the course materials. M03 follows the approved offline adaptation and explicitly lists the missing steps to skip. The revised M04 and M06 directions replace those sections in older workbooks.
 
 ## Before starting
 
@@ -16,6 +16,10 @@ python -c "from pathlib import Path; Path('student-work').mkdir(exist_ok=True)"
 ```
 
 Use your editor/file manager to copy the named starter to the named destination before running a checker on your record. `student-work/` is ignored by Git. A checker returning `1` for an incomplete record is expected; preserve its issues and record a stop if you cannot resolve them in time. The supplied JSON contracts describe synthetic workflows: retain their field names and clearly distinguish scenario claims from actions you actually performed.
+
+For M04, M07, and M12, keep one terminal at the **lab collection root** and a second terminal in the prepared working project. Each activity names where to run its commands. Return to the lab terminal when a module ends.
+
+M06 and the prepared coding activities save results in `student-results/` at the lab collection root. Create it in your editor or run `python -c "from pathlib import Path; Path('student-results').mkdir(exist_ok=True)"`. Both `student-work/` and `student-results/` are Git-ignored. Follow the destination named by each activity and keep the supplied fixtures unchanged.
 
 ## M00 — Foundations and context budgeting
 
@@ -397,7 +401,7 @@ Expected: **9 tests pass**. Explain the winning test command, the modeled trust 
 
 ### 0–2 minutes: inspect the scenario
 
-Read [task.json](examples/module-05/steering-plan/task.json) and compare [structured.json](examples/module-05/steering-plan/plans/structured.json) with [unsafe.json](examples/module-05/steering-plan/plans/unsafe.json). Their paths describe a proposed pricing task; no missing production repository needs to be created.
+Use the terminal at the **lab collection root**. Read [task.json](examples/module-05/steering-plan/task.json) and compare [structured.json](examples/module-05/steering-plan/plans/structured.json) with [unsafe.json](examples/module-05/steering-plan/plans/unsafe.json). Their paths describe a proposed pricing task; no missing production repository needs to be created.
 
 ```sh
 python examples/module-05/steering-plan/steering_check.py examples/module-05/steering-plan/task.json examples/module-05/steering-plan/plans/structured.json
@@ -412,11 +416,13 @@ In your notes, make one row each for Explore, Plan, Implement, Test, and Review.
 
 ### 6–9 minutes: route the correction
 
-For a concrete classroom example, assume the approved threshold changes from 100 to 200 units before implementation. Record those as scenario assumptions. Draft the message you would send to steer the task: identify the changed requirement, retain file/permission boundaries, revise boundary-test cases, and require reapproval before implementation. Explain why a side conversation alone would not update the active plan, when separate work is appropriate, and what uncertainty would make you stop.
+The initial plan gives a 10% discount when the subtotal is at least $100. The maintainer corrects the requirement: the threshold is **at least $150**, with the rate still 10%. Draft the steer message, preserve the public API, dependencies, allowed paths, and budget, and require reapproval before implementation. Revise the boundary cases: $149.99 gets no discount; $150.00 and $150.01 get 10%. Name the earlier expectations that must change. Explain why a side conversation alone would not update the active plan, when separate work is appropriate, and what uncertainty would make you stop.
+
+Save your steer and contract as `student-results/m05-plan.md`. The pricing paths in `task.json` describe a scenario, so no implementation needs editing. The supplied checker validates phase records; check your written threshold correction against this brief yourself.
 
 ### 9–13 minutes: bound execution
 
-Use [plan-mode-template.md](examples/module-05/prompt-loop/plan-mode-template.md) and [bounded-loop-template.md](examples/module-05/prompt-loop/bounded-loop-template.md) to write a task contract with measurable completion, maximum attempts, tool calls, elapsed time, token/cost ceiling, and escalation. Choose explicit finite values as a proposal. At each checkpoint record hypothesis, smallest action, result/evidence, remaining budget, and continue/re-plan/stop decision. You are writing the contract, not starting an autonomous loop.
+Use [plan-mode-template.md](examples/module-05/prompt-loop/plan-mode-template.md) and [bounded-loop-template.md](examples/module-05/prompt-loop/bounded-loop-template.md) to write a task contract with measurable completion, maximum attempts, tool calls, elapsed time, token/cost ceiling, and escalation. Use at most two implementation attempts and a 15-minute execution budget. Propose explicit finite limits for tool calls and token/cost usage. At each checkpoint record hypothesis, smallest action, result/evidence, remaining budget, and continue/re-plan/stop decision. You are writing the contract, not starting an autonomous loop.
 
 ### 13–15 minutes: check and hand off
 
@@ -426,50 +432,62 @@ python -m unittest discover -s examples/module-05/steering-plan/tests -v
 
 Expected: 8 tests pass; older workbook text says seven. Keep the two checker reports, five phase contracts, routing rationale, steer message, and bounded execution contract. A peer should be able to identify what changed, what stayed authorized, and exactly when work must stop. If Python is unavailable, do the comparison in notes and mark the checker/tests “not run.”
 
-## M06 — Cost per accepted task
+## M06 — Model choice and reasoning effort
 
-Read [cost-decision](examples/module-06/cost-decision/README.md). Compare routine and high-risk workload decisions and inspect the supplied synthetic cost trace.
+**Time: 20 minutes in pairs; allow 30 minutes alone.** Follow [the M06 activity](examples/module-06/README.md), which replaces the earlier cost-decision lab.
+
+Create a Codex project named **M06 — Model choice**. Select [examples/module-06/starter-repo](examples/module-06/starter-repo) in your existing student checkout as its only folder and working root. Keep the evidence unchanged. Save answers in `student-results/m06/` at the checkout root, outside the exercise folder.
+
+- **9 minutes:** split the models with a partner. Run GPT-5.5 and GPT-6 Astra at each model's lowest and highest available effort. Use the same prompt in four fresh chats, with up to four minutes per run.
+- **8 minutes:** check both reconstructed views, the diagnosis, and the proposed regression tests. Run the checker from the student checkout root for each saved answer:
 
 ```sh
-python examples/module-06/cost-decision/decision.py examples/module-06/cost-decision/scenarios/routine.json
-python examples/module-06/cost-decision/decision.py examples/module-06/cost-decision/scenarios/high-risk.json
-python examples/module-06/cost-decision/cost_trace.py examples/module-06/cost-decision/traces/model-eval-2026-09-18.json
-python -m unittest discover -s examples/module-06/cost-decision/tests -v
+python examples/module-06/check_answer.py student-results/m06/A.json
 ```
 
-Expected: **12 tests pass**. Verify one candidate's cost-per-accepted-task calculation by hand, including failed runs, tools, and reviewer labor. Record baseline choice, escalation gates, assumptions, and the trace date. The supplied prices/model labels are a course snapshot.
+- **3 minutes:** compare effort settings within each model, then compare the models. Recommend a configuration using correctness, response time, and review work.
+
+The checker verifies 22 balance and exception results. Students must also check that the diagnosis and regression expectations agree with the evidence. Correct totals can appear alongside an incorrect proposed test. Use the review guide after assessing the answers yourself.
+
+**Follow-on — 8 minutes:** copy the GPT-5.5 low answer into the exercise folder as `earlier-answer.json`. In a fresh chat, have GPT-6 Astra at High effort review it using the [follow-on prompt](examples/module-06/README.md#follow-on-review). Give it the case evidence and earlier answer, then verify its corrections yourself. A saved live answer is available if needed. Keep the review and your verdict with your results, and move the answer out of the exercise folder afterward.
 
 ## M07 — Implement, test, review, hand off
 
 **Time: 17 minutes. Slide M07 S015.** Implement the inventory reservation work item and hand off evidence that another person can review.
 
-Use a disposable copy of the repository. Read the starter [AGENTS.md](examples/module-07/change-workflow/starter-repo/AGENTS.md), [WORK_ITEM.md](examples/module-07/change-workflow/starter-repo/WORK_ITEM.md), `src/inventory.py`, and `tests/test_inventory.py`.
+Complete setup before the activity. From the **lab collection root**, prepare a separate copy of the starter:
+
+```sh
+python scripts/prepare_coding_lab.py m07 ../m07-work
+```
+
+The helper refuses to overwrite a destination and creates a Git baseline and exercise branch when Git is available. Open the printed **m07-work** folder as the agent's project and use a second terminal there. Read its `AGENTS.md` and `WORK_ITEM.md`, plus `src/inventory.py` and `tests/test_inventory.py`.
 
 ### 0–4 minutes: contract and baseline
 
-Record your starting commit or identify the untouched ZIP copy. Permit changes only to the starter's `src/inventory.py` and `tests/test_inventory.py`. Plan two increments: a reproducing test, then the smallest implementation. Write four acceptance cases: positive subtraction, insufficient-stock rejection, zero rejection, and negative rejection. Preserve the function signature and existing exception behavior.
+Record `git rev-parse HEAD` inside m07-work if Git is available. Otherwise identify the untouched starter and record the limitation. Permit changes only to the starter's `src/inventory.py` and `tests/test_inventory.py`. Plan two increments: a reproducing test, then the smallest implementation. Write four acceptance cases: positive subtraction, insufficient-stock rejection, zero rejection, and negative rejection. Preserve the function signature and existing exception behavior.
 
-Give execution a 10-minute budget and a minute-10 checkpoint. Keep one writer. Choose a disposable local copy or an isolated worktree and explain your choice. Optional side conversations or reviewers do not receive write authority.
+Give execution a 10-minute budget and a minute-10 checkpoint. Keep one writer. Work in the prepared m07-work copy. Optional side conversations or reviewers do not receive write authority.
+
+Run **inside m07-work**:
 
 ```sh
-cd examples/module-07/change-workflow/starter-repo
 python -m unittest discover -s tests -v
-cd ../../../..
 ```
 
 Two baseline tests pass. Stop on an unexpected baseline failure.
 
 ### 4–10 minutes: implement
 
-Add separate tests for zero and negative requests, run them to show failure on the starter, then add the guard. Rerun the same test command from inside `starter-repo`. Four tests should now pass. Stop at the budget boundary and record incomplete work if needed. Compare the supplied solution only after your attempt.
+Add separate tests for zero and negative requests, run them to show failure on the starter, then add the guard. Rerun the same test command from inside **m07-work**. Four tests should now pass. Stop at the budget boundary and record incomplete work if needed. Compare the supplied solution only after your attempt.
 
 ### 10–15 minutes: review and remediate
 
-Review the changed lines and all four cases. Check the return value, `ValueError` behavior, unchanged interface, and absence of unrelated edits. Ask a peer or a read-only reviewer to inspect the diff. Correct evidenced problems and rerun the affected tests. A solo review must be labeled as such.
+Run `git diff` and `git status --short` inside m07-work and review the changed lines and all four cases. Without Git, compare with the untouched starter in your editor. Check the return value, `ValueError` behavior, unchanged interface, and absence of unrelated edits. Ask a peer or a read-only reviewer to inspect the diff. Correct evidenced problems and rerun the affected tests. A solo review must be labeled as such.
 
 ### 15–17 minutes: hand off
 
-Keep the contract, base/copy identity, diff, exact test commands and results, review findings and decisions, skipped checks, remaining risk/budget, and stop reason. The reference evidence checker illustrates a complete handoff:
+Keep the contract, base/copy identity, diff, exact test commands and results, review findings and decisions, skipped checks, remaining risk/budget, and stop reason. Switch back to the **lab collection root** terminal. After your attempt, compare the supplied solution and its tests. The reference evidence checker illustrates a complete handoff:
 
 ```sh
 python examples/module-07/change-workflow/workflow_check.py examples/module-07/change-workflow/task.json examples/module-07/change-workflow/evidence/complete.json
@@ -478,6 +496,14 @@ python -m unittest discover -s examples/module-07/change-workflow/tests -v
 ```
 
 Complete exits `0`, unsafe exits `1`, and 10 checker tests pass. These records do not attest to your implementation. Keep your own real output. Without execution access, write the plan/test cases and critique the reference diff, labeling implementation and tests “not run.”
+
+Use the complete record's field structure to write `student-results/m07.json` with your own results. Save the earlier failing-test output separately; the record's `commands` list describes final acceptance checks. The checker uses a dated model allowlist in `task.json`. If your actual model is absent, record it honestly and retain the rejection for instructor review; do not substitute an unused model to pass. Check your record from the lab root:
+
+```sh
+python examples/module-07/change-workflow/workflow_check.py examples/module-07/change-workflow/task.json student-results/m07.json > student-results/m07-check.json
+```
+
+Open the report, correct supported omissions, and rerun. An incomplete record exits `1`; a supported complete record exits `0`. Keep unresolved issues with your submission.
 
 ## M08 — MCP integration dossier
 
@@ -586,59 +612,90 @@ Complete exits `0`, unsafe/incomplete exits `1`, and 12 tests pass. Keep your gr
 
 ## M12 — Release-evidence capstone
 
-**Time: 26 minutes. Slides M12 S003 and S011–S014.** Add an explanation to the pricing function, preserve its existing totals, and defend the change with code and offline RAG evidence.
+**Time: 26 minutes. Slides M12 S003 and S011–S014.** Add a quote explanation, preserve the existing totals, and defend the change with code and offline RAG evidence. Complete project setup before the activity.
 
-Use a disposable copy/branch of the whole collection so the shared RAG paths remain available. Read [task.json](examples/module-12/release-evidence/task.json), `starter/pricing.py`, `starter/tests/test_pricing.py`, and [evidence/starter.json](examples/module-12/release-evidence/evidence/starter.json). Copy that evidence starter to `student-work/m12-capstone.json`; keep `student-work/m12-rag-report.json` for your observed RAG evaluation.
+### Prepare your working project
 
-### 0–4 minutes: contract
-
-Record goal, start commit or ZIP snapshot, assumptions, instructions consulted, tools/permissions, time/iteration budget, escalation, validation, review, and stop. The task's `pricing.py` and `tests/test_pricing.py` refer to the files under `starter/`. Its two evidence outputs map to your `student-work` records. Keep these mappings explicit in your notes and use the task's relative names in the synthetic contract.
-
-Acceptance:
-
-- Preserve `quote_total`'s standard and partner totals, including its 10% partner discount and two-decimal rounding.
-- Add `explain_quote(subtotal, segment="standard")`, returning `subtotal`, `discount_rate`, `total`, and `reason`. Use a clear reason such as `standard rate` or `partner discount`.
-- Reject negative/non-numeric subtotals (including booleans) and unknown segments with `ValueError`, preserving the starter's validation.
-- Test both explanation paths and invalid input, and retain the two baseline total tests.
+From the **lab collection root**, run:
 
 ```sh
-python -m unittest discover -s examples/module-12/release-evidence/starter/tests -v
+python scripts/prepare_coding_lab.py m12 ../m12-work
 ```
 
-Expected: two baseline tests pass. Stop on unexpected baseline failure.
+The helper copies the [starter](examples/module-12/release-evidence/starter), its `AGENTS.md` and `WORK_ITEM.md`, `task.json`, and a blank record at `evidence/capstone.json`. It creates a local Git baseline and `student/m12-exercise` branch, even when the lab collection came from a ZIP. It refuses to overwrite an existing destination. Open the printed **m12-work** path as the coding project and use a second terminal there.
+
+Git is required for this capstone's final baseline/branch evidence. If unavailable, pair with someone who has it, or complete the code and written work while marking that gate incomplete. Never invent a starting commit. Keep the lab collection terminal open for the shared RAG and checker commands.
+
+### 0–4 minutes: contract and baseline
+
+Read [the function contract](examples/module-12/release-evidence/starter/WORK_ITEM.md) and the copied `AGENTS.md` and `task.json` before editing. `explain_quote(subtotal, segment="standard")` returns `subtotal`, `discount_rate`, `total`, and `reason`; the work item defines their exact values, rounding, invalid-input behavior, examples, and required checks. Preserve `quote_total`.
+
+Record the goal, scope, assumptions, instructions consulted, tool permissions, time and iteration limits, escalation, validation, review, and stopping conditions. Keep the task’s paths relative to m12-work.
+
+Run **inside m12-work**:
+
+```sh
+git status --short --branch
+git rev-parse HEAD
+python -m unittest discover -s tests -v
+```
+
+Save the baseline commit and output: **2 tests pass**. Stop on an unexpected baseline failure.
 
 ### 4–12 minutes: implement and prove
 
-Add your focused tests, show the new behavior failing before implementation, then make the smallest change inside `starter/pricing.py` and `starter/tests/test_pricing.py`. Rerun the command above. The reference solution has five test methods; your tests must cover all acceptance behaviors even if organized differently. Inspect the solution only after attempting the work.
+Add the work item's acceptance tests, retain their failure before implementation, implement the function, and rerun the same test command. Keep evidence outside the project in `student-results` or your workbook notes until you reference it in the allowed evidence files.
+
+Still **inside m12-work**, review your final result:
+
+```sh
+python -m unittest discover -s tests -v
+git diff -- pricing.py tests/test_pricing.py
+git status --short
+```
+
+Check both explanation cases, rounding consistency, invalid inputs, and the unchanged valid totals. The number of your test methods may vary. Allowed edited paths are `pricing.py`, `tests/test_pricing.py`, `evidence/capstone.json`, and `evidence/rag-report.json`. Open new evidence files directly because plain `git diff` omits untracked files.
 
 ### 12–18 minutes: assemble RAG and code evidence
 
-Run the [M03 ingest and authorized-query commands](#m03--authorized-rag-trace), then:
+Switch to the **lab collection root** terminal. Run the [M03 ingest and authorized-query commands](#m03--authorized-rag-trace), then save the evaluation output:
 
 ```sh
-python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl --report student-work/m12-rag-report.json
+python examples/rag-reference/rag.py eval --index examples/rag-reference/build/index.json --cases examples/rag-reference/evals/cases.json --telemetry examples/rag-reference/build/telemetry.jsonl --report student-results/m12-rag-output.json
 ```
 
-Expect 7 source documents, 5 indexed documents/chunks, 8/8 evaluation cases, and ten metrics at 1.0. Link the supplied EV-RAG observation and full digests plus your actual saved output. The checker independently verifies file bindings. Do not modify the shared RAG source/corpus to pass a gate. Mark hosted latency, provider cost, scale, and live deployment/recovery **skipped — not supplied by this lab**.
+Expect 7 source documents, 5 indexed documents/chunks, 8/8 evaluation cases, and ten metrics at 1.0. Keep the actual outputs and full digests. Keep the shared RAG source and corpus unchanged. Record hosted latency, provider cost, scale, and live deployment/recovery as unmeasured in this lab. In **m12-work**, create `evidence/rag-report.json` with the observed status, counts, index version, integrity digest, evaluation results, and references to those saved outputs. State that these paths are relative to the separate lab collection. Submit the referenced outputs with the report.
 
-Complete the eleven `required_domains` in `task.json`: instructions, context, decision, cost, tools, workflow, security, RAG, validation, review, and release. Give evidence entries unique identifiers and real file/output references for work you performed. Label inherited reference/scenario data distinctly. If an actual review or observation is missing, record it as unresolved instead of inventing a pass.
+Fill in **m12-work/evidence/capstone.json**, using the supplied complete record to understand the field structure. Record your actual baseline SHA, branch, changed paths, and test/review evidence. For `baseline`, `focused`, and `regression`, reference your saved test runs. For `rag`, reference the M03 outputs. For `security`, document your input-validation tests and review of dependencies, data, and tool boundaries; for `diff`, reference your reviewed diff. Give each of the eleven domains a unique `EV-` identifier and map it to your actual evidence in your workbook notes.
 
 ### 18–22 minutes: independent review
 
-Exchange a named diff and RAG report with a peer. The reviewer checks behavior, tests, scope, authorization/citations, monitoring/cost assumptions, and provenance without editing your files. Record findings, your decisions, and any rerun checks. If no independent reviewer is available, record the review gap and choose a safe-stop handoff.
+Exchange the final diff and RAG report with a peer. Check behavior, tests, scope, authorization and citations, monitoring/cost assumptions, and provenance without editing each other's files. Record findings, decisions, and rerun checks. If independent review or another required gate is unavailable, record it as incomplete and keep the checker failure.
 
 ### 22–26 minutes: release decision and defense
 
-Explain who owns the result, which gates passed, what remains uncertain, how to undo your code change, and how to rebuild a trusted RAG index. This is a classroom release decision; **do not deploy**. Give a two-minute defense to a peer, then listen to theirs: task/boundary, main decision, strongest code/RAG evidence, residual risk, and recovery.
+Make a classroom release/recovery decision. Identify the baseline as the recovery point, explain how to rebuild a trusted RAG index, and record remaining risks. Give a two-minute defense to a peer, then listen to theirs: task and scope, main decision, strongest code/RAG evidence, residual risk, and recovery. No deployment or push is required.
+
+From the **lab collection root**, validate your working record:
 
 ```sh
+python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json ../m12-work/evidence/capstone.json > student-results/m12-check.json
+```
+
+If you chose another working-folder name, substitute it in this command. The blank record exits `1`. Open the report, address its `issues` with real evidence, and rerun. A complete record exits `0` with `valid: true`; the checker does not run your tests or verify the truth of your recorded review. Keep its report alongside your code, evidence index, RAG outputs, independent review/adjudication, release/recovery decision, and paired defense.
+
+### Compare references after your attempt
+
+Use the **lab collection root** terminal for these reference checks:
+
+```sh
+python -m unittest discover -s examples/module-12/release-evidence/solution/tests -v
 python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json examples/module-12/release-evidence/evidence/complete.json
 python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json examples/module-12/release-evidence/evidence/unsafe.json
-python examples/module-12/release-evidence/evidence_check.py examples/module-12/release-evidence/task.json student-work/m12-capstone.json
 python -m unittest discover -s examples/module-12/release-evidence/tests -v
 ```
 
-Complete exits `0`, unsafe/incomplete exits `1`, and 13 checker tests pass. Use issues to find missing evidence; an honestly incomplete record and explicit stop are preferable to fabricated validation. Keep the contract, diff, code/RAG results, evidence record, review, and decision. If tools are unavailable, produce a written critique of the reference and mark execution “not run.”
+Expected: **5 reference-solution tests**, complete exit `0`, unsafe exit `1`, and **13 checker tests**. These reference checks are separate from the tests you ran in `m12-work`.
 
 ## M12.5 — Optional practice check
 

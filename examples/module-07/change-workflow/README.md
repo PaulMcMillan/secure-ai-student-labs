@@ -11,6 +11,8 @@ Use the fixture after an approved Plan is converted into a bounded task/model an
 
 ## Demonstration
 
+For the student activity, follow the [M07 workbook directions](../../../WORKBOOK_GUIDE.md#m07--implement-test-review-hand-off). From the lab collection root, run `python scripts/prepare_coding_lab.py m07 ../m07-work`, then open the printed folder as your working project. Run `python -m unittest discover -s tests -v` inside that copy before and after editing. Keep the lab-root terminal for checking reference records and your own `student-results/m07.json` handoff.
+
 Run this block from `examples/module-07/change-workflow`.
 
 ```powershell
