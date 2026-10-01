@@ -91,6 +91,102 @@ The implementation uses lexical retrieval and a deterministic answer composer. I
 
 ## M04 — Repository guidance
 
+This is the 15-minute activity in the revised M04 slides. You will write shared and local project instructions, check a small agent-assisted change, and improve a rule that is too broad. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
+
+Read these directions yourself. Give the agent only your project guides and the task prompts below. Keep this workbook guide outside the agent's working project.
+
+### 0–2 minutes: prepare the project
+
+From the **secure-ai-student-labs root**, run:
+
+```sh
+python scripts/prepare_m04.py ../m04-work
+```
+
+Open the new **m04-work** folder as your project in the coding agent. The preparation script copies only seven starter files and, when Git is available, creates a local baseline commit for reviewing changes. It refuses to overwrite an existing destination. To try again, choose a new folder name.
+
+From **m04-work**, run:
+
+```sh
+python -m unittest discover -s tests -v
+python demo.py
+```
+
+Expected baseline: **4 passing tests** and `Order total: 13.50`. Use `python3` or `py -3` if that is your Python command. No packages, API keys, or AITrainer files are required by the sample. Use your existing coding agent for the live activity.
+
+The repository root for the rest of this exercise is **m04-work**, not the lab collection.
+
+```text
+m04-work/
+├── AGENTS.md                   starter project instructions
+├── demo.py                     an example caller
+├── src/order_total/pricing.py  the calculator
+└── tests/test_pricing.py       automated checks
+```
+
+### The maintainer's brief
+
+The maintainer looks after this project. These are the requirements they want future work to respect:
+
+- Use Python's standard library; the project needs no extra packages.
+- Keep money calculations in `Decimal`, Python's decimal number type. Converting to floating-point values can change rounding results.
+- Round the final total to two decimal places with `ROUND_HALF_UP`, as the starter does.
+- Ordinary fixes preserve the public function's name and parameters because other code uses them to call it.
+- A maintainer can approve an interface change. That change must account for the callers and tests that use the interface.
+- Finish by reviewing the changed lines and reporting the test results.
+
+### 2–6 minutes: write two guides
+
+Write the drafts yourself, using the brief above.
+
+1. Open the root `AGENTS.md`. Add the small folder map, the test command and its working directory, use of the standard library, and the expectations for review and test reporting. Keep the starter public-function rule for now.
+2. Create `src/order_total/AGENTS.md`. Put the money-calculation and rounding requirements there. This local guide applies to the calculator; it does not need to repeat the root guide's workflow.
+
+A few clear sentences in each file are enough. Include the reason for a requirement when it will help someone make a decision. Headings such as `## Validation` are optional ways to organize the text.
+
+### 6–11 minutes: make and review a small change
+
+Start a fresh agent conversation in **m04-work**. Ask the agent to read both `AGENTS.md` and `src/order_total/AGENTS.md`, name the files, and summarize the relevant guidance.
+
+Give it this task:
+
+> Reject order items whose quantity is zero or negative. Raise `ValueError` with the message `quantity must be at least 1`. Add tests for both cases and check the result.
+
+Read the changed lines, using your editor's diff view or `git diff`, and review the test results:
+
+- Did the function keep its name and parameters?
+- Are `Decimal` and the final rounding intact?
+- Do the new and existing tests pass?
+- Did the agent report what it changed and checked?
+
+If you find a problem, look for missing or unclear guidance and ask for the needed correction. If the agent is still working at the end of the block, continue with the final step and return to the code review afterward.
+
+### 11–15 minutes: plan an approved change and revise a rule
+
+Give the agent this request:
+
+> The maintainer has approved renaming `calculate_order_total` to `order_total`. Give me a short plan and explain how the project instructions affect it. Leave the files unchanged.
+
+Read the starter rule about public functions. Does it explain both ordinary fixes and approved changes? Revise it to express the maintainer's intent more clearly.
+
+Ask the agent to reread your updated root guide and reconsider its plan. Check that it accounts for `demo.py` and the tests that call the function, while preserving the arithmetic and rounding requirements.
+
+Keep the original rule, your revision, and a short reason for the change. The first plan may already have been sensible; the purpose is to improve a misleading rule, not to force an agent failure.
+
+### What to keep
+
+- Your root and local `AGENTS.md` files.
+- The quantity-validation change and test results.
+- The original public-function rule, your revision, and why you changed it.
+
+No push or pull request is required. Keep the work in your own copy.
+
+### If setup or agent access is unavailable
+
+Read the starter files on GitHub. Draft the two guides and a short plan for each task in your notes, then revise the public-function rule. You can pair with a learner whose copy is running. The slide's timings are a guide, so move on to the revision step even if the implementation needs more time.
+
+### Earlier workbook: instruction tracing
+
 Start with [instruction-chain](examples/module-04/instruction-chain/README.md). The nested `AGENTS.md` files are synthetic inputs for this exercise; inspect the selected files and their order.
 
 ```sh

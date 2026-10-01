@@ -2,7 +2,7 @@
 
 Exercise source, tests, and synthetic data for the Day 1 and Day 2 student workbooks.
 
-**[Download ZIP](https://github.com/PaulMcMillan/secure-ai-student-labs/archive/refs/heads/main.zip)** · **[Workbook exercise guide](WORKBOOK_GUIDE.md)**
+**[Exercise index](EXERCISES.md)** · **[Download ZIP](https://github.com/PaulMcMillan/secure-ai-student-labs/archive/refs/heads/main.zip)** · **[Workbook exercise guide](WORKBOOK_GUIDE.md)**
 
 ## Get started
 
@@ -17,7 +17,7 @@ If you already cloned this repository, run `git pull` after saving your exercise
 
 Use **Python 3.11 or newer**. The bundled fixtures need only the standard library. Substitute `python3` or `py -3` if that is your Python command. Run commands from the repository root unless a lab explicitly names another working directory.
 
-The validation command runs **231 tests across 26 suites**, then rebuilds the RAG index in a temporary directory, runs a cited query, and checks **8 evaluation cases** against the supplied observation. Setup diagnostics may invoke installed Git/Codex status commands; no model API is required. The optional tokenizer homework and live coding-assistant activities have separate tool requirements described in the workbook.
+The validation command runs **235 tests across 27 suites**, then rebuilds the RAG index in a temporary directory, runs a cited query, and checks **8 evaluation cases** against the supplied observation. Setup diagnostics may invoke installed Git/Codex status commands; no model API is required. The optional tokenizer homework and live coding-assistant activities have separate tool requirements described in the workbook.
 
 ## Find your workbook module
 
@@ -27,7 +27,7 @@ The validation command runs **231 tests across 26 suites**, then rebuilds the RA
 | 1 | M01 | [Setup and sanitized evidence](examples/module-01/setup-check/README.md) | Setup checker and configuration fixtures |
 | 1 | M02 | [Bounded coding change](examples/module-02/order-service/README.md) | Order-service starter and baseline tests |
 | 1 | M03 | [Authorized RAG trace](examples/module-03/README.md) | Offline RAG; full hybrid/LLM extension remains additional work |
-| 1 | M04 | [Repository guidance](examples/module-04/instruction-chain/README.md) | Instruction tracing and guidance lint |
+| 1 | M04 | [Writing project guidance](examples/module-04/README.md) | Standalone order-calculator starter for the revised slides |
 | 1 | M05 | [Steering and bounded plans](examples/module-05/steering-plan/README.md) | Plan checker and prompt templates |
 | 1 | M06 | [Cost per accepted task](examples/module-06/cost-decision/README.md) | Role decisions and synthetic cost trace |
 | 2 | M07 | [Implement, test, review, hand off](examples/module-07/change-workflow/README.md) | Inventory starter, reference solution, evidence checker |
@@ -38,7 +38,7 @@ The validation command runs **231 tests across 26 suites**, then rebuilds the RA
 | 2 | M12 | [Release-evidence capstone](examples/module-12/release-evidence/README.md) | Pricing starter/solution and RAG release evidence |
 | 2 | M12.5 | [Optional practice check](examples/module-12-5/practice-check/README.md) | Twelve-practice evidence packet and checker |
 
-See the [workbook guide](WORKBOOK_GUIDE.md) for starting files, runnable commands, expected outcomes, and what to record for each exercise.
+Start with the [exercise index](EXERCISES.md). For M04, run `python scripts/prepare_m04.py ../m04-work` from this repository root, then open the new `m04-work` folder in your coding agent. The [M04 workbook directions](WORKBOOK_GUIDE.md#m04--repository-guidance) and the work slide describe the same activity. Keep the workbook guide outside the agent's working project. The [workbook guide](WORKBOOK_GUIDE.md) retains commands and records for the other existing exercises.
 
 ## Supplemental exercises
 
@@ -50,6 +50,7 @@ These existing fixtures support additional practice. Follow the core workbook ac
 | M01 | [Workload identity](examples/module-01/workload-identity/README.md) | Evaluate identity, isolation, and authorization contracts |
 | M02 | [Lint repair](examples/module-02/lint-repair/README.md) | Repair one lint issue while preserving behavior |
 | M03 | [Context packet](examples/module-03/context-packet/README.md) | Build a bounded handoff using relevant repository context |
+| M04, earlier workbook | [Instruction-chain tracing](examples/module-04/instruction-chain/README.md) | Earlier workbook fixture, separate from the revised slide activity |
 | M05 | [Prompt and bounded-loop templates](examples/module-05/prompt-loop/README.md) | Write a plan, steer, and stopping contract |
 | M08 | [MCP security](examples/module-08/mcp-security/README.md) | Evaluate policy records and incident events |
 | M03 / M08 | [RAG MCP bridge](examples/module-08/rag-mcp-bridge/README.md) | Expose the shared offline RAG through a read-only tool |
