@@ -23,6 +23,8 @@ Expected baseline: **4 passing tests** and `Order total: 13.50`.
 
 You can also copy the contents of `agents-md-workshop` into a new folder yourself. Use `python3` or `py -3` if that is how you run Python.
 
+Complete preparation before the 15-minute activity begins.
+
 ## During class
 
 Follow the [M04 workbook directions](../../WORKBOOK_GUIDE.md#m04--repository-guidance) or the single work slide, **M04 S014 — Practice: write, try, and revise**. Keep the workbook guide outside your `m04-work` project and give the agent only your guides and the stated task prompts. The starter contains no completed local guide, exercise walkthrough, or worked solution.

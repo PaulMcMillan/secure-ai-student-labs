@@ -195,11 +195,11 @@ If a command cannot find a file, return to the repository root and check the pat
 
 ## M04 — Repository guidance
 
-This is the 15-minute activity in the revised M04 slides. Have Python and your coding agent ready and download this lab collection before starting the timer. You will write shared and local project instructions, check a small agent-assisted change, and improve a rule that is too broad. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
+This activity takes about 15 minutes once the project is ready: 2 minutes to read the brief, then 13 minutes to write, try, and revise guidance. Complete preparation before starting the timer. You will write shared and local project instructions, check a small agent-assisted change, and clarify how a rule handles an approved exception. The [order calculator starter](examples/module-04/agents-md-workshop/README.md) is self-contained and needs only Python's standard library.
 
 Read these directions yourself. Give the agent only your project guides and the task prompts below. Keep this workbook guide outside the agent's working project.
 
-### 0–2 minutes: prepare the project
+### Before the timer: prepare the project
 
 From the **secure-ai-student-labs root**, run:
 
@@ -228,7 +228,7 @@ m04-work/
 └── tests/test_pricing.py       automated checks
 ```
 
-### The maintainer's brief
+### 0–2 minutes: read the maintainer's brief
 
 The maintainer looks after this project. These are the requirements they want future work to respect:
 
@@ -250,11 +250,11 @@ A few clear sentences in each file are enough. Include the reason for a requirem
 
 ### 6–11 minutes: make and review a small change
 
-Start a fresh agent conversation in **m04-work**. Ask the agent to read both `AGENTS.md` and `src/order_total/AGENTS.md`, name the files, and summarize the relevant guidance.
+Start a fresh agent conversation in **m04-work**. Give it this request:
 
-Give it this task:
+> Read `AGENTS.md` and `src/order_total/AGENTS.md`. Name both files and briefly summarize the rules that apply. Then reject order items whose quantity is zero or negative. Raise `ValueError` with the message `quantity must be at least 1`. Add tests for both cases and check the result.
 
-> Reject order items whose quantity is zero or negative. Raise `ValueError` with the message `quantity must be at least 1`. Add tests for both cases and check the result.
+Check that its summary covers both files before accepting the work. If it misses a guide, ask it to read that exact path. Explicitly reading the files makes this activity usable across coding agents; it is not a test of automatic instruction discovery.
 
 Run `git status --short` to see changed and new files. Read the changed lines in your editor's diff view or with `git diff`. Open the new `src/order_total/AGENTS.md` directly too: plain `git diff` does not display untracked files. Then review the test results:
 
@@ -265,22 +265,23 @@ Run `git status --short` to see changed and new files. Read the changed lines in
 
 If you find a problem, look for missing or unclear guidance and ask for the needed correction. If the agent is still working at the end of the block, stop the run and confirm it has stopped before continuing. Use a written plan for the final step if needed, and return to the code review afterward.
 
-### 11–15 minutes: plan an approved change and revise a rule
+### 11–15 minutes: revise the rule, then try an approved change
 
-Give the agent this request:
+Make sure the previous run has finished or stopped. Read the starter rule about public functions alongside the maintainer's brief. Rewrite it to explain what ordinary fixes preserve and what an approved interface change needs to account for. Save the file, and keep the original sentence and your revision in your notes with a short reason for the change.
 
-> The maintainer has approved renaming `calculate_order_total` to `order_total`. Give me a short plan and explain how the project instructions affect it. Leave the files unchanged.
+Start a **new conversation** in **m04-work** and give it this request:
 
-Read the starter rule about public functions. Does it explain both ordinary fixes and approved changes? Revise it to express the maintainer's intent more clearly.
+> Read `AGENTS.md` and `src/order_total/AGENTS.md`. Name both files and briefly summarize the relevant rules. The maintainer has approved renaming `calculate_order_total` to `order_total`. Give me a short plan and explain how the instructions affect it. Leave every file unchanged.
 
-Ask the agent to reread your updated root guide and reconsider its plan. Check that it accounts for `demo.py` and the tests that call the function, while preserving the arithmetic and rounding requirements.
+Check the plan against the revised guidance. It should account for `demo.py` and the tests that call the function, while preserving the arithmetic and rounding requirements. If the plan misses something, identify the relevant instruction and clarify the plan. You can also check `git status --short` and the diff to confirm this planning step added no changes.
 
-Keep the original rule, your revision, and a short reason for the change. The first plan may already have been sensible; the purpose is to improve a misleading rule, not to force an agent failure.
+A useful revision expresses both ordinary fixes and approved changes clearly. It does not require the agent to make a mistake first. If the agent is unavailable or slow, write the rename plan yourself and use the same checks.
 
 ### What to keep
 
 - Your root and local `AGENTS.md` files.
-- The quantity-validation change and test results.
+- The quantity-validation change and test results, or a written plan if you used the fallback.
+- A short rename plan that accounts for affected callers and tests.
 - The original public-function rule, your revision, and why you changed it.
 
 No push or pull request is required. Keep the work in your own copy.
